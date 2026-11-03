@@ -7,6 +7,7 @@ import { InboxIcon, MenuIcon, SearchIcon } from 'lucide-react';
 import { type HTMLAttributes, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
+import { AmforgeProductSwitcher } from '~/components/general/amforge-product-switcher';
 import { BrandingLogo } from '~/components/general/branding-logo';
 
 import { AppCommandMenu } from './app-command-menu';
@@ -65,8 +66,10 @@ export const Header = ({ className, fullWidth = false, ...props }: HeaderProps) 
           to={getRootHref(params)}
           className="hidden rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:inline"
         >
-          <BrandingLogo className="h-6 w-auto" />
+          <BrandingLogo product={false} className="h-6 w-auto" />
         </Link>
+
+        <AmforgeProductSwitcher current="sign" className="ml-6 hidden md:inline-flex" />
 
         <AppNavDesktop setIsCommandMenuOpen={setIsCommandMenuOpen} />
 

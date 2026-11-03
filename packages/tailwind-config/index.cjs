@@ -4,6 +4,8 @@ const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenCo
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // AmForge: shared preset (tokens -> Tailwind). See amforge-deal-suite/packages/amforge-ui.
+  presets: [require('./amforge.preset.cjs')],
   darkMode: ['variant', '&:is(.dark:not(.dark-mode-disabled) *)'],
   content: ['src/**/*.{ts,tsx}'],
   theme: {
@@ -67,19 +69,20 @@ module.exports = {
           DEFAULT: 'hsl(var(--widget))',
           foreground: 'hsl(var(--widget-foreground))',
         },
+        // AmForge: the `documenso` lime palette now aliases the AmForge brand scale (tokens.css).
         documenso: {
-          DEFAULT: '#A2E771',
-          50: '#FFFFFF',
-          100: '#FDFFFD',
-          200: '#E7F9DA',
-          300: '#D0F3B7',
-          400: '#B9ED94',
-          500: '#A2E771',
-          600: '#83DF41',
-          700: '#66C622',
-          800: '#4D9619',
-          900: '#356611',
-          950: '#284E0D',
+          DEFAULT: 'hsl(var(--brand) / <alpha-value>)',
+          50: 'hsl(var(--af-brand-50) / <alpha-value>)',
+          100: 'hsl(var(--af-brand-100) / <alpha-value>)',
+          200: 'hsl(var(--af-brand-200) / <alpha-value>)',
+          300: 'hsl(var(--af-brand-300) / <alpha-value>)',
+          400: 'hsl(var(--af-brand-400) / <alpha-value>)',
+          500: 'hsl(var(--af-brand-500) / <alpha-value>)',
+          600: 'hsl(var(--af-brand-600) / <alpha-value>)',
+          700: 'hsl(var(--af-brand-700) / <alpha-value>)',
+          800: 'hsl(var(--af-brand-800) / <alpha-value>)',
+          900: 'hsl(var(--af-brand-900) / <alpha-value>)',
+          950: 'hsl(var(--af-brand-950) / <alpha-value>)',
         },
         dawn: {
           DEFAULT: '#aaa89f',

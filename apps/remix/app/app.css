@@ -1,4 +1,7 @@
 @import "@documenso/ui/styles/theme.css";
+/* AmForge tokens override Documenso's theme vars by source order (keep these AFTER theme.css). */
+@import "@documenso/ui/styles/amforge-tokens.css";
+@import "@documenso/ui/styles/amforge-documenso.css";
 
 /* Inter Variable Fonts */
 @font-face {

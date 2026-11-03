@@ -1,6 +1,7 @@
 import backgroundPattern from '@documenso/assets/images/background-pattern.png';
 import { Outlet } from 'react-router';
 
+import { BrandingLogo } from '~/components/general/branding-logo';
 import { PublicLegalLinks } from '~/components/general/public-legal-links';
 
 export default function Layout() {
@@ -11,13 +12,15 @@ export default function Layout() {
           <img
             src={backgroundPattern}
             alt="background pattern"
-            className="dark:brightness-95 dark:contrast-[70%] dark:invert dark:sepia"
+            className="grayscale dark:brightness-95 dark:contrast-[70%] dark:invert"
             style={{
               mask: 'radial-gradient(rgba(255, 255, 255, 1) 0%, transparent 80%)',
               WebkitMask: 'radial-gradient(rgba(255, 255, 255, 1) 0%, transparent 80%)',
             }}
           />
         </div>
+
+        <BrandingLogo className="relative z-10 mb-10 h-7 w-auto text-foreground lg:mb-24" />
 
         <div className="relative w-full flex items-center justify-center">
           <Outlet />
@@ -26,6 +29,7 @@ export default function Layout() {
 
       <footer className="z-10 mt-8 w-full">
         <PublicLegalLinks />
+        <p className="mt-2 text-center text-muted-foreground text-xs">AmForge Deal Suite · Send · Sign</p>
       </footer>
     </main>
   );
