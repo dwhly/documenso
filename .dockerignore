@@ -34,3 +34,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# Commercial implementation is never a build input.
+packages/ee

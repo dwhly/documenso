@@ -3,7 +3,19 @@
   "name": "@documenso/root",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/api",
+    "packages/app-tests",
+    "packages/assets",
+    "packages/auth",
+    "packages/community-ee",
+    "packages/email",
+    "packages/lib",
+    "packages/prisma",
+    "packages/signing",
+    "packages/tailwind-config",
+    "packages/trpc",
+    "packages/tsconfig",
+    "packages/ui"
   ],
   "version": "2.21.1",
   "scripts": {
