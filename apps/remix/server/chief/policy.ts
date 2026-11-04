@@ -12,16 +12,20 @@ export const widensAccess = (name: string) => procedurePolicy.get(name)?.widensA
 const matches = (pattern: string, path: string) => {
   const expression = pattern
     .split('/')
-    .map((part) =>
-      part.startsWith(':') || part.startsWith('{')
-        ? part.endsWith('?')
-          ? '[^/]*'
-          : '[^/]+'
-        : part === '*'
-          ? '.*'
-          : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
-    )
-    .join('/');
+    .map((part, index) => {
+      const slash = index > 0 ? '/' : '';
+      if (part.startsWith(':') && part.endsWith('?')) {
+        return `(?:${slash}[^/]+)?`;
+      }
+      const segment =
+        part.startsWith(':') || part.startsWith('{')
+          ? '[^/]+'
+          : part === '*'
+            ? '.*'
+            : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return slash + segment;
+    })
+    .join('');
   return new RegExp(`^${expression}/?$`).test(path);
 };
 

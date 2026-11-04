@@ -99,3 +99,11 @@ test('jobs only accept actual loopback connections and POST', () => {
   }
   assert.equal(routeDecision('GET', '/api/jobs/internal.seal-document/id', false, '127.0.0.1'), 'denied');
 });
+
+test('actual optional-version recipient download route works with and without version', () => {
+  for (const suffix of ['', '/signed', '/original']) {
+    const path = `/api/files/token/token/envelopeItem/item/download${suffix}`;
+    assert.equal(routeDecision('GET', path), 'allowed');
+    assert.equal(isRecipientRequest('GET', path), true);
+  }
+});
