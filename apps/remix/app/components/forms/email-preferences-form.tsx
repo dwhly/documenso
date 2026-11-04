@@ -69,7 +69,7 @@ export const EmailPreferencesForm = ({ settings, onFormSubmit, canInherit }: Ema
   const { data: emailData, isLoading: isLoadingEmails } = trpc.enterprise.organisation.email.find.useQuery({
     organisationId: organisation.id,
     perPage: 100,
-  });
+  }, { enabled: false });
 
   const emails = emailData?.data || [];
 

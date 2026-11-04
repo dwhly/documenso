@@ -4,10 +4,10 @@ Signature #1:
   - Signature Field Name: Signature_1
   - Signer Certificate Common Name: AmForge Sign
   - Signer full Distinguished Name: C=US,O=AmForge LLC,CN=AmForge Sign
-  - Signing Time: Nov 04 2026 13:08:44
+  - Signing Time: Nov 04 2026 13:23:45
   - Signing Hash Algorithm: SHA-256
   - Signature Type: ETSI.CAdES.detached
-  - Signed Ranges: [0 - 247789], [272367 - 273164]
+  - Signed Ranges: [0 - 638881], [663459 - 664256]
   - Total document signed
   - Signature Validation: Signature is Valid.
   - Certificate Validation: Certificate issuer isn't Trusted.

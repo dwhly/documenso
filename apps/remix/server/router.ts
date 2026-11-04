@@ -29,6 +29,7 @@ import { aiRoute } from './api/ai/route';
 import { downloadRoute } from './api/download/download';
 import { filesRoute } from './api/files/files';
 import { type AppContext, appContext } from './context';
+import { dealApi } from './chief/deal-api';
 import { csrfMiddleware } from './csrf-middleware';
 import { appMiddleware } from './middleware';
 import { securityHeadersMiddleware } from './security-headers';
@@ -139,6 +140,8 @@ app.use('/api/jobs/*', jobsClient.getApiHandler());
 
 app.use('/api/trpc/*', trpcRateLimitMiddleware);
 app.use('/api/trpc/*', reactRouterTrpcServer);
+
+app.route('/api/deal', dealApi);
 
 // Unstable API server routes. Order matters for these two.
 app.get(`/api/v2/openapi.json`, (c) => c.json(openApiDocument));

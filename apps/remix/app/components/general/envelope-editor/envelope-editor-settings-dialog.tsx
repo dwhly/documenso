@@ -228,7 +228,7 @@ export const EnvelopeEditorSettingsDialog = ({ trigger, ...props }: EnvelopeEdit
     },
     {
       ...DO_NOT_INVALIDATE_QUERY_ON_MUTATION,
-      enabled: Boolean(organisationEmails !== undefined && organisation.id),
+      enabled: false,
     },
   );
 

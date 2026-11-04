@@ -13,7 +13,7 @@ services:
       retries: 20
     networks: [private]
   sign:
-    image: chief/sign-v1:local
+    image: ${SIGN_IMAGE:-chief/sign-v1:layer}
     mem_limit: 960m
     restart: unless-stopped
     env_file: .env
@@ -39,6 +39,7 @@ services:
       DOCUMENSO_DISABLE_TELEMETRY: 'true'
     ports: ['8796:3000']
     volumes:
+      - ./branding/logo.png:/app/apps/remix/public/static/logo.png:ro
       - ./secrets/signing.p12:/run/secrets/signing.p12:ro
     depends_on:
       database: {condition: service_healthy}

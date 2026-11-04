@@ -1,0 +1,21 @@
+{
+  "procedures": 287,
+  "classifications": {
+    "denied": 142,
+    "recipient": 10,
+    "deal": 122,
+    "plumbing": 10,
+    "operator": 2,
+    "human": 1
+  },
+  "mutations": 194,
+  "policy_tests": 38,
+  "http_tests": 18,
+  "two_signers_completed": 2,
+  "completed_envelope": "envelope_irfrzikstlnmoifh",
+  "mailpit_signer_messages": [
+    0,
+    0
+  ],
+  "amd64": "pending CI"
+}

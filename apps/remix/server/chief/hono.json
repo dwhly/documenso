@@ -1,0 +1,702 @@
+[
+  {
+    "method": "ALL",
+    "path": "/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/auth/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/trpc/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2/*",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2-beta/*",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/files/*",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/ai/*",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/ai/*",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v1/*",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v1/*",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2/*",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2/*",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2-beta/*",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2-beta/*",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/auth/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/auth/accounts",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/auth/account/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/auth/email-password/update-password",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/auth/email-password/2fa/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/auth/two-factor/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/csrf",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/session",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/sessions",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/session-json",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/signout",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/signout-all",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/signout-session",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/signout-session",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/accounts",
+    "classification": "plumbing"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/auth/account/:accountId",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/callback/oidc",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/callback/oidc/org/:orgUrl",
+    "classification": "denied"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/callback/google",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/callback/microsoft",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/oauth/authorize/google",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/oauth/authorize/google",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/oauth/authorize/microsoft",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/oauth/authorize/microsoft",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/oauth/authorize/oidc",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/oauth/authorize/oidc",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/oauth/authorize/oidc/org/:orgUrl",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/authorize",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/authorize",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/signup",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/signup",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/update-password",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/update-password",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/verify-email",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/verify-email",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/resend-verify-email",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/resend-verify-email",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/forgot-password",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/forgot-password",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/reset-password",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/reset-password",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/2fa/setup",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/2fa/enable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/2fa/enable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/2fa/disable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/2fa/disable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/2fa/view-recovery-codes",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/email-password/2fa/view-recovery-codes",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/embed/start",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/embed/start",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/embed/start",
+    "classification": "denied"
+  },
+  {
+    "method": "GET",
+    "path": "/api/auth/embed/complete",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/embed/redeem",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/embed/redeem",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/embed/redeem",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/passkey/authorize",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/passkey/authorize",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/two-factor/setup",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/two-factor/enable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/two-factor/enable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/two-factor/disable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/two-factor/disable",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/two-factor/view-recovery-codes",
+    "classification": "plumbing"
+  },
+  {
+    "method": "POST",
+    "path": "/api/auth/two-factor/view-recovery-codes",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/files/upload-pdf",
+    "classification": "deal"
+  },
+  {
+    "method": "POST",
+    "path": "/api/files/upload-pdf",
+    "classification": "deal"
+  },
+  {
+    "method": "POST",
+    "path": "/api/files/upload-pdf",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId/download/:version?",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId/download/:version?",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/token/:token/envelopeItem/:envelopeItemId",
+    "classification": "recipient"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/token/:token/envelopeItem/:envelopeItemId",
+    "classification": "recipient"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/token/:token/envelopeItem/:envelopeItemId/download/:version?",
+    "classification": "recipient"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/token/:token/envelopeItem/:envelopeItemId/download/:version?",
+    "classification": "recipient"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId/dataId/:documentDataId/:version/item.pdf",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId/dataId/:documentDataId/:version/item.pdf",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/envelope/:envelopeId/envelopeItem/:envelopeItemId/dataId/:documentDataId/:version/item.pdf",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/token/:token/envelope/:envelopeId/envelopeItem/:envelopeItemId/dataId/:documentDataId/:version/item.pdf",
+    "classification": "recipient"
+  },
+  {
+    "method": "GET",
+    "path": "/api/files/token/:token/envelope/:envelopeId/envelopeItem/:envelopeItemId/dataId/:documentDataId/:version/item.pdf",
+    "classification": "recipient"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/ai/*",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/ai/detect-recipients",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/ai/detect-recipients",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/ai/detect-fields",
+    "classification": "denied"
+  },
+  {
+    "method": "POST",
+    "path": "/api/ai/detect-fields",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/csc/*",
+    "classification": "denied"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/openapi",
+    "classification": "denied"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/openapi.json",
+    "classification": "denied"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/me",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v1/zapier/list-documents",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v1/zapier/subscribe",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v1/zapier/unsubscribe",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v1/*",
+    "classification": "denied"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/jobs/*",
+    "classification": "internal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/trpc/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/trpc/*",
+    "classification": "plumbing"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/openapi.json",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/envelope/item/:envelopeItemId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/envelope/item/:envelopeItemId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/envelope/item/:envelopeItemId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/envelope/:envelopeId/audit-log/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/envelope/:envelopeId/audit-log/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/envelope/:envelopeId/certificate/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/envelope/:envelopeId/certificate/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/document/:documentId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2/document/:documentId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2/*",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/openapi.json",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/envelope/item/:envelopeItemId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/envelope/item/:envelopeItemId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/envelope/item/:envelopeItemId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/envelope/:envelopeId/audit-log/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/envelope/:envelopeId/audit-log/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/envelope/:envelopeId/certificate/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/envelope/:envelopeId/certificate/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/document/:documentId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v2-beta/document/:documentId/download",
+    "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/v2-beta/*",
+    "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/api/deal/openapi.json",
+    "classification": "plumbing"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/deal/*",
+    "classification": "deal"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "enabledByDefault": false,
+  "listener": "Separate recipient-only edge listener; staff/MCP never published",
+  "proxyHeader": {"X-Chief-Recipient-Listener": "1"},
+  "GET": ["/sign/:token", "/sign/:token/complete", "/sign/:token/expired", "/sign/:token/rejected", "/sign/:token/waiting", "same signing paths with .data suffix", "/articles/signature-disclosure", "/__manifest", "/assets/*", "/fonts/*", "/static/*", "/chief/*", "/api/branding/logo/team/:teamId", "/api/branding/logo/organisation/:orgId", "/api/files/token/:token/envelopeItem/:envelopeItemId", "/api/files/token/:token/envelopeItem/:envelopeItemId/download/:version?", "/api/files/token/:token/envelope/:envelopeId/envelopeItem/:envelopeItemId/dataId/:documentDataId/:version/item.pdf"],
+  "trpc": "GET queries or POST mutations at /api/trpc/:names. Decode then split comma-separated names; EVERY name must be classified recipient in procedures.json and match the HTTP method. Unknown/mixed staff batches denied.",
+  "denied": ["/d/*", "/report/*", "/api/v1/*", "/api/v2/*", "/api/deal/*", "/api/jobs/*", "/api/auth/*", "all staff and operator routes"]
+}

@@ -1,0 +1,3124 @@
+[
+  {
+    "name": "enterprise.organisation.email.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "enterprise.organisation.email.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.organisation.email.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.organisation.email.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "enterprise.organisation.emailDomain.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "enterprise.organisation.emailDomain.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "enterprise.organisation.emailDomain.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.organisation.emailDomain.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "enterprise.organisation.emailDomain.verify",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.organisation.authenticationPortal.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "enterprise.organisation.authenticationPortal.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.organisation.authenticationPortal.linkAccount",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.organisation.authenticationPortal.declineLinkAccount",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.billing.plans.get",
+    "type": "query",
+    "input": 0,
+    "output": false,
+    "classification": "denied"
+  },
+  {
+    "name": "enterprise.billing.subscription.get",
+    "type": "query",
+    "input": 1,
+    "output": false,
+    "classification": "denied"
+  },
+  {
+    "name": "enterprise.billing.subscription.create",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.billing.subscription.manage",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.billing.subscription.sync",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "enterprise.billing.invoices.get",
+    "type": "query",
+    "input": 1,
+    "output": false,
+    "classification": "denied"
+  },
+  {
+    "name": "enterprise.csc.signEnvelope",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.attachment.find",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/attachment",
+      "summary": "Find attachments",
+      "description": "Find all attachments for an envelope",
+      "tags": ["Envelope Attachments"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "recipient"
+  },
+  {
+    "name": "envelope.attachment.create",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/attachment/create",
+      "summary": "Create attachment",
+      "description": "Create a new attachment for an envelope",
+      "tags": ["Envelope Attachments"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.attachment.update",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/attachment/update",
+      "summary": "Update attachment",
+      "description": "Update an existing attachment",
+      "tags": ["Envelope Attachments"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.attachment.delete",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/attachment/delete",
+      "summary": "Delete attachment",
+      "description": "Delete an attachment from an envelope",
+      "tags": ["Envelope Attachments"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.item.getMany",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.item.getManyByToken",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "recipient"
+  },
+  {
+    "name": "envelope.item.createMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/item/create-many",
+      "summary": "Create envelope items",
+      "contentTypes": ["multipart/form-data"],
+      "description": "Create multiple envelope items for an envelope",
+      "tags": ["Envelope Items"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.item.updateMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/item/update-many",
+      "summary": "Update envelope items",
+      "description": "Update multiple envelope items for an envelope",
+      "tags": ["Envelope Items"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.item.delete",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/item/delete",
+      "summary": "Delete envelope item",
+      "description": "Delete an envelope item from an envelope",
+      "tags": ["Envelope Items"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.item.download",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/item/{envelopeItemId}/download",
+      "summary": "Download an envelope item",
+      "description": "Download an envelope item by its ID",
+      "tags": ["Envelope Items"],
+      "responseHeaders": {
+        "_def": {
+          "unknownKeys": "strip",
+          "catchall": {
+            "_def": {
+              "typeName": "ZodNever"
+            },
+            "~standard": {
+              "version": 1,
+              "vendor": "zod"
+            }
+          },
+          "typeName": "ZodObject"
+        },
+        "~standard": {
+          "version": 1,
+          "vendor": "zod"
+        },
+        "_cached": null
+      }
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.item.replacePdf",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.recipient.get",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/recipient/{recipientId}",
+      "summary": "Get envelope recipient",
+      "description": "Returns an envelope recipient given an ID",
+      "tags": ["Envelope Recipients"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.recipient.createMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/recipient/create-many",
+      "summary": "Create envelope recipients",
+      "description": "Create multiple recipients for an envelope",
+      "tags": ["Envelope Recipients"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.recipient.updateMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/recipient/update-many",
+      "summary": "Update envelope recipients",
+      "description": "Update multiple recipients for an envelope",
+      "tags": ["Envelope Recipients"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "envelope.recipient.delete",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/recipient/delete",
+      "summary": "Delete envelope recipient",
+      "description": "Delete an envelope recipient",
+      "tags": ["Envelope Recipients"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.recipient.set",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "envelope.recipient.report",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "recipient",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.recipient.rejectOnBehalfOf",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/recipient/{recipientId}/reject",
+      "summary": "Reject envelope recipient on behalf of",
+      "description": "Records a rejection on behalf of a recipient. Use this when a recipient has declined to sign outside of the platform. The rejection is flagged as external in the document audit log. By default the action is attributed to the API user; supply `actAsEmail` to attribute it to a specific team member.",
+      "tags": ["Envelope Recipients"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.field.get",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/field/{fieldId}",
+      "summary": "Get envelope field",
+      "description": "Returns an envelope field given an ID",
+      "tags": ["Envelope Fields"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.field.getSignatures",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.field.createMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/field/create-many",
+      "summary": "Create envelope fields",
+      "description": "Create multiple fields for an envelope",
+      "tags": ["Envelope Fields"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.field.updateMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/field/update-many",
+      "summary": "Update envelope fields",
+      "description": "Update multiple envelope fields for an envelope",
+      "tags": ["Envelope Fields"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.field.delete",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/field/delete",
+      "summary": "Delete envelope field",
+      "description": "Delete an envelope field",
+      "tags": ["Envelope Fields"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.field.set",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.field.sign",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "recipient",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.find",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope",
+      "summary": "Find envelopes",
+      "description": "Find envelopes based on search criteria",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.auditLog.find",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/{envelopeId}/audit-log",
+      "summary": "Get envelope audit logs",
+      "description": "Find audit logs based on a search criteria",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.auditLog.downloadPdf",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/{envelopeId}/audit-log/download",
+      "summary": "Download envelope audit log PDF",
+      "description": "Download the audit log for a document as a PDF.",
+      "tags": ["Envelope"],
+      "responseHeaders": {
+        "_def": {
+          "unknownKeys": "strip",
+          "catchall": {
+            "_def": {
+              "typeName": "ZodNever"
+            },
+            "~standard": {
+              "version": 1,
+              "vendor": "zod"
+            }
+          },
+          "typeName": "ZodObject"
+        },
+        "~standard": {
+          "version": 1,
+          "vendor": "zod"
+        },
+        "_cached": null
+      }
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.certificate.downloadPdf",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/{envelopeId}/certificate/download",
+      "summary": "Download envelope certificate PDF",
+      "description": "Download the signing certificate for a completed document as a PDF.",
+      "tags": ["Envelope"],
+      "responseHeaders": {
+        "_def": {
+          "unknownKeys": "strip",
+          "catchall": {
+            "_def": {
+              "typeName": "ZodNever"
+            },
+            "~standard": {
+              "version": 1,
+              "vendor": "zod"
+            }
+          },
+          "typeName": "ZodObject"
+        },
+        "~standard": {
+          "version": 1,
+          "vendor": "zod"
+        },
+        "_cached": null
+      }
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.bulk.move",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.bulk.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.bulk.cancel",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.editor.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.get",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/envelope/{envelopeId}",
+      "summary": "Get envelope",
+      "description": "Returns an envelope given an ID",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "envelope.getMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/get-many",
+      "summary": "Get multiple envelopes",
+      "description": "Retrieve multiple envelopes by their IDs",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.create",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/create",
+      "contentTypes": ["multipart/form-data"],
+      "summary": "Create envelope",
+      "description": "Create an envelope using form data.",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.use",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/use",
+      "contentTypes": ["multipart/form-data"],
+      "summary": "Use envelope",
+      "description": "Create a document envelope from a template envelope. Upload custom files to replace the template PDFs and map them to specific envelope items using identifiers.",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.update",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/update",
+      "summary": "Update envelope",
+      "description": "Update envelope properties and settings",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval on every edit: destination, default recipients, visibility, auth or expiry can widen access."
+  },
+  {
+    "name": "envelope.delete",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/delete",
+      "summary": "Delete envelope",
+      "description": "Delete an envelope",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.cancel",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/cancel",
+      "summary": "Cancel envelope",
+      "description": "Cancel a pending envelope",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "envelope.duplicate",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/duplicate",
+      "summary": "Duplicate envelope",
+      "description": "Duplicate an envelope with all its settings",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.saveAsTemplate",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.distribute",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/distribute",
+      "summary": "Distribute envelope",
+      "description": "Send the envelope to recipients based on your distribution method",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.redistribute",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/envelope/redistribute",
+      "summary": "Redistribute envelope",
+      "description": "Redistribute the envelope to the provided recipients who have not actioned the envelope. Will use the distribution method set in the envelope. This also refreshes the signing-link expiration for the targeted unsigned recipients, renewing any expired links.",
+      "tags": ["Envelope"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "envelope.signingStatus",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "recipient"
+  },
+  {
+    "name": "auth.getAuthMethods",
+    "type": "query",
+    "input": 0,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "auth.passkey.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "auth.passkey.createAuthenticationOptions",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "auth.passkey.createRegistrationOptions",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "auth.passkey.createSigninOptions",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "auth.passkey.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "auth.passkey.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "auth.passkey.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "profile.findUserSecurityAuditLogs",
+    "type": "query",
+    "input": 1,
+    "output": false,
+    "classification": "denied"
+  },
+  {
+    "name": "profile.updateProfile",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "profile.deleteAccount",
+    "type": "mutation",
+    "input": 0,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "profile.setProfileImage",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "profile.submitSupportTicket",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.get",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/document/{documentId}",
+      "summary": "Get document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Returns a document given an ID",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.getMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/get-many",
+      "summary": "Get multiple documents",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Retrieve multiple documents by their IDs",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.find",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/document",
+      "summary": "Find documents",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Find documents based on a search criteria",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.create",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/create",
+      "contentTypes": ["multipart/form-data"],
+      "summary": "Create document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.update",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/update",
+      "summary": "Update document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval on every edit: destination, default recipients, visibility, auth or expiry can widen access."
+  },
+  {
+    "name": "document.delete",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/delete",
+      "summary": "Delete document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "document.duplicate",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/duplicate",
+      "summary": "Duplicate document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.downloadCertificate",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.distribute",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/distribute",
+      "summary": "Distribute document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Send the document out to recipients based on your distribution method",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.redistribute",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/redistribute",
+      "summary": "Redistribute document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Redistribute the document to the provided recipients who have not actioned the document. Will use the distribution method set in the document. This also refreshes the signing-link expiration for the targeted unsigned recipients, renewing any expired links.",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.search",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.share",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.download",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/document/{documentId}/download",
+      "summary": "Download document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Document"],
+      "deprecated": true,
+      "responseHeaders": {
+        "_def": {
+          "unknownKeys": "strip",
+          "catchall": {
+            "_def": {
+              "typeName": "ZodNever"
+            },
+            "~standard": {
+              "version": 1,
+              "vendor": "zod"
+            }
+          },
+          "typeName": "ZodObject"
+        },
+        "~standard": {
+          "version": 1,
+          "vendor": "zod"
+        },
+        "_cached": null
+      }
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.downloadBeta",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/document/{documentId}/download-beta",
+      "summary": "Download document (beta)",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Get a pre-signed download URL for the original or signed version of a document",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.createDocumentTemporary",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/create/beta",
+      "summary": "Create document",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. You will need to upload the PDF to the provided URL returned. This endpoint will be removed since we will allow direct uploads, instead of using an upload URL.",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.getDocumentByToken",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "recipient"
+  },
+  {
+    "name": "document.findDocumentsInternal",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.accessAuth.request2FAEmail",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.auditLog.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.auditLog.download",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.inbox.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.inbox.getCount",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "document.attachment.create",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/attachment/create",
+      "summary": "Create attachment",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create a new attachment for a document",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.attachment.update",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/attachment/update",
+      "summary": "Update attachment",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update an existing attachment",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "document.attachment.delete",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/attachment/delete",
+      "summary": "Delete attachment",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Delete an attachment from a document",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "document.attachment.find",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/document/attachment",
+      "summary": "Find attachments",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Find all attachments for a document",
+      "tags": ["Document"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "field.getDocumentField",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/document/field/{fieldId}",
+      "summary": "Get document field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Returns a single field. If you want to retrieve all the fields for a document, use the \"Get Document\" endpoint.",
+      "tags": ["Document Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "field.createDocumentField",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/field/create",
+      "summary": "Create document field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create a single field for a document.",
+      "tags": ["Document Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.createDocumentFields",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/field/create-many",
+      "summary": "Create document fields",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create multiple fields for a document.",
+      "tags": ["Document Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.updateDocumentField",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/field/update",
+      "summary": "Update document field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update a single field for a document.",
+      "tags": ["Document Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.updateDocumentFields",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/field/update-many",
+      "summary": "Update document fields",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update multiple fields for a document.",
+      "tags": ["Document Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.deleteDocumentField",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/field/delete",
+      "summary": "Delete document field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Document Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.setFieldsForDocument",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.createTemplateField",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/field/create",
+      "summary": "Create template field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create a single field for a template.",
+      "tags": ["Template Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.getTemplateField",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/template/field/{fieldId}",
+      "summary": "Get template field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Returns a single field. If you want to retrieve all the fields for a template, use the \"Get Template\" endpoint.",
+      "tags": ["Template Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "field.createTemplateFields",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/field/create-many",
+      "summary": "Create template fields",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create multiple fields for a template.",
+      "tags": ["Template Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.updateTemplateField",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/field/update",
+      "summary": "Update template field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update a single field for a template.",
+      "tags": ["Template Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.updateTemplateFields",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/field/update-many",
+      "summary": "Update template fields",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update multiple fields for a template.",
+      "tags": ["Template Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.deleteTemplateField",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/field/delete",
+      "summary": "Delete template field",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Template Fields"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.setFieldsForTemplate",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.signFieldWithToken",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "recipient",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "field.removeSignedFieldWithToken",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "recipient",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "folder.getFolders",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "folder.findFolders",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/folder",
+      "summary": "Find folders",
+      "description": "Find folders based on a search criteria",
+      "tags": ["Folder"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "folder.findFoldersInternal",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "folder.createFolder",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/folder/create",
+      "summary": "Create new folder",
+      "description": "Creates a new folder in your team",
+      "tags": ["Folder"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "folder.updateFolder",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/folder/update",
+      "summary": "Update folder",
+      "description": "Updates an existing folder",
+      "tags": ["Folder"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "folder.deleteFolder",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/folder/delete",
+      "summary": "Delete folder",
+      "description": "Deletes an existing folder",
+      "tags": ["Folder"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "recipient.suggestions.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "recipient.getDocumentRecipient",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/document/recipient/{recipientId}",
+      "summary": "Get document recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Returns a single recipient. If you want to retrieve all the recipients for a document, use the \"Get Document\" endpoint.",
+      "tags": ["Document Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "recipient.createDocumentRecipient",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/recipient/create",
+      "summary": "Create document recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create a single recipient for a document.",
+      "tags": ["Document Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "recipient.createDocumentRecipients",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/recipient/create-many",
+      "summary": "Create document recipients",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create multiple recipients for a document.",
+      "tags": ["Document Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "recipient.updateDocumentRecipient",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/recipient/update",
+      "summary": "Update document recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update a single recipient for a document.",
+      "tags": ["Document Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "recipient.updateDocumentRecipients",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/recipient/update-many",
+      "summary": "Update document recipients",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update multiple recipients for a document.",
+      "tags": ["Document Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "recipient.deleteDocumentRecipient",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/document/recipient/delete",
+      "summary": "Delete document recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Document Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "recipient.setDocumentRecipients",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "recipient.getTemplateRecipient",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/template/recipient/{recipientId}",
+      "summary": "Get template recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Returns a single recipient. If you want to retrieve all the recipients for a template, use the \"Get Template\" endpoint.",
+      "tags": ["Template Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "recipient.createTemplateRecipient",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/recipient/create",
+      "summary": "Create template recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create a single recipient for a template.",
+      "tags": ["Template Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "recipient.createTemplateRecipients",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/recipient/create-many",
+      "summary": "Create template recipients",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create multiple recipients for a template.",
+      "tags": ["Template Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "recipient.updateTemplateRecipient",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/recipient/update",
+      "summary": "Update template recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update a single recipient for a template.",
+      "tags": ["Template Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "recipient.updateTemplateRecipients",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/recipient/update-many",
+      "summary": "Update template recipients",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Update multiple recipients for a template.",
+      "tags": ["Template Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "recipient.deleteTemplateRecipient",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/recipient/delete",
+      "summary": "Delete template recipient",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Template Recipients"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "recipient.setTemplateRecipients",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "recipient.completeDocumentWithToken",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "recipient",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "recipient.rejectDocumentWithToken",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "recipient",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisation.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.organisation.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.organisation.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisation.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisation.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.organisation.subscription.swap",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisation.subscription.sync",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisation.stats.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.organisation.stats.reset",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisationMember.promoteToOwner",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisationMember.updateRole",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.organisationMember.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.claims.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.claims.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.claims.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.claims.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.stripe.createCustomer",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.license.resync",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.user.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.user.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.user.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.user.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.user.enable",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.user.disable",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.user.resetTwoFactor",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.user.findTeams",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.document.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.document.findUnsealed",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.document.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.document.reseal",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.document.findJobs",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.document.findAuditLogs",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.document.downloadAuditLogs",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.recipient.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Identity rebinding: email/name/recipient replacement; conservatively require approval for every edit."
+  },
+  {
+    "name": "admin.recipient.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.emailDomain.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.emailDomain.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.emailDomain.reregister",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.emailTransport.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.emailTransport.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.emailTransport.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.emailTransport.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.emailTransport.sendTest",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "admin.team.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.teamMember.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "admin.search",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "admin.updateSiteSetting",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "organisation.getMany",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "organisation.getQuotaFlags",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "organisation.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "organisation.leave",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.analytics.getOverview",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.analytics.getDocumentsOverTime",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.analytics.getStatusBreakdown",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.analytics.getTemplateUsage",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.analytics.getTeamActivity",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.member.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.member.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.member.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "organisation.member.deleteMany",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "organisation.member.invite.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.member.invite.getMany",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.member.invite.createMany",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.member.invite.deleteMany",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "organisation.member.invite.accept",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.member.invite.decline",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.member.invite.resend",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.group.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "organisation.group.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.group.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.group.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "organisation.settings.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "operator",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.settings.updateBrandingLogo",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "operator",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "organisation.internal.getOrganisationSession",
+    "type": "query",
+    "input": 0,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "apiToken.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "human",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "apiToken.getMany",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "apiToken.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "team.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "team.get",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "team.create",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "team.analytics.getOverview",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "team.analytics.getDocumentsOverTime",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "team.analytics.getStatusBreakdown",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "team.analytics.getTemplateUsage",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "team.analytics.getMemberActivity",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "team.member.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "team.member.getMany",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "plumbing"
+  },
+  {
+    "name": "team.member.createMany",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.member.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.member.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "team.group.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "team.group.createMany",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.group.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.group.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "team.settings.update",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval on every edit: destination, default recipients, visibility, auth or expiry can widen access."
+  },
+  {
+    "name": "team.settings.updateBrandingLogo",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.email.get",
+    "type": "query",
+    "input": 0,
+    "output": false,
+    "classification": "denied"
+  },
+  {
+    "name": "team.email.update",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.email.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "team.email.verification.send",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.email.verification.complete",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.email.verification.resend",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "team.email.verification.delete",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": false
+  },
+  {
+    "name": "template.findTemplates",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/template",
+      "summary": "Find templates",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Find templates based on a search criteria",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "template.findTemplatesInternal",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "template.findOrganisationTemplates",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "template.getOrganisationTemplateById",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "template.getTemplateById",
+    "type": "query",
+    "openapi": {
+      "method": "GET",
+      "path": "/template/{templateId}",
+      "summary": "Get template",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "template.getMany",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/get-many",
+      "summary": "Get multiple templates",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Retrieve multiple templates by their IDs",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.search",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "template.createTemplate",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/create",
+      "contentTypes": ["multipart/form-data"],
+      "summary": "Create template",
+      "description": "Create a new template. Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.createTemplateTemporary",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/create/beta",
+      "summary": "Create template",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. You will need to upload the PDF to the provided URL returned. Note: Once V2 API is released, this will be removed since we will allow direct uploads, instead of using an upload URL.",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.updateTemplate",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/update",
+      "summary": "Update template",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval on every edit: destination, default recipients, visibility, auth or expiry can widen access."
+  },
+  {
+    "name": "template.duplicateTemplate",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/duplicate",
+      "summary": "Duplicate template",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.deleteTemplate",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/delete",
+      "summary": "Delete template",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide.",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "template.createDocumentFromTemplate",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/use",
+      "summary": "Use template",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Use the template to create a document",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.createDocumentFromDirectTemplate",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.createTemplateDirectLink",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/direct/create",
+      "summary": "Create direct link",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Create a direct link for a template",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.deleteTemplateDirectLink",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/direct/delete",
+      "summary": "Delete direct link",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Delete a direct link for a template",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.toggleTemplateDirectLink",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/template/direct/toggle",
+      "summary": "Toggle direct link",
+      "description": "Deprecated: this endpoint is being replaced by the Envelope API. See https://docs.documenso.com/docs/developers/api/migrate-to-envelopes for the migration guide. Enable or disable a direct link for a template",
+      "tags": ["Template"],
+      "deprecated": true
+    },
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "template.uploadBulkSend",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "webhook.calls.find",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "deal"
+  },
+  {
+    "name": "webhook.calls.resend",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "webhook.getTeamWebhooks",
+    "type": "query",
+    "input": 0,
+    "output": false,
+    "classification": "deal"
+  },
+  {
+    "name": "webhook.getWebhookById",
+    "type": "query",
+    "input": 1,
+    "output": false,
+    "classification": "deal"
+  },
+  {
+    "name": "webhook.createWebhook",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "webhook.deleteWebhook",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "deal",
+    "widensAccess": false
+  },
+  {
+    "name": "webhook.editWebhook",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval on every edit: destination, default recipients, visibility, auth or expiry can widen access."
+  },
+  {
+    "name": "webhook.testWebhook",
+    "type": "mutation",
+    "input": 1,
+    "output": false,
+    "classification": "deal",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.createEmbeddingPresignToken",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/embedding/create-presign-token",
+      "summary": "Create embedding presign token",
+      "description": "Creates a presign token for embedding operations with configurable expiration time",
+      "tags": ["Embedding"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.verifyEmbeddingPresignToken",
+    "type": "mutation",
+    "openapi": {
+      "method": "POST",
+      "path": "/embedding/verify-presign-token",
+      "summary": "Verify embedding presign token",
+      "description": "Verifies a presign token for embedding operations and returns the associated API token",
+      "tags": ["Embedding"]
+    },
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.createEmbeddingEnvelope",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.createEmbeddingDocument",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.createEmbeddingTemplate",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.updateEmbeddingEnvelope",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.updateEmbeddingDocument",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.updateEmbeddingTemplate",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  },
+  {
+    "name": "embeddingPresign.getMultiSignDocument",
+    "type": "query",
+    "input": 1,
+    "output": true,
+    "classification": "denied"
+  },
+  {
+    "name": "embeddingPresign.persistEmbedSignature",
+    "type": "mutation",
+    "input": 1,
+    "output": true,
+    "classification": "denied",
+    "widensAccess": true,
+    "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
+  }
+]

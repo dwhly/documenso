@@ -106,6 +106,7 @@ export const EnvelopeDistributeDialog = ({
     },
     {
       ...DO_NOT_INVALIDATE_QUERY_ON_MUTATION,
+      enabled: false,
     },
   );
 

@@ -1,8 +1,10 @@
 import { PREFERRED_TEAM_URL_COOKIE } from '@documenso/lib/constants/cookies';
 import { AppDebugger } from '@documenso/lib/utils/debugger';
+import { getConnInfo } from '@hono/node-server/conninfo';
 import type { Context, Next } from 'hono';
 import { setCookie } from 'hono/cookie';
 
+import { containsExcludedFeature, isRecipientRequest, routeDecision } from './chief/policy';
 import { handleRedirects } from './redirects';
 
 const debug = new AppDebugger('Middleware');
@@ -19,6 +21,44 @@ const debug = new AppDebugger('Middleware');
 export const appMiddleware = async (c: Context, next: Next) => {
   const { req } = c;
   const { path } = req;
+
+  if (req.header('x-chief-recipient-listener') === '1' && !isRecipientRequest(req.method, path)) {
+    return c.json({ error: 'Recipient route required' }, 404);
+  }
+
+  const decision = routeDecision(req.method, path, Boolean(req.header('authorization')), getConnInfo(c).remote.address);
+  if (
+    decision === 'denied' ||
+    (decision === 'operator' &&
+      (!process.env.CHIEF_OPERATOR_KEY || req.header('x-chief-operator-key') !== process.env.CHIEF_OPERATOR_KEY))
+  ) {
+    return c.json({ error: 'This route is not enabled in Chief Sign' }, 404);
+  }
+
+  if (req.method === 'POST' && !path.startsWith('/api/auth/')) {
+    const contentType = req.header('content-type') ?? '';
+    let payload: unknown;
+    if (contentType.includes('application/json')) {
+      payload = await req.raw
+        .clone()
+        .json()
+        .catch(() => null);
+    }
+    if (contentType.includes('multipart/form-data')) {
+      const form = await req.raw.clone().formData();
+      const raw = form.get('payload');
+      if (typeof raw === 'string') {
+        try {
+          payload = JSON.parse(raw);
+        } catch {
+          payload = null;
+        }
+      }
+    }
+    if (containsExcludedFeature(payload)) {
+      return c.json({ error: 'Document action reauthentication and qualified signatures are not enabled' }, 403);
+    }
+  }
 
   // Paths to ignore.
   if (nonPagePathRegex.test(path)) {

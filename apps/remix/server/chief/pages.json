@@ -1,0 +1,526 @@
+[
+  {
+    "path": "/",
+    "classification": "staff"
+  },
+  {
+    "path": "/admin",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/claims",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/documents/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/documents",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/email-domains/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/email-domains",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/email-transports",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/organisation-insights/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/organisation-insights",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/organisation-stats",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/organisations/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/organisations",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/site-settings",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/stats",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/teams/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/unsealed-documents",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/users/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/admin/users",
+    "classification": "denied"
+  },
+  {
+    "path": "/dashboard",
+    "classification": "staff"
+  },
+  {
+    "path": "/inbox",
+    "classification": "staff"
+  },
+  {
+    "path": "/o/:orgUrl",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/analytics",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/billing",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/branding",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/certificates",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/document",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/email-domains/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/email-domains",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/email",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/general",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/groups/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/groups",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/members",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/reminders",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/sso",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/settings/teams",
+    "classification": "denied"
+  },
+  {
+    "path": "/o/:orgUrl/support",
+    "classification": "denied"
+  },
+  {
+    "path": "/settings",
+    "classification": "staff"
+  },
+  {
+    "path": "/settings/billing",
+    "classification": "denied"
+  },
+  {
+    "path": "/settings/organisations",
+    "classification": "denied"
+  },
+  {
+    "path": "/settings/profile",
+    "classification": "staff"
+  },
+  {
+    "path": "/settings/security",
+    "classification": "staff"
+  },
+  {
+    "path": "/settings/security/activity",
+    "classification": "staff"
+  },
+  {
+    "path": "/settings/security/linked-accounts",
+    "classification": "staff"
+  },
+  {
+    "path": "/settings/security/passkeys",
+    "classification": "denied"
+  },
+  {
+    "path": "/settings/security/sessions",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/analytics",
+    "classification": "denied"
+  },
+  {
+    "path": "/t/:teamUrl/documents/:id",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/documents/:id/edit",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/documents/:id/legacy_editor",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/documents/:id/logs",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/documents",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/documents/f/:folderId",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/documents/folders",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/branding",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/certificates",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/document",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/email",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/general",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/groups",
+    "classification": "denied"
+  },
+  {
+    "path": "/t/:teamUrl/settings/members",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/public-profile",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/reminders",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/tokens",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/webhooks/:id",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/settings/webhooks",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/templates/:id",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/templates/:id/edit",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/templates/:id/legacy_editor",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/templates",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/templates/f/:folderId",
+    "classification": "staff"
+  },
+  {
+    "path": "/t/:teamUrl/templates/folders",
+    "classification": "staff"
+  },
+  {
+    "path": "/__htmltopdf/audit-log",
+    "classification": "staff"
+  },
+  {
+    "path": "/__htmltopdf/certificate",
+    "classification": "staff"
+  },
+  {
+    "path": "/p/:url",
+    "classification": "staff"
+  },
+  {
+    "path": "/d/:token",
+    "classification": "denied"
+  },
+  {
+    "path": "/report/:token",
+    "classification": "denied"
+  },
+  {
+    "path": "/sign/:token",
+    "classification": "staff"
+  },
+  {
+    "path": "/sign/:token/complete",
+    "classification": "staff"
+  },
+  {
+    "path": "/sign/:token/expired",
+    "classification": "staff"
+  },
+  {
+    "path": "/sign/:token/rejected",
+    "classification": "staff"
+  },
+  {
+    "path": "/sign/:token/waiting",
+    "classification": "staff"
+  },
+  {
+    "path": "/ingest/*",
+    "classification": "staff"
+  },
+  {
+    "path": "/share/:slug",
+    "classification": "staff"
+  },
+  {
+    "path": "/share/:slug/opengraph",
+    "classification": "staff"
+  },
+  {
+    "path": "/articles/signature-disclosure",
+    "classification": "staff"
+  },
+  {
+    "path": "/check-email",
+    "classification": "staff"
+  },
+  {
+    "path": "/forgot-password",
+    "classification": "staff"
+  },
+  {
+    "path": "/o/:orgUrl/signin",
+    "classification": "denied"
+  },
+  {
+    "path": "/organisation/decline/:token",
+    "classification": "staff"
+  },
+  {
+    "path": "/organisation/invite/:token",
+    "classification": "staff"
+  },
+  {
+    "path": "/organisation/sso/confirmation/:token",
+    "classification": "staff"
+  },
+  {
+    "path": "/reset-password/:token",
+    "classification": "staff"
+  },
+  {
+    "path": "/reset-password",
+    "classification": "staff"
+  },
+  {
+    "path": "/signin",
+    "classification": "staff"
+  },
+  {
+    "path": "/signup",
+    "classification": "denied"
+  },
+  {
+    "path": "/team/verify/email/:token",
+    "classification": "staff"
+  },
+  {
+    "path": "/unverified-account",
+    "classification": "staff"
+  },
+  {
+    "path": "/verify-email/:token",
+    "classification": "staff"
+  },
+  {
+    "path": "/verify-email",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/avatar/:id",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/branding/logo/organisation/:orgId",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/branding/logo/team/:teamId",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/certificate-status",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/health",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/limits",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/locale",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/preferred-team",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/stripe/webhook",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/theme",
+    "classification": "staff"
+  },
+  {
+    "path": "/api/webhook/trigger",
+    "classification": "staff"
+  },
+  {
+    "path": "/embed",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/direct/:token",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/sign/:token",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/auth/complete",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/auth/popup",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/playground",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v1/authoring",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v1/authoring/document/create",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v1/authoring/document/edit/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v1/authoring/template/create",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v1/authoring/template/edit/:id",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v1/authoring/completed/create",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v1/multisign",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v2/authoring",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v2/authoring/envelope/create",
+    "classification": "denied"
+  },
+  {
+    "path": "/embed/v2/authoring/envelope/edit/:id",
+    "classification": "denied"
+  }
+]

@@ -1,0 +1,2189 @@
+[
+  {
+    "id": "root",
+    "path": "",
+    "parentId": null,
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/_layout",
+    "path": null,
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/site-settings/get-site-settings",
+      "@documenso/lib/server-only/site-settings/schemas/banner"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/_layout",
+    "path": "admin",
+    "parentId": "routes/_authenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/license/license-client"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/_index",
+    "path": null,
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/claims",
+    "path": "claims",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/license/license-client"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/documents.$id",
+    "path": "documents/:id",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [
+      "@documenso/lib/server-only/admin/get-entire-document"
+    ],
+    "trpcCalls": [
+      "admin.document.downloadAuditLogs",
+      "admin.document.reseal"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/documents._index",
+    "path": "documents",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "admin.document.find"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/email-domains.$id",
+    "path": "email-domains/:id",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": [
+      "admin.emailDomain.get",
+      "admin.emailDomain.reregister"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/email-domains._index",
+    "path": "email-domains",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "admin.emailDomain.find"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/email-transports._index",
+    "path": "email-transports",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/organisation-insights.$id",
+    "path": "organisation-insights/:id",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/admin/get-organisation-detailed-insights"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/organisation-insights._index",
+    "path": "organisation-insights",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/admin/get-signing-volume"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/organisation-stats._index",
+    "path": "organisation-stats",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "admin.claims.find"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/organisations.$id",
+    "path": "organisations/:id",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/license/license-client"
+    ],
+    "trpcCalls": [
+      "admin.emailTransport.find",
+      "admin.organisation.get",
+      "admin.organisation.update",
+      "admin.stripe.createCustomer"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/organisations._index",
+    "path": "organisations",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/site-settings",
+    "path": "site-settings",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/site-settings/get-site-settings",
+      "@documenso/lib/server-only/site-settings/schemas/banner",
+      "@documenso/lib/server-only/site-settings/schemas/email-blocklist"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/stats",
+    "path": "stats",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/admin/get-documents-stats",
+      "@documenso/lib/server-only/admin/get-recipients-stats",
+      "@documenso/lib/server-only/admin/get-users-stats",
+      "@documenso/lib/server-only/license/license-client",
+      "@documenso/lib/server-only/user/get-signer-conversion"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/admin+/teams.$id",
+    "path": "teams/:id",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "admin.team.get"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/unsealed-documents._index",
+    "path": "unsealed-documents",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "admin.document.findUnsealed",
+      "admin.document.reseal"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/users.$id",
+    "path": "users/:id",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "admin.user.get",
+      "admin.user.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/admin+/users._index",
+    "path": "users",
+    "parentId": "routes/_authenticated+/admin+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/user/get-all-users"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/dashboard",
+    "path": "dashboard",
+    "parentId": "routes/_authenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/inbox",
+    "path": "inbox",
+    "parentId": "routes/_authenticated+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl._layout",
+    "path": "o/:orgUrl",
+    "parentId": "routes/_authenticated+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl._index",
+    "path": null,
+    "parentId": "routes/_authenticated+/o.$orgUrl._layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.analytics._index",
+    "path": "analytics",
+    "parentId": "routes/_authenticated+/o.$orgUrl._layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session"
+    ],
+    "trpcCalls": [
+      "organisation.analytics.getDocumentsOverTime",
+      "organisation.analytics.getOverview",
+      "organisation.analytics.getStatusBreakdown",
+      "organisation.analytics.getTeamActivity",
+      "organisation.analytics.getTemplateUsage"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "path": "settings",
+    "parentId": "routes/_authenticated+/o.$orgUrl._layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/cookies"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.billing",
+    "path": "billing",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "enterprise.billing.subscription.get",
+      "enterprise.billing.subscription.sync"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.branding",
+    "path": "branding",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "organisation.get",
+      "organisation.settings.update",
+      "organisation.settings.updateBrandingLogo"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.certificates",
+    "path": "certificates",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "organisation.get",
+      "organisation.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.document",
+    "path": "document",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "organisation.get",
+      "organisation.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.email-domains.$id",
+    "path": "email-domains/:id",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "enterprise.organisation.emailDomain.get"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.email-domains._index",
+    "path": "email-domains",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.email",
+    "path": "email",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "organisation.get",
+      "organisation.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.general",
+    "path": "general",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.groups.$id",
+    "path": "groups/:id",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "organisation.group.find",
+      "organisation.group.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.groups._index",
+    "path": "groups",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.members",
+    "path": "members",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.reminders",
+    "path": "reminders",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "organisation.get",
+      "organisation.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.sso",
+    "path": "sso",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "enterprise.organisation.authenticationPortal.get",
+      "enterprise.organisation.authenticationPortal.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.settings.teams",
+    "path": "teams",
+    "parentId": "routes/_authenticated+/o.$orgUrl.settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/o.$orgUrl.support",
+    "path": "support",
+    "parentId": "routes/_authenticated+/o.$orgUrl._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/_layout",
+    "path": "settings",
+    "parentId": "routes/_authenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/cookies"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/billing",
+    "path": "billing",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/organisations",
+    "path": "organisations",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/profile",
+    "path": "profile",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.email.get"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/settings+/security._index",
+    "path": "security",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/user/get-user-auth-methods"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/security.activity",
+    "path": "security/activity",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/security.linked-accounts",
+    "path": "security/linked-accounts",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/security.passkeys",
+    "path": "security/passkeys",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/settings+/security.sessions",
+    "path": "security/sessions",
+    "parentId": "routes/_authenticated+/settings+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "path": "t/:teamUrl",
+    "parentId": "routes/_authenticated+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/_index",
+    "path": null,
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/analytics._index",
+    "path": "analytics",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/team/get-team"
+    ],
+    "trpcCalls": [
+      "team.analytics.getDocumentsOverTime",
+      "team.analytics.getMemberActivity",
+      "team.analytics.getOverview",
+      "team.analytics.getStatusBreakdown",
+      "team.analytics.getTemplateUsage"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents.$id._layout",
+    "path": "documents/:id",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/envelope/get-envelope-by-id",
+      "@documenso/lib/server-only/team/get-team"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents.$id._index",
+    "path": null,
+    "parentId": "routes/_authenticated+/t.$teamUrl+/documents.$id._layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "envelope.field.getSignatures",
+      "envelope.get"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents.$id.edit",
+    "path": "edit",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/documents.$id._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "envelope.editor.get"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents.$id.legacy_editor",
+    "path": "legacy_editor",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/documents.$id._layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/document/get-document-with-details-by-id",
+      "@documenso/lib/server-only/team/get-team"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents.$id.logs",
+    "path": "logs",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/documents.$id._layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/envelope/get-envelope-by-id",
+      "@documenso/lib/server-only/team/get-team"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents._index",
+    "path": "documents",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "document.findDocumentsInternal"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents.f.$folderId._index",
+    "path": "documents/f/:folderId",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/documents.folders._index",
+    "path": "documents/folders",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "envelope.find",
+      "envelope.get",
+      "envelope.editor.get",
+      "envelope.auditLog.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "folder.getFolders"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "path": "settings",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/team/get-team"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.branding",
+    "path": "branding",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.certificates",
+    "path": "certificates",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.get",
+      "team.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.document",
+    "path": "document",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.get",
+      "team.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.email",
+    "path": "email",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.get",
+      "team.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.general",
+    "path": "general",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session"
+    ],
+    "trpcCalls": [
+      "team.email.verification.resend"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.groups",
+    "path": "groups",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.group.find"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.members",
+    "path": "members",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.public-profile",
+    "path": "public-profile",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/team/get-team",
+      "@documenso/lib/server-only/team/get-team-public-profile"
+    ],
+    "trpcCalls": [
+      "team.update",
+      "template.findTemplates"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.reminders",
+    "path": "reminders",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "team.get",
+      "team.settings.update",
+      "team.settings.updateBrandingLogo"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.get",
+      "team.settings.update"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.tokens",
+    "path": "tokens",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "apiToken.getMany",
+      "apiToken.create (human session only)",
+      "apiToken.delete"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "apiToken.getMany"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index",
+    "path": "webhooks/:id",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "webhook.getTeamWebhooks",
+      "webhook.getWebhookById",
+      "webhook.calls.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "webhook.calls.find",
+      "webhook.getWebhookById"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/settings.webhooks._index",
+    "path": "webhooks",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/settings._layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "webhook.getTeamWebhooks",
+      "webhook.getWebhookById",
+      "webhook.calls.find"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "webhook.getTeamWebhooks"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/templates.$id._layout",
+    "path": "templates/:id",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "template.findTemplates",
+      "template.getTemplateById",
+      "envelope.editor.get"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/envelope/get-envelope-by-id",
+      "@documenso/lib/server-only/team/get-team",
+      "@documenso/lib/server-only/template/get-organisation-template-by-id"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/templates.$id._index",
+    "path": null,
+    "parentId": "routes/_authenticated+/t.$teamUrl+/templates.$id._layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "template.findTemplates",
+      "template.getTemplateById",
+      "envelope.editor.get"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "envelope.get",
+      "template.getOrganisationTemplateById"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/templates.$id.edit",
+    "path": "edit",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/templates.$id._layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "template.findTemplates",
+      "template.getTemplateById",
+      "envelope.editor.get"
+    ],
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/templates.$id.legacy_editor",
+    "path": "legacy_editor",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/templates.$id._layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "template.findTemplates",
+      "template.getTemplateById",
+      "envelope.editor.get"
+    ],
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/team/get-team",
+      "@documenso/lib/server-only/template/get-template-by-id"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/templates._index",
+    "path": "templates",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "template.findTemplates",
+      "template.getTemplateById",
+      "envelope.editor.get"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "template.findOrganisationTemplates",
+      "template.findTemplatesInternal"
+    ]
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/templates.f.$folderId._index",
+    "path": "templates/f/:folderId",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "template.findTemplates",
+      "template.getTemplateById",
+      "envelope.editor.get"
+    ],
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_authenticated+/t.$teamUrl+/templates.folders._index",
+    "path": "templates/folders",
+    "parentId": "routes/_authenticated+/t.$teamUrl+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": [
+      "template.findTemplates",
+      "template.getTemplateById",
+      "envelope.editor.get"
+    ],
+    "nativeServices": [],
+    "trpcCalls": [
+      "folder.getFolders"
+    ]
+  },
+  {
+    "id": "routes/_index",
+    "path": null,
+    "parentId": "root",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/cookies",
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/team/get-teams"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_internal+/[__htmltopdf]+/audit-log",
+    "path": "__htmltopdf/audit-log",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/admin/get-entire-document",
+      "@documenso/lib/server-only/crypto/decrypt",
+      "@documenso/lib/server-only/document/find-document-audit-logs",
+      "@documenso/lib/server-only/organisation/get-organisation-claims"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_internal+/[__htmltopdf]+/certificate",
+    "path": "__htmltopdf/certificate",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/admin/get-entire-document",
+      "@documenso/lib/server-only/crypto/decrypt",
+      "@documenso/lib/server-only/document/get-document-certificate-audit-logs",
+      "@documenso/lib/server-only/organisation/get-organisation-claims"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_profile+/_layout",
+    "path": null,
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_profile+/p.$url",
+    "path": "p/:url",
+    "parentId": "routes/_profile+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/profile/get-public-profile-by-url"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_recipient+/_layout",
+    "path": null,
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_recipient+/d.$token+/_index",
+    "path": "d/:token",
+    "parentId": "routes/_recipient+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/branding/load-recipient-branding",
+      "@documenso/lib/server-only/envelope/get-envelope-for-direct-template-signing",
+      "@documenso/lib/server-only/template/get-template-by-direct-link-token",
+      "@documenso/lib/server-only/user/assert-user-not-disabled"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_recipient+/report.$token",
+    "path": "report/:token",
+    "parentId": "routes/_recipient+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [],
+    "trpcCalls": [
+      "envelope.recipient.report"
+    ]
+  },
+  {
+    "id": "routes/_recipient+/sign.$token+/_index",
+    "path": "sign/:token",
+    "parentId": "routes/_recipient+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/branding/load-recipient-branding",
+      "@documenso/lib/server-only/document/get-document-by-token",
+      "@documenso/lib/server-only/document/viewed-document",
+      "@documenso/lib/server-only/envelope/get-envelope-for-recipient-signing",
+      "@documenso/lib/server-only/envelope/get-envelope-required-access-data",
+      "@documenso/lib/server-only/field/get-completed-fields-for-token",
+      "@documenso/lib/server-only/field/get-fields-for-token",
+      "@documenso/lib/server-only/recipient/get-is-recipient-turn",
+      "@documenso/lib/server-only/recipient/get-next-pending-recipient",
+      "@documenso/lib/server-only/recipient/get-recipient-by-token",
+      "@documenso/lib/server-only/recipient/get-recipient-signatures",
+      "@documenso/lib/server-only/recipient/get-recipients-for-assistant",
+      "@documenso/lib/server-only/team/get-team-settings",
+      "@documenso/lib/server-only/user/assert-user-not-disabled",
+      "@documenso/lib/server-only/user/get-user-by-email"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_recipient+/sign.$token+/complete",
+    "path": "sign/:token/complete",
+    "parentId": "routes/_recipient+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/branding/load-recipient-branding",
+      "@documenso/lib/server-only/document/get-document-by-token",
+      "@documenso/lib/server-only/document/is-recipient-authorized",
+      "@documenso/lib/server-only/field/get-fields-for-token",
+      "@documenso/lib/server-only/recipient/get-recipient-by-token",
+      "@documenso/lib/server-only/recipient/get-recipient-signatures",
+      "@documenso/lib/server-only/user/get-user-by-email"
+    ],
+    "trpcCalls": [
+      "envelope.signingStatus"
+    ]
+  },
+  {
+    "id": "routes/_recipient+/sign.$token+/expired",
+    "path": "sign/:token/expired",
+    "parentId": "routes/_recipient+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/branding/load-recipient-branding",
+      "@documenso/lib/server-only/document/get-document-by-token",
+      "@documenso/lib/server-only/document/is-recipient-authorized",
+      "@documenso/lib/server-only/recipient/get-recipient-by-token"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_recipient+/sign.$token+/rejected",
+    "path": "sign/:token/rejected",
+    "parentId": "routes/_recipient+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/branding/load-recipient-branding",
+      "@documenso/lib/server-only/document/get-document-by-token",
+      "@documenso/lib/server-only/document/is-recipient-authorized",
+      "@documenso/lib/server-only/field/get-fields-for-token",
+      "@documenso/lib/server-only/recipient/get-recipient-by-token"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_recipient+/sign.$token+/waiting",
+    "path": "sign/:token/waiting",
+    "parentId": "routes/_recipient+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Recipient-bound token procedures and authenticated token file routes; not a staff-agent capability",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/branding/load-recipient-branding",
+      "@documenso/lib/server-only/document/get-document-by-token",
+      "@documenso/lib/server-only/envelope/get-envelope-by-id",
+      "@documenso/lib/server-only/recipient/get-recipient-by-token",
+      "@documenso/lib/server-only/team/get-team"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_redirects+/ingest.$",
+    "path": "ingest/*",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": true,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_share+/_layout",
+    "path": null,
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_share+/share.$slug",
+    "path": "share/:slug",
+    "parentId": "routes/_share+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/document/get-document-by-access-token"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_share+/share.$slug.opengraph",
+    "path": "opengraph",
+    "parentId": "routes/_share+/share.$slug",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/document/get-recipient-or-sender-by-share-link-slug"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/_layout",
+    "path": null,
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/articles.signature-disclosure",
+    "path": "articles/signature-disclosure",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/check-email",
+    "path": "check-email",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/forgot-password",
+    "path": "forgot-password",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/o.$orgUrl.signin",
+    "path": "o/:orgUrl/signin",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/organisation.decline.$token",
+    "path": "organisation/decline/:token",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/organisation.invite.$token",
+    "path": "organisation/invite/:token",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session"
+    ],
+    "trpcCalls": [
+      "organisation.member.invite.accept",
+      "organisation.member.invite.decline"
+    ]
+  },
+  {
+    "id": "routes/_unauthenticated+/organisation.sso.confirmation.$token",
+    "path": "organisation/sso/confirmation/:token",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": [
+      "enterprise.organisation.authenticationPortal.declineLinkAccount",
+      "enterprise.organisation.authenticationPortal.linkAccount"
+    ]
+  },
+  {
+    "id": "routes/_unauthenticated+/reset-password.$token",
+    "path": "reset-password/:token",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/user/get-reset-token-validity"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/reset-password._index",
+    "path": "reset-password",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/signin",
+    "path": "signin",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/signup",
+    "path": "signup",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/team.verify.email.$token",
+    "path": "team/verify/email/:token",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": [
+      "team.email.verification.complete"
+    ]
+  },
+  {
+    "id": "routes/_unauthenticated+/unverified-account",
+    "path": "unverified-account",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/verify-email.$token",
+    "path": "verify-email/:token",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/_unauthenticated+/verify-email._index",
+    "path": "verify-email",
+    "parentId": "routes/_unauthenticated+/_layout",
+    "index": true,
+    "loader": false,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/avatar.$id",
+    "path": "api/avatar/:id",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/profile/get-avatar-image"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/branding.logo.organisation.$orgId",
+    "path": "api/branding/logo/organisation/:orgId",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/branding.logo.team.$teamId",
+    "path": "api/branding/logo/team/:teamId",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/team/get-team-settings"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/certificate-status",
+    "path": "api/certificate-status",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/cert/cert-status"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/health",
+    "path": "api/health",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/cert/cert-status"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/limits",
+    "path": "api/limits",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "presentation",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/locale",
+    "path": "api/locale",
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": true,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/preferred-team",
+    "path": "api/preferred-team",
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": true,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/stripe.webhook",
+    "path": "api/stripe/webhook",
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": true,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/theme",
+    "path": "api/theme",
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": true,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/api+/webhook.trigger",
+    "path": "api/webhook/trigger",
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": true,
+    "classification": "presentation",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [
+      "@documenso/lib/server-only/webhooks/trigger/handler"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/_v0+/_layout",
+    "path": "embed",
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/_v0+/direct.$token",
+    "path": "direct/:token",
+    "parentId": "routes/embed+/_v0+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/analytics/capture-server-event",
+      "@documenso/lib/server-only/envelope/get-envelope-for-direct-template-signing",
+      "@documenso/lib/server-only/envelope/get-envelope-required-access-data",
+      "@documenso/lib/server-only/organisation/get-organisation-claims",
+      "@documenso/lib/server-only/template/get-template-by-direct-link-token",
+      "@documenso/lib/server-only/user/assert-user-not-disabled"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/_v0+/sign.$token",
+    "path": "sign/:token",
+    "parentId": "routes/embed+/_v0+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/analytics/capture-server-event",
+      "@documenso/lib/server-only/document/get-document-by-token",
+      "@documenso/lib/server-only/document/viewed-document",
+      "@documenso/lib/server-only/embedding/resolve-embed-signature",
+      "@documenso/lib/server-only/envelope/get-envelope-for-recipient-signing",
+      "@documenso/lib/server-only/envelope/get-envelope-required-access-data",
+      "@documenso/lib/server-only/field/get-completed-fields-for-token",
+      "@documenso/lib/server-only/field/get-fields-for-token",
+      "@documenso/lib/server-only/organisation/get-organisation-claims",
+      "@documenso/lib/server-only/recipient/get-is-recipient-turn",
+      "@documenso/lib/server-only/recipient/get-recipient-by-token",
+      "@documenso/lib/server-only/recipient/get-recipients-for-assistant",
+      "@documenso/lib/server-only/user/assert-user-not-disabled"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/auth+/complete",
+    "path": "embed/auth/complete",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/auth+/popup",
+    "path": "embed/auth/popup",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/playground",
+    "path": "embed/playground",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/v1+/authoring+/_layout",
+    "path": "embed/v1/authoring",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/analytics/capture-server-event",
+      "@documenso/lib/server-only/embedding-presign/verify-embedding-presign-token",
+      "@documenso/lib/server-only/organisation/get-organisation-claims"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/v1+/authoring+/document.create",
+    "path": "document/create",
+    "parentId": "routes/embed+/v1+/authoring+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "embeddingPresign.createEmbeddingDocument"
+    ]
+  },
+  {
+    "id": "routes/embed+/v1+/authoring+/document.edit.$id",
+    "path": "document/edit/:id",
+    "parentId": "routes/embed+/v1+/authoring+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/document/get-document-with-details-by-id",
+      "@documenso/lib/server-only/embedding-presign/verify-embedding-presign-token"
+    ],
+    "trpcCalls": [
+      "embeddingPresign.updateEmbeddingDocument"
+    ]
+  },
+  {
+    "id": "routes/embed+/v1+/authoring+/template.create",
+    "path": "template/create",
+    "parentId": "routes/embed+/v1+/authoring+/_layout",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": [
+      "embeddingPresign.createEmbeddingTemplate"
+    ]
+  },
+  {
+    "id": "routes/embed+/v1+/authoring+/template.edit.$id",
+    "path": "template/edit/:id",
+    "parentId": "routes/embed+/v1+/authoring+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/embedding-presign/verify-embedding-presign-token",
+      "@documenso/lib/server-only/template/get-template-by-id"
+    ],
+    "trpcCalls": [
+      "embeddingPresign.updateEmbeddingTemplate"
+    ]
+  },
+  {
+    "id": "routes/embed+/v1+/authoring_.completed.create",
+    "path": "embed/v1/authoring/completed/create",
+    "parentId": "root",
+    "index": false,
+    "loader": false,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Presentation or auth plumbing",
+    "nativeServices": [],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/v1+/multisign+/_index",
+    "path": "embed/v1/multisign",
+    "parentId": "root",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/auth/server/lib/utils/get-session",
+      "@documenso/lib/server-only/analytics/capture-server-event",
+      "@documenso/lib/server-only/document/get-document-by-token",
+      "@documenso/lib/server-only/organisation/get-organisation-claims",
+      "@documenso/lib/server-only/recipient/get-recipient-by-token"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/v2+/authoring+/_layout",
+    "path": "embed/v2/authoring",
+    "parentId": "root",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/embedding-presign/verify-embedding-presign-token",
+      "@documenso/lib/server-only/organisation/get-organisation-claims",
+      "@documenso/lib/server-only/team/get-team-settings"
+    ],
+    "trpcCalls": []
+  },
+  {
+    "id": "routes/embed+/v2+/authoring+/envelope.create._index",
+    "path": "envelope/create",
+    "parentId": "routes/embed+/v2+/authoring+/_layout",
+    "index": true,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/analytics/capture-server-event",
+      "@documenso/lib/server-only/embedding-presign/verify-embedding-presign-token",
+      "@documenso/lib/server-only/team/get-team-settings"
+    ],
+    "trpcCalls": [
+      "embeddingPresign.createEmbeddingEnvelope"
+    ]
+  },
+  {
+    "id": "routes/embed+/v2+/authoring+/envelope.edit.$id",
+    "path": "envelope/edit/:id",
+    "parentId": "routes/embed+/v2+/authoring+/_layout",
+    "index": false,
+    "loader": true,
+    "action": false,
+    "classification": "denied",
+    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
+    "nativeServices": [
+      "@documenso/lib/server-only/analytics/capture-server-event",
+      "@documenso/lib/server-only/embedding-presign/verify-embedding-presign-token",
+      "@documenso/lib/server-only/envelope/get-editor-envelope-by-id",
+      "@documenso/lib/server-only/team/get-team-settings"
+    ],
+    "trpcCalls": [
+      "embeddingPresign.updateEmbeddingEnvelope"
+    ]
+  }
+]
