@@ -32,13 +32,13 @@ import {
 import { Fragment, type ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router';
 
-import { AmforgeProductSwitcher } from '~/components/general/amforge-product-switcher';
+import { AmforgeProductSwitcher } from '~/chief/amforge-product-switcher';
 import { BrandingLogo } from '~/components/general/branding-logo';
 import { BrandingLogoIcon } from '~/components/general/branding-logo-icon';
 import { useOptionalCurrentTeam } from '~/providers/team';
 
-import { AppCommandMenu } from './app-command-menu';
-import { OrgMenuSwitcher } from './org-menu-switcher';
+import { AppCommandMenu } from '~/components/general/app-command-menu';
+import { OrgMenuSwitcher } from '~/components/general/org-menu-switcher';
 
 /**
  * AmForge sidebar shell for Sign (Chief Dealroom layout prototype, `?layout=sidebar`).

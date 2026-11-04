@@ -1,6 +1,6 @@
 import type { SVGAttributes } from 'react';
 
-import { AMFORGE_MARK } from './amforge-brand-paths';
+import { AMFORGE_MARK } from '~/chief/amforge-brand-paths';
 
 export type LogoProps = SVGAttributes<SVGSVGElement>;
 

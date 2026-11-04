@@ -7,7 +7,7 @@ import { InboxIcon, MenuIcon, SearchIcon } from 'lucide-react';
 import { type HTMLAttributes, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { AmforgeProductSwitcher } from '~/components/general/amforge-product-switcher';
+import { AmforgeProductSwitcher } from '~/chief/amforge-product-switcher';
 import { BrandingLogo } from '~/components/general/branding-logo';
 
 import { AppCommandMenu } from './app-command-menu';

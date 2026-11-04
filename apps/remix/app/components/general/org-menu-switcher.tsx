@@ -32,7 +32,7 @@ import { useMemo, useState } from 'react';
 import { Link, useLocation, useRouteLoaderData } from 'react-router';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
-import { type AmforgeLayout, switchAmforgeLayout } from '~/utils/amforge-layout';
+import { type AmforgeLayout, switchAmforgeLayout } from '~/chief/amforge-layout';
 
 export type OrgMenuSwitcherProps = {
   /** `sidebar`: Send's NavUser treatment, for the sidebar footer (AmForge layout prototype). */

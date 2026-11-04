@@ -25,6 +25,7 @@ const config = {
     typescript({
       noEmitOnError: true,
       moduleResolution: 'bundler',
+      exclude: ['../../packages/ee/**'],
       include: ['server/**/*', '../../packages/**/*', '../../packages/lib/translations/**/*'],
       jsx: 'preserve',
     }),

@@ -5,7 +5,7 @@ const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenCo
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // AmForge: shared preset (tokens -> Tailwind). See amforge-deal-suite/packages/amforge-ui.
-  presets: [require('./amforge.preset.cjs')],
+  presets: [require('../amforge-ui/amforge.preset.cjs')],
   darkMode: ['variant', '&:is(.dark:not(.dark-mode-disabled) *)'],
   content: ['src/**/*.{ts,tsx}'],
   theme: {

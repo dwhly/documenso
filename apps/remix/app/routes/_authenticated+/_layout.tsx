@@ -9,7 +9,7 @@ import { msg } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { Link, Outlet } from 'react-router';
 
-import { AmforgeSidebarLayout } from '~/components/general/amforge-sidebar-layout';
+import { AmforgeSidebarLayout } from '~/chief/amforge-sidebar-layout';
 import { AppBanner } from '~/components/general/app-banner';
 import { Header } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
@@ -18,7 +18,7 @@ import { OrganisationQuotaBanner } from '~/components/general/organisations/orga
 import { VerifyEmailBanner } from '~/components/general/verify-email-banner';
 import { authenticatedMiddleware } from '~/middleware/authenticated';
 import { TeamProvider } from '~/providers/team';
-import { resolveAmforgeLayout } from '~/utils/amforge-layout';
+import { resolveAmforgeLayout } from '~/chief/amforge-layout';
 
 import type { Route } from './+types/_layout';
 

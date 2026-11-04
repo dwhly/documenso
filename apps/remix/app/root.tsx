@@ -135,7 +135,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
-        <link rel="icon" type="image/svg+xml" href={`${basePath}/amforge-mark.svg`} />
+        <link rel="icon" type="image/svg+xml" href={`${basePath}/chief/amforge-mark.svg`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
         <meta name="google" content="notranslate" />

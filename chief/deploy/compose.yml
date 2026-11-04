@@ -1,0 +1,51 @@
+name: chief-sign-v1
+services:
+  database:
+    image: postgres:16-alpine
+    mem_limit: 256m
+    restart: unless-stopped
+    env_file: .env
+    volumes: [sign-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U sign -d sign']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks: [private]
+  sign:
+    image: chief/sign-v1:local
+    mem_limit: 960m
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: 3000
+      NEXT_PUBLIC_WEBAPP_URL: http://sign-v1.100-110-241-2.sslip.io
+      NEXT_PRIVATE_INTERNAL_WEBAPP_URL: http://localhost:3000
+      NEXT_PUBLIC_AMFORGE_SEND_URL: http://send-v1.100-110-241-2.sslip.io
+      NEXT_PUBLIC_AMFORGE_SIGN_URL: http://sign-v1.100-110-241-2.sslip.io
+      NEXT_PRIVATE_SIGNING_TRANSPORT: local
+      NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH: /run/secrets/signing.p12
+      NEXT_PRIVATE_JOBS_PROVIDER: local
+      NEXT_PRIVATE_SMTP_TRANSPORT: smtp-auth
+      NEXT_PRIVATE_SMTP_HOST: mailpit
+      NEXT_PRIVATE_SMTP_PORT: 1025
+      NEXT_PRIVATE_SMTP_SECURE: 'false'
+      NEXT_PRIVATE_SMTP_UNSAFE_IGNORE_TLS: 'true'
+      NEXT_PRIVATE_SMTP_FROM_NAME: AmForge Dealroom
+      NEXT_PRIVATE_SMTP_FROM_ADDRESS: deals@amforge.test
+      NEXT_PUBLIC_DISABLE_SIGNUP: 'true'
+      NEXT_PUBLIC_DISABLE_EMAIL_PASSWORD_SIGNUP: 'true'
+      NEXT_PUBLIC_DISABLE_OIDC_SIGNUP: 'true'
+      DOCUMENSO_DISABLE_TELEMETRY: 'true'
+    ports: ['8796:3000']
+    volumes:
+      - ./secrets/signing.p12:/run/secrets/signing.p12:ro
+    depends_on:
+      database: {condition: service_healthy}
+    networks: [private, amforge-net]
+volumes:
+  sign-data:
+networks:
+  private:
+  amforge-net:
+    external: true

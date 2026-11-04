@@ -6,7 +6,7 @@ import {
   AMFORGE_VIEWBOX_HEIGHT,
   AMFORGE_VIEWBOX_TOP,
   AMFORGE_WORDMARK,
-} from './amforge-brand-paths';
+} from '~/chief/amforge-brand-paths';
 
 export type LogoProps = SVGAttributes<SVGSVGElement> & {
   /**

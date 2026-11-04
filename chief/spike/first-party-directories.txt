@@ -1,2 +1,5 @@
 chief/
 packages/community-ee/
+packages/amforge-ui/
+apps/remix/app/chief/
+apps/remix/public/chief/
