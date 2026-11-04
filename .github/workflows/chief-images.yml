@@ -5,12 +5,13 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  packages: write
 concurrency:
   group: chief-images-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   build:
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -22,17 +23,14 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/login-action@v3
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
       - name: Verify native architecture
         env:
           ARCH: ${{ matrix.arch }}
         run: test "$(docker info --format '{{.Architecture}}')" = "$(test "$ARCH" = arm64 && echo aarch64 || echo x86_64)"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
       - name: Build
@@ -48,13 +46,41 @@ jobs:
             docker image save chief-sign:ci -o "$RUNNER_TEMP/chief-sign.tar"
             python3 chief/spike/check-image-ee.py "$RUNNER_TEMP/chief-sign.tar"
           else
-            # Baseline CI plumbing only; feature branches use the verified clean runtime above.
-            docker build --label org.opencontainers.image.revision="$GITHUB_SHA" -t chief-sign:ci -f docker/Dockerfile .
+            echo "Missing Chief EE-checked runtime build; refusing publication" >&2
+            exit 1
           fi
       - name: Native runtime smoke
         run: |
           docker run --rm --memory=960m --entrypoint sh chief-sign:ci -ec 'cd /app; npx prisma --version'
           docker run --rm --memory=960m --workdir /app --entrypoint node chief-sign:ci -e 'const {Canvas}=require("@documenso/skia-canvas"); new Canvas(64,64).toBufferSync("pdf"); console.log("native PDF canvas OK")'
+      - name: Save checked image
+        run: docker save chief-sign:ci -o "$RUNNER_TEMP/image.tar"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: checked-image-${{ matrix.arch }}
+          path: ${{ runner.temp }}/image.tar
+          retention-days: 1
+  publish:
+    needs: build
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: checked-image-${{ matrix.arch }}
+          path: ${{ runner.temp }}/checked
+      - name: Load checked image without executing it
+        run: docker load -i "$RUNNER_TEMP/checked/image.tar"
+      - uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish architecture image
         env:
           IMAGE: ghcr.io/dwhly/chief-sign
@@ -63,15 +89,18 @@ jobs:
           docker tag chief-sign:ci "$IMAGE:$GITHUB_SHA-$ARCH"
           docker push "$IMAGE:$GITHUB_SHA-$ARCH"
   manifest:
-    needs: build
+    needs: [build, publish]
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-24.04
     steps:
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
       - name: Publish immutable commit manifest
         env:
           IMAGE: ghcr.io/dwhly/chief-sign
@@ -79,7 +108,7 @@ jobs:
           docker buildx imagetools create -t "$IMAGE:$GITHUB_SHA" "$IMAGE:$GITHUB_SHA-amd64" "$IMAGE:$GITHUB_SHA-arm64"
           docker buildx imagetools inspect "$IMAGE:$GITHUB_SHA" | tee manifest.txt
           cat manifest.txt >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: image-manifest
           path: manifest.txt
