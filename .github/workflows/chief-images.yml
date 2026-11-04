@@ -32,12 +32,25 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}
         run: test "$(docker info --format '{{.Architecture}}')" = "$(test "$ARCH" = arm64 && echo aarch64 || echo x86_64)"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Build
         env:
           IMAGE: ghcr.io/dwhly/chief-sign
           ARCH: ${{ matrix.arch }}
         run: |
-          docker build --label org.opencontainers.image.revision="$GITHUB_SHA" -t chief-sign:ci -f docker/Dockerfile .
+          if [ -f chief/docker/prepare-context.sh ]; then
+            npm ci
+            NEXT_PRIVATE_ENCRYPTION_KEY=CAFEBABE NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY=DEADBEEF NODE_OPTIONS=--max-old-space-size=8192 npx turbo run build --filter=@documenso/remix...
+            bash chief/docker/prepare-context.sh "$RUNNER_TEMP/chief-sign-context"
+            docker build --label org.opencontainers.image.revision="$GITHUB_SHA" -t chief-sign:ci "$RUNNER_TEMP/chief-sign-context"
+            docker image save chief-sign:ci -o "$RUNNER_TEMP/chief-sign.tar"
+            python3 chief/spike/check-image-ee.py "$RUNNER_TEMP/chief-sign.tar"
+          else
+            # Baseline CI plumbing only; feature branches use the verified clean runtime above.
+            docker build --label org.opencontainers.image.revision="$GITHUB_SHA" -t chief-sign:ci -f docker/Dockerfile .
+          fi
       - name: Native runtime smoke
         run: |
           docker run --rm --memory=960m --entrypoint sh chief-sign:ci -ec 'cd /app; npx prisma --version; node -e "const {Canvas}=require("@documenso/skia-canvas"); new Canvas(64,64).toBufferSync("pdf"); console.log("native PDF canvas OK")"' 
