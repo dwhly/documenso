@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import { createUser } from '../../apps/remix/build/server/hono/packages/lib/server-only/user/create-user.js';
+import { createApiToken } from '../../apps/remix/build/server/hono/packages/lib/server-only/public-api/create-api-token.js';
+import { prisma } from '../../apps/remix/build/server/hono/packages/prisma/index.js';
+const email = process.env.STAFF_EMAIL || 'sender@amforge.test';
+if (!process.env.STAFF_PASSWORD) throw new Error('STAFF_PASSWORD required');
+let user = await prisma.user.findUnique({where:{email}});
+if (!user) user = await createUser({name:'AmForge Staff',email,password:process.env.STAFF_PASSWORD});
+await prisma.user.update({where:{id:user.id},data:{emailVerified:new Date()}});
+const team = await prisma.team.findFirstOrThrow({where:{organisation:{ownerUserId:user.id}}});
+const token = await createApiToken({userId:user.id,teamId:team.id,tokenName:'Chief integration staff credential',expiresIn:null});
+fs.writeFileSync('/tmp/chief-staff.json', JSON.stringify({userId:user.id,teamId:team.id,teamUrl:team.url,...token}), {mode:0o600});
+console.log(JSON.stringify({userId:user.id,teamId:team.id,teamUrl:team.url,credentialFile:'/tmp/chief-staff.json'}));
+await prisma.$disconnect();
