@@ -33,6 +33,9 @@ export const routeDecision = (method: string, rawPath: string, hasBearer = false
   let path: string;
   try {
     path = decodeURIComponent(rawPath).replace(/\.data$/, '');
+    if (path === '/_root') {
+      path = '/';
+    }
   } catch {
     return 'denied';
   }

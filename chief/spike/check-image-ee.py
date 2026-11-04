@@ -16,6 +16,7 @@ with tarfile.open(args.archive) as archive:
             layer_count += 1
             path_entries = []
             sourcemaps = []
+            ee_strings = []
             with tarfile.open(fileobj=archive.extractfile(layer), mode='r|*') as files:
                 for entry in files:
                     if 'packages/ee' in entry.name or 'packages/ee' in entry.linkname:
@@ -24,13 +25,19 @@ with tarfile.open(args.archive) as archive:
                         content = files.extractfile(entry).read()
                         if b'packages/ee/' in content or b'packages\\\\ee\\\\' in content:
                             sourcemaps.append(entry.name)
-            if path_entries or sourcemaps:
-                findings.append({'layer': layer, 'ee_path_entries': path_entries, 'ee_sourcemaps': sourcemaps})
+                    if entry.isfile() and '/build/' in '/' + entry.name and not entry.name.endswith('.map'):
+                        content = files.extractfile(entry).read()
+                        for marker in [b'CSC OAuth callback state mismatch', b'No signature found in request']:
+                            if marker in content:
+                                ee_strings.append({'path': entry.name, 'marker': marker.decode()})
+            if path_entries or sourcemaps or ee_strings:
+                findings.append({'layer': layer, 'ee_path_entries': path_entries, 'ee_sourcemaps': sourcemaps, 'ee_strings': ee_strings})
 result = {
     'passed': not findings,
     'layers_checked': layer_count,
     'ee_path_entries': sum(len(x['ee_path_entries']) for x in findings),
     'ee_sourcemaps': sum(len(x['ee_sourcemaps']) for x in findings),
+    'ee_strings': sum(len(x['ee_strings']) for x in findings),
     'findings': findings,
 }
 print(json.dumps(result, indent=2))

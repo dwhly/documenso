@@ -377,7 +377,7 @@
   },
   {
     "path": "/organisation/invite/:token",
-    "classification": "staff"
+    "classification": "denied"
   },
   {
     "path": "/organisation/sso/confirmation/:token",

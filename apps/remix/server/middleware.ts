@@ -1,3 +1,5 @@
+import { bodyLimit } from 'hono/body-limit';
+import { timingSafeEqual } from 'node:crypto';
 import { PREFERRED_TEAM_URL_COOKIE } from '@documenso/lib/constants/cookies';
 import { AppDebugger } from '@documenso/lib/utils/debugger';
 import { getConnInfo } from '@hono/node-server/conninfo';
@@ -6,6 +8,8 @@ import { setCookie } from 'hono/cookie';
 
 import { containsExcludedFeature, isRecipientRequest, routeDecision } from './chief/policy';
 import { handleRedirects } from './redirects';
+
+const limitBody = bodyLimit({ maxSize: 25 * 1024 * 1024 });
 
 const debug = new AppDebugger('Middleware');
 
@@ -30,32 +34,37 @@ export const appMiddleware = async (c: Context, next: Next) => {
   if (
     decision === 'denied' ||
     (decision === 'operator' &&
-      (!process.env.CHIEF_OPERATOR_KEY || req.header('x-chief-operator-key') !== process.env.CHIEF_OPERATOR_KEY))
+      !operatorKeyMatches(req.header('x-chief-operator-key'), process.env.CHIEF_OPERATOR_KEY))
   ) {
     return c.json({ error: 'This route is not enabled in Chief Sign' }, 404);
   }
 
-  if (req.method === 'POST' && !path.startsWith('/api/auth/')) {
-    const contentType = req.header('content-type') ?? '';
-    let payload: unknown;
-    if (contentType.includes('application/json')) {
-      payload = await req.raw
-        .clone()
-        .json()
-        .catch(() => null);
-    }
-    if (contentType.includes('multipart/form-data')) {
-      const form = await req.raw.clone().formData();
-      const raw = form.get('payload');
-      if (typeof raw === 'string') {
-        try {
-          payload = JSON.parse(raw);
-        } catch {
-          payload = null;
+  const limited = await limitBody(c, async () => {});
+  if (limited) {
+    return limited;
+  }
+  if (req.method === 'POST' && path.startsWith('/api/')) {
+    const contentType = (req.header('content-type') ?? '').split(';')[0].trim().toLowerCase();
+    const payloads: unknown[] = [];
+    try {
+      if (contentType === 'application/json') {
+        payloads.push(await req.raw.clone().json());
+      } else if (contentType === 'multipart/form-data') {
+        const form = await req.raw.clone().formData();
+        for (const [key, value] of form.entries()) {
+          if (typeof value === 'string') {
+            const name = key.replace(/\[\]$/, '');
+            const parsed = JSON.parse(value);
+            payloads.push({ [name]: parsed }, parsed);
+          }
         }
+      } else {
+        return c.json({ error: 'JSON or multipart body required' }, 415);
       }
+    } catch {
+      return c.json({ error: 'Malformed request body' }, 400);
     }
-    if (containsExcludedFeature(payload)) {
+    if (payloads.some(containsExcludedFeature)) {
       return c.json({ error: 'Document action reauthentication and qualified signatures are not enabled' }, 403);
     }
   }
@@ -117,3 +126,12 @@ export const appMiddleware = async (c: Context, next: Next) => {
 // The ^ ensures matching from the beginning of the string
 // The | acts as OR operator between different patterns
 const nonPagePathRegex = /^(\/api\/|\/ingest\/|\/__manifest|\/assets\/|\/apple-.*|\/favicon.*)/;
+
+export const operatorKeyMatches = (provided?: string, expected?: string) => {
+  if (!provided || !expected) {
+    return false;
+  }
+  const actual = Buffer.from(provided);
+  const secret = Buffer.from(expected);
+  return actual.length === secret.length && timingSafeEqual(actual, secret);
+};

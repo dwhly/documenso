@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/../.."
-CI=true npx tsx --test chief/inventory/policy.test.ts
+CI=true npx tsx --test chief/inventory/policy.test.ts chief/inventory/fixes.test.ts
+python3 chief/inventory/fixes.test.py
 # The image must be running against its isolated acceptance DB. Do not point at a production DB.
 compose=chief/deploy/compose.yml
 stage=$(mktemp -d)

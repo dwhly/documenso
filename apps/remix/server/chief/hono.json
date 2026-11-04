@@ -698,5 +698,10 @@
     "method": "ALL",
     "path": "/api/deal/*",
     "classification": "deal"
+  },
+  {
+    "method": "ALL",
+    "path": "/api/deal/*",
+    "classification": "deal"
   }
 ]

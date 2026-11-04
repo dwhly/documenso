@@ -472,14 +472,14 @@ const SigningPageV1 = ({ data }: { data: Awaited<ReturnType<typeof handleV1Loade
           </p>
 
           {user ? (
-            <Link to="/" className="mt-36 text-documenso-700 hover:text-documenso-600">
+            <Link to="/articles/signature-disclosure" className="mt-36 text-documenso-700 hover:text-documenso-600">
               <Trans>Go Back Home</Trans>
             </Link>
           ) : (
             <p className="mt-36 text-muted-foreground/60 text-sm">
               <Trans>
                 Want to send slick signing links like this one?{' '}
-                <Link to="/" className="text-documenso-700 hover:text-documenso-600">
+                <Link to="/articles/signature-disclosure" className="text-documenso-700 hover:text-documenso-600">
                   AmForge Sign
                 </Link>
                 .
@@ -572,14 +572,14 @@ const SigningPageV2 = ({ data }: { data: Awaited<ReturnType<typeof handleV2Loade
           </p>
 
           {user ? (
-            <Link to="/" className="mt-36 text-documenso-700 hover:text-documenso-600">
+            <Link to="/articles/signature-disclosure" className="mt-36 text-documenso-700 hover:text-documenso-600">
               <Trans>Go Back Home</Trans>
             </Link>
           ) : (
             <p className="mt-36 text-muted-foreground/60 text-sm">
               <Trans>
                 Want to send slick signing links like this one?{' '}
-                <Link to="/" className="text-documenso-700 hover:text-documenso-600">
+                <Link to="/articles/signature-disclosure" className="text-documenso-700 hover:text-documenso-600">
                   AmForge Sign
                 </Link>
                 .

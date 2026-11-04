@@ -10,6 +10,8 @@ import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import handle from 'hono-react-router-adapter/node';
 
+import { recipientFetch } from './hono/server/chief/recipient-listener.js';
+
 import { getLoadContext } from './hono/server/load-context.js';
 import server from './hono/server/router.js';
 import * as build from './index.js';
@@ -47,3 +49,5 @@ const handler = handle(build, server, { getLoadContext });
 const port = parseInt(process.env.PORT || '3000', 10);
 
 serve({ fetch: handler.fetch, port });
+
+serve({ fetch: recipientFetch(handler.fetch), port: parseInt(process.env.CHIEF_RECIPIENT_PORT || '3001', 10) });

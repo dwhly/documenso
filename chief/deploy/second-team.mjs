@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import { createTeam } from '../../apps/remix/build/server/hono/packages/lib/server-only/team/create-team.js';
+import { createApiToken } from '../../apps/remix/build/server/hono/packages/lib/server-only/public-api/create-api-token.js';
+import { prisma } from '../../apps/remix/build/server/hono/packages/prisma/index.js';
+const user=await prisma.user.findUniqueOrThrow({where:{email:'sender@amforge.test'}});
+const organisation=await prisma.organisation.findFirstOrThrow({where:{ownerUserId:user.id}});
+const teamUrl='chief-r2-second-team';
+if(!await prisma.team.findUnique({where:{url:teamUrl}})) await createTeam({userId:user.id,teamName:'R2 binding regression',teamUrl,organisationId:organisation.id,inheritMembers:true});
+const team=await prisma.team.findUniqueOrThrow({where:{url:teamUrl}});
+const token=await createApiToken({userId:user.id,teamId:team.id,tokenName:'R2 second-team regression',expiresIn:null});
+fs.writeFileSync('/tmp/chief-second-team.json',JSON.stringify({teamId:team.id,...token}),{mode:0o600});
+console.log(JSON.stringify({userId:user.id,secondTeamId:team.id}));
+await prisma.$disconnect();

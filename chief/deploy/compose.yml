@@ -19,6 +19,7 @@ services:
     env_file: .env
     environment:
       PORT: 3000
+      CHIEF_RECIPIENT_PORT: 3001
       NEXT_PUBLIC_WEBAPP_URL: http://sign-v1.100-110-241-2.sslip.io
       NEXT_PRIVATE_INTERNAL_WEBAPP_URL: http://localhost:3000
       NEXT_PUBLIC_AMFORGE_SEND_URL: http://send-v1.100-110-241-2.sslip.io
@@ -37,7 +38,7 @@ services:
       NEXT_PUBLIC_DISABLE_EMAIL_PASSWORD_SIGNUP: 'true'
       NEXT_PUBLIC_DISABLE_OIDC_SIGNUP: 'true'
       DOCUMENSO_DISABLE_TELEMETRY: 'true'
-    ports: ['8796:3000']
+    ports: ['127.0.0.1:8796:3000', '127.0.0.1:8798:3001']
     volumes:
       - ./branding/logo.png:/app/apps/remix/public/static/logo.png:ro
       - ./secrets/signing.p12:/run/secrets/signing.p12:ro

@@ -1092,7 +1092,7 @@
     "type": "mutation",
     "input": 1,
     "output": true,
-    "classification": "deal",
+    "classification": "human",
     "widensAccess": true,
     "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
   },
@@ -1207,14 +1207,14 @@
     "type": "query",
     "input": 1,
     "output": true,
-    "classification": "deal"
+    "classification": "human"
   },
   {
     "name": "document.inbox.getCount",
     "type": "query",
     "input": 1,
     "output": true,
-    "classification": "deal"
+    "classification": "human"
   },
   {
     "name": "document.attachment.create",

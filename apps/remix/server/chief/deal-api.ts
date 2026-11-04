@@ -2,7 +2,7 @@ import { AppError, genericErrorCodeToTrpcErrorCodeMap } from '@documenso/lib/err
 import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 import { createTrpcContext } from '@documenso/trpc/server/context';
 import { appRouter } from '@documenso/trpc/server/router';
-import { procedure, router } from '@documenso/trpc/server/trpc';
+import { authenticatedMiddleware, procedure, router } from '@documenso/trpc/server/trpc';
 import { createOpenApiFetchHandler } from '@documenso/trpc/utils/openapi-fetch-handler';
 import type { AnyTRPCProcedure } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
@@ -19,6 +19,9 @@ for (const entry of procedureInventory) {
     continue;
   }
   const native = (appRouter._def.procedures as unknown as Record<string, { _def: typeof procedure._def }>)[entry.name];
+  if (native._def.middlewares[0] !== authenticatedMiddleware._middlewares[0]) {
+    throw new Error(`Deal adapter requires native staff authentication: ${entry.name}`);
+  }
   const output =
     native._def.output ??
     (entry.name === 'webhook.getTeamWebhooks'

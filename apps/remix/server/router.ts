@@ -39,6 +39,7 @@ import { reactRouterTrpcServer } from './trpc/hono-trpc-remix';
 // Re-export so the rollup build (entry: server/router.ts) bundles
 // load-context.ts. server/main.js imports getLoadContext from the rolled-up
 // output to wire it into the React Router adapter.
+export { recipientFetch } from './chief/recipient-listener';
 export { getLoadContext } from './load-context';
 
 export interface HonoEnv {
@@ -141,6 +142,7 @@ app.use('/api/jobs/*', jobsClient.getApiHandler());
 app.use('/api/trpc/*', trpcRateLimitMiddleware);
 app.use('/api/trpc/*', reactRouterTrpcServer);
 
+app.use('/api/deal/*', apiV2RateLimitMiddleware);
 app.route('/api/deal', dealApi);
 
 // Unstable API server routes. Order matters for these two.

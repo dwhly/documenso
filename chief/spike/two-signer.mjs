@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 const base=process.env.SIGN_BASE || 'http://sign-v1.100-110-241-2.sslip.io';
+const recipientBase=process.env.SIGN_RECIPIENT_BASE || 'http://127.0.0.1:8798';
 const credential=JSON.parse(fs.readFileSync('chief/deploy/secrets/staff.json'));
 const artifacts='chief/deploy/artifacts';fs.mkdirSync(artifacts,{recursive:true});
 const headers={Authorization:`Bearer ${credential.token}`};
@@ -20,8 +21,10 @@ try {
  for (const [i,recipient] of sent.recipients.entries()) {
   const context=await browser.newContext();const page=await context.newPage();
   page.on('pageerror',error=>console.error('PAGE_ERROR',error.message));
-  await page.goto(`${base}/sign/${recipient.token}`,{waitUntil:'networkidle'});
+  await page.goto(`${recipientBase}/sign/${recipient.token}`,{waitUntil:'networkidle'});
   await page.screenshot({path:`${artifacts}/signer-${i+1}-before.png`,fullPage:true});
+  const brand=page.getByRole('link',{name:'AmForge Sign',exact:true});
+  await assert.equal(await brand.getAttribute('href'),'/articles/signature-disclosure');
   await page.getByTestId('signature-pad-dialog-button').click();
   await page.getByRole('tab',{name:'Type',exact:true}).click();
   await page.getByTestId('signature-pad-type-input').fill(`Chief Signer ${i+1}`);
