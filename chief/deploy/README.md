@@ -21,7 +21,7 @@ docker compose -f chief/deploy/compose.yml up -d
 
 `provision.mjs` is an operator-only script run inside the image with STAFF_EMAIL/STAFF_PASSWORD. It invokes native user/team creation and token generation, writes the one-time token to `/tmp/chief-staff.json` (0600), and logs only public IDs. Copy that file to `secrets/staff.json` (0600). Never return the token to a scoped agent. Existing UI token creation is under team Settings → API Tokens. Token minting through bearer-authenticated tRPC is denied.
 
-Run `node chief/deploy/brand.mjs` to configure native team branding and upload the mounted PNG through the native typed adapter. The certificate/audit renderer reads `branding/logo.png` via the compose mount. SMTP is Mailpit; signup is disabled. Host port 8796 is bound to loopback; staff traffic enters through the private Caddy hostname. The independent recipient listener is container port 3001 (host loopback 8798). No public exposure is enabled.
+Run `node chief/deploy/brand.mjs` to configure native team branding and upload the mounted PNG through the native typed adapter. The certificate/audit renderer reads `branding/logo.png` via the compose mount. SMTP is Mailpit; signup is disabled. Host port 8796 is bound to loopback; staff traffic enters through the private Caddy hostname. The independent recipient listener is container port 3001 (host loopback 8798). `CHIEF_RECIPIENT_URL` must match the recipient origin (currently loopback); it controls same-origin PDF links and the recipient-only CSRF allowance. No public exposure is enabled.
 
 APIs:
 

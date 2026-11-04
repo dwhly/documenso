@@ -88,3 +88,10 @@ test('r1 finding 11: supplemental API applies the native rate limiter',async()=>
  const r=await fetch(`${base}/api/deal/openapi.json`);assert.equal(r.status,200);
  assert.equal(r.headers.get('x-ratelimit-limit'),'1000');assert.ok(Number(r.headers.get('x-ratelimit-remaining'))<1000);
 });
+test('r1 finding 3: recipient origin passes CSRF while unrelated origins are rejected',async()=>{
+ const recipient=process.env.SIGN_RECIPIENT_BASE || 'http://127.0.0.1:8798';
+ for(const [origin,status] of [[recipient,400],['https://attacker.example',403]]) {
+  const r=await fetch(`${recipient}/api/trpc/envelope.field.sign`,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:'{}'});
+  assert.equal(r.status,status);
+ }
+});

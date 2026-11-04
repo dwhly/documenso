@@ -3,19 +3,24 @@
   "classifications": {
     "denied": 142,
     "recipient": 10,
-    "deal": 122,
+    "deal": 119,
     "plumbing": 10,
-    "operator": 2,
-    "human": 1
+    "human": 4,
+    "operator": 2
   },
   "mutations": 194,
-  "policy_tests": 39,
-  "http_tests": 18,
+  "policy_tests": 48,
+  "http_tests": 28,
   "two_signers_completed": 2,
-  "completed_envelope": "envelope_irfrzikstlnmoifh",
+  "completed_envelope": "envelope_hdecyzfekxyexova",
   "mailpit_signer_messages": [
     0,
     0
   ],
-  "amd64": "pending CI"
+  "amd64": "see branch CI run in status report",
+  "hono_routes": 141,
+  "python_regression_tests": 2,
+  "source_mutations": 10,
+  "runtime_mutations": 9,
+  "recipient_listener": "127.0.0.1:8798"
 }

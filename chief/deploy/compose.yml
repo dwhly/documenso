@@ -20,6 +20,7 @@ services:
     environment:
       PORT: 3000
       CHIEF_RECIPIENT_PORT: 3001
+      CHIEF_RECIPIENT_URL: http://127.0.0.1:8798
       NEXT_PUBLIC_WEBAPP_URL: http://sign-v1.100-110-241-2.sslip.io
       NEXT_PRIVATE_INTERNAL_WEBAPP_URL: http://localhost:3000
       NEXT_PUBLIC_AMFORGE_SEND_URL: http://send-v1.100-110-241-2.sslip.io

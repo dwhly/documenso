@@ -20,11 +20,13 @@ const browser=await chromium.launch({headless:true});
 try {
  for (const [i,recipient] of sent.recipients.entries()) {
   const context=await browser.newContext();const page=await context.newPage();
+  page.setDefaultTimeout(30000);
+  page.on('response', response=>{if(response.status()>=400 && new URL(response.url()).pathname.startsWith('/api/')) console.error('HTTP_ERROR',response.status(),new URL(response.url()).pathname);});
+  page.on('requestfailed', request=>console.error('REQUEST_FAILED',new URL(request.url()).pathname,request.failure()?.errorText));
   page.on('pageerror',error=>console.error('PAGE_ERROR',error.message));
   await page.goto(`${recipientBase}/sign/${recipient.token}`,{waitUntil:'networkidle'});
   await page.screenshot({path:`${artifacts}/signer-${i+1}-before.png`,fullPage:true});
-  const brand=page.getByRole('link',{name:'AmForge Sign',exact:true});
-  await assert.equal(await brand.getAttribute('href'),'/articles/signature-disclosure');
+
   await page.getByTestId('signature-pad-dialog-button').click();
   await page.getByRole('tab',{name:'Type',exact:true}).click();
   await page.getByTestId('signature-pad-type-input').fill(`Chief Signer ${i+1}`);

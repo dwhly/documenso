@@ -4,6 +4,9 @@ import subprocess
 from pathlib import Path
 
 cases=[
+ ('3-pdf-origin','apps/remix/app/chief/public-env.server.ts',lambda s:s.replace('environment.NEXT_PUBLIC_WEBAPP_URL = configured;',''),['npx','tsx','--test','--test-name-pattern=PDF URLs','chief/inventory/fixes.test.ts']),
+ ('4-classification','apps/remix/server/chief/procedures.json',lambda s:json.dumps([{**e,'classification':'deal'} if e['name']=='document.share' else e for e in json.loads(s)]),['npx','tsx','--test','--test-name-pattern=finding 4','chief/inventory/fixes.test.ts']),
+ ('11-inbox','apps/remix/server/chief/procedures.json',lambda s:json.dumps([{**e,'classification':'deal'} if e['name'].startswith('document.inbox.') else e for e in json.loads(s)]),['npx','tsx','--test','--test-name-pattern=finding 11','chief/inventory/fixes.test.ts']),
  ('2','chief/deploy/compose.yml',lambda s:s.replace('127.0.0.1:8796:3000','8796:3000'),['python3','chief/inventory/fixes.test.py','ReviewRegressions.test_finding_2_no_wildcard_host_bindings']),
  ('7','packages/community-ee/server-only/signing/csc/finalize-tsp-completion.ts',lambda s:s.replace('=> unsupported();','=> {};'),['npx','tsx','--test','--test-name-pattern=finding 7','chief/inventory/fixes.test.ts']),
  ('8','apps/remix/server/chief/pages.json',lambda s:json.dumps([{**e,'classification':'human'} if e['path']=='/organisation/invite/:token' else e for e in json.loads(s)]),['npx','tsx','--test','--test-name-pattern=finding 8','chief/inventory/fixes.test.ts']),
