@@ -9,6 +9,7 @@ import { msg } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { Link, Outlet } from 'react-router';
 
+import { AmforgeSidebarLayout } from '~/components/general/amforge-sidebar-layout';
 import { AppBanner } from '~/components/general/app-banner';
 import { Header } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
@@ -17,6 +18,7 @@ import { OrganisationQuotaBanner } from '~/components/general/organisations/orga
 import { VerifyEmailBanner } from '~/components/general/verify-email-banner';
 import { authenticatedMiddleware } from '~/middleware/authenticated';
 import { TeamProvider } from '~/providers/team';
+import { resolveAmforgeLayout } from '~/utils/amforge-layout';
 
 import type { Route } from './+types/_layout';
 
@@ -29,18 +31,20 @@ export const shouldRevalidate = () => false;
 
 export const middleware = [authenticatedMiddleware];
 
-export async function loader() {
+export async function loader({ request }: Route.LoaderArgs) {
   const banner = await getSiteSettings().then((settings) =>
     settings.find((setting) => setting.id === SITE_SETTINGS_BANNER_ID),
   );
 
   return {
     banner,
+    // AmForge layout prototype: cookie/`?layout=` read on the server so SSR renders the right shell.
+    layout: resolveAmforgeLayout(request),
   };
 }
 
 export default function Layout({ loaderData, params, matches }: Route.ComponentProps) {
-  const { banner } = loaderData;
+  const { banner, layout } = loaderData;
 
   const { user, organisations } = useSession();
 
@@ -102,6 +106,28 @@ export default function Layout({ loaderData, params, matches }: Route.ComponentP
           </Button>
         }
       />
+    );
+  }
+
+  if (layout === 'sidebar' && !hideHeader) {
+    return (
+      <OrganisationProvider organisation={currentOrganisation}>
+        <TeamProvider team={currentTeam || null}>
+          <AmforgeSidebarLayout
+            isSettingsLayout={layoutMode === 'settings'}
+            banners={
+              <>
+                <OrganisationBillingBanner />
+                <OrganisationQuotaBanner />
+                {!user.emailVerified && <VerifyEmailBanner email={user.email} />}
+                {banner && <AppBanner banner={banner} />}
+              </>
+            }
+          >
+            <Outlet />
+          </AmforgeSidebarLayout>
+        </TeamProvider>
+      </OrganisationProvider>
     );
   }
 
