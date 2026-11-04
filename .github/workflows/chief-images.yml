@@ -53,7 +53,8 @@ jobs:
           fi
       - name: Native runtime smoke
         run: |
-          docker run --rm --memory=960m --entrypoint sh chief-sign:ci -ec 'cd /app; npx prisma --version; node -e "const {Canvas}=require("@documenso/skia-canvas"); new Canvas(64,64).toBufferSync("pdf"); console.log("native PDF canvas OK")"' 
+          docker run --rm --memory=960m --entrypoint sh chief-sign:ci -ec 'cd /app; npx prisma --version'
+          docker run --rm --memory=960m --workdir /app --entrypoint node chief-sign:ci -e 'const {Canvas}=require("@documenso/skia-canvas"); new Canvas(64,64).toBufferSync("pdf"); console.log("native PDF canvas OK")'
       - name: Publish architecture image
         env:
           IMAGE: ghcr.io/dwhly/chief-sign
