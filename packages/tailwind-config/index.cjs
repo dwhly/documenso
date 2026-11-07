@@ -4,9 +4,10 @@ const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenCo
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // AmForge: shared preset (tokens -> Tailwind). See amforge-deal-suite/packages/amforge-ui.
-  presets: [require('../amforge-ui/amforge.preset.cjs')],
-  darkMode: ['variant', '&:is(.dark:not(.dark-mode-disabled) *)'],
+  // Fleet design system preset (vendored in packages/amforge-ui/fds). Dark mode keys off the tokens'
+  // `data-theme`, so Documenso's `.dark` palette in theme.css never activates.
+  presets: [require('../amforge-ui/fds/tailwind.preset.cjs')],
+  darkMode: ['variant', '&:is([data-theme="dark"]:not(.dark-mode-disabled) *)'],
   content: ['src/**/*.{ts,tsx}'],
   theme: {
     extend: {
@@ -69,7 +70,7 @@ module.exports = {
           DEFAULT: 'hsl(var(--widget))',
           foreground: 'hsl(var(--widget-foreground))',
         },
-        // AmForge: the `documenso` lime palette now aliases the AmForge brand scale (tokens.css).
+        // The `documenso` lime palette aliases the AmForge brand scale (legacy block in fds brands/amforge.css).
         documenso: {
           DEFAULT: 'hsl(var(--brand) / <alpha-value>)',
           50: 'hsl(var(--af-brand-50) / <alpha-value>)',
@@ -83,34 +84,6 @@ module.exports = {
           800: 'hsl(var(--af-brand-800) / <alpha-value>)',
           900: 'hsl(var(--af-brand-900) / <alpha-value>)',
           950: 'hsl(var(--af-brand-950) / <alpha-value>)',
-        },
-        dawn: {
-          DEFAULT: '#aaa89f',
-          50: '#f8f8f8',
-          100: '#f1f1ef',
-          200: '#e6e5e2',
-          300: '#d4d3cd',
-          400: '#b9b7b0',
-          500: '#aaa89f',
-          600: '#88857a',
-          700: '#706e65',
-          800: '#5f5d55',
-          900: '#52514a',
-          950: '#2a2925',
-        },
-        water: {
-          DEFAULT: '#d7e4f3',
-          50: '#f3f6fb',
-          100: '#e3ebf6',
-          200: '#d7e4f3',
-          300: '#abc7e5',
-          400: '#82abd8',
-          500: '#658ecc',
-          600: '#5175bf',
-          700: '#4764ae',
-          800: '#3e538f',
-          900: '#364772',
-          950: '#252d46',
         },
         recipient: {
           green: 'hsl(var(--recipient-green))',
@@ -130,8 +103,10 @@ module.exports = {
         '2xl': 'calc(var(--radius) + 4px)',
         xl: 'calc(var(--radius) + 2px)',
         lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        // shadcn primitives round controls (buttons, inputs, selects, menu items) with `rounded-md`.
+        md: 'var(--radius-control)',
+        sm: 'calc(var(--radius-control) * 0.75)',
+        control: 'var(--radius-control)',
       },
       keyframes: {
         'accordion-down': {

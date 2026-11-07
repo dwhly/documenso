@@ -27,21 +27,22 @@ export const StackAvatar = ({ first, zIndex, fallbackText = '', type, className 
     zIndexClass = ZIndexes[zIndex] ?? '';
   }
 
+  // Fleet design system status roles: opened = info (in progress), unsigned and waiting = neutral.
   switch (type) {
     case RecipientStatusType.UNSIGNED:
-      classes = 'bg-dawn-200 text-dawn-900';
+      classes = 'bg-neutral-subtle text-neutral';
       break;
     case RecipientStatusType.OPENED:
-      classes = 'bg-yellow-200 text-yellow-700';
+      classes = 'bg-info-subtle text-info';
       break;
     case RecipientStatusType.WAITING:
-      classes = 'bg-water text-water-700';
+      classes = 'bg-neutral-subtle text-neutral';
       break;
     case RecipientStatusType.COMPLETED:
-      classes = 'bg-documenso-200 text-documenso-800';
+      classes = 'bg-success-subtle text-success';
       break;
     case RecipientStatusType.REJECTED:
-      classes = 'bg-red-200 text-red-800';
+      classes = 'bg-danger-subtle text-danger';
       break;
     default:
       break;
@@ -52,7 +53,7 @@ export const StackAvatar = ({ first, zIndex, fallbackText = '', type, className 
       className={cn(
         zIndexClass,
         firstClass,
-        'h-10 w-10 border-2 border-white border-solid dark:border-border',
+        'h-10 w-10 border-2 border-background border-solid',
         className,
       )}
     >

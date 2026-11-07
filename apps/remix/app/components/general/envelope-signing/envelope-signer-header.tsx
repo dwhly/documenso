@@ -16,6 +16,7 @@ import { match } from 'ts-pattern';
 
 import { EnvelopeDownloadDialog } from '~/components/dialogs/envelope-download-dialog';
 import { useEmbedSigningContext } from '~/components/embed/embed-signing-context';
+import { FleetThemeToggle } from '~/chief/fleet-theme-toggle';
 import { BrandingLogo } from '~/components/general/branding-logo';
 import { PublicLegalLinksDropdownMenuItems } from '~/components/general/public-legal-links';
 
@@ -57,7 +58,7 @@ export const EnvelopeSignerHeader = () => {
         <div className="hidden items-center space-x-2 md:flex">
           <h1 className="whitespace-nowrap font-medium text-foreground text-sm">{envelope.title}</h1>
 
-          <Badge>
+          <Badge variant="neutral">
             {match(recipient.role)
               .with(RecipientRole.VIEWER, () => <Trans>Viewer</Trans>)
               .with(RecipientRole.SIGNER, () => <Trans>Signer</Trans>)
@@ -75,11 +76,15 @@ export const EnvelopeSignerHeader = () => {
         </p>
 
         <EnvelopeSignerCompleteDialog />
+
+        {!isEmbedSigning && <FleetThemeToggle />}
       </div>
 
       {/* Mobile Actions button */}
-      <div className="flex-shrink-0 lg:hidden">
+      <div className="flex flex-shrink-0 items-center gap-2 lg:hidden">
         <MobileDropdownMenu />
+
+        {!isEmbedSigning && <FleetThemeToggle />}
       </div>
     </nav>
   );

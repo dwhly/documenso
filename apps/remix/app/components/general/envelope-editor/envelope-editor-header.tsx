@@ -15,13 +15,13 @@ import {
   SettingsIcon,
 } from 'lucide-react';
 import { useMemo } from 'react';
-import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
 import { EnvelopeDistributeDialog } from '~/components/dialogs/envelope-distribute-dialog';
 import { EnvelopeRedistributeDialog } from '~/components/dialogs/envelope-redistribute-dialog';
 import { TemplateUseDialog } from '~/components/dialogs/template-use-dialog';
-import { BrandingLogo } from '~/components/general/branding-logo';
+import { FleetLockup } from '~/chief/fleet-header';
+import { FleetThemeToggle } from '~/chief/fleet-theme-toggle';
 import { DocumentAttachmentsPopover } from '~/components/general/document/document-attachments-popover';
 import { EmbeddedEditorAttachmentPopover } from '~/components/general/document/embedded-editor-attachment-popover';
 import { EnvelopeEditorSettingsDialog } from '~/components/general/envelope-editor/envelope-editor-settings-dialog';
@@ -74,9 +74,7 @@ export default function EnvelopeEditorHeader() {
           {editorConfig.embedded?.customBrandingLogo ? (
             <img src={`/api/branding/logo/team/${envelope.teamId}`} alt="Logo" className="h-6 w-auto" />
           ) : (
-            <Link to="/">
-              <BrandingLogo className="h-6 w-auto" />
-            </Link>
+            <FleetLockup />
           )}
           <Separator orientation="vertical" className="h-6 shrink-0" />
 
@@ -99,7 +97,7 @@ export default function EnvelopeEditorHeader() {
               <>
                 {envelope.templateType === TemplateType.PRIVATE && (
                   <Badge variant="secondary" className="shrink-0">
-                    <LockIcon className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-300" />
+                    <LockIcon className="mr-2 h-4 w-4" />
                     <Trans>Private Template</Trans>
                   </Badge>
                 )}
@@ -111,7 +109,7 @@ export default function EnvelopeEditorHeader() {
                 )}
                 {envelope.templateType === TemplateType.PUBLIC && (
                   <Badge variant="default" className="shrink-0">
-                    <Globe2Icon className="mr-2 h-4 w-4 text-green-500 dark:text-green-300" />
+                    <Globe2Icon className="mr-2 h-4 w-4" />
                     <Trans>Public Template</Trans>
                   </Badge>
                 )}
@@ -129,7 +127,7 @@ export default function EnvelopeEditorHeader() {
             {envelope.type === EnvelopeType.DOCUMENT &&
               match(envelope.status)
                 .with(DocumentStatus.DRAFT, () => (
-                  <Badge variant="warning" className="shrink-0">
+                  <Badge variant="neutral" className="shrink-0">
                     <Trans>Draft</Trans>
                   </Badge>
                 ))
@@ -149,7 +147,7 @@ export default function EnvelopeEditorHeader() {
                   </Badge>
                 ))
                 .with(DocumentStatus.CANCELLED, () => (
-                  <Badge variant="destructive" className="shrink-0">
+                  <Badge variant="neutral" className="shrink-0">
                     <Trans>Cancelled</Trans>
                   </Badge>
                 ))
@@ -247,6 +245,8 @@ export default function EnvelopeEditorHeader() {
               {isDocument ? <Trans>Update Document</Trans> : <Trans>Update Template</Trans>}
             </Button>
           )}
+
+          {!isEmbedded && <FleetThemeToggle />}
         </div>
       </div>
     </nav>

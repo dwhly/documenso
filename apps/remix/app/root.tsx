@@ -131,7 +131,16 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     // `data-theme`/`class` on <html> before hydration (PreventFlashOnWrongTheme),
     // so the server-rendered attributes never match the client render when the
     // theme is resolved from the system preference. Attribute-only, one level deep.
-    <html translate="no" lang={lang} data-theme={theme} className={theme ?? ''} suppressHydrationWarning>
+    // Fleet design system: tokens read `data-theme`, never the `.dark` class (that would activate
+    // Documenso's own palette). An empty attribute makes PreventFlashOnWrongTheme fill in the OS
+    // preference before paint; without it the script would add a `.dark` class instead.
+    <html
+      translate="no"
+      lang={lang}
+      data-theme={theme ?? ''}
+      data-density="spacious"
+      suppressHydrationWarning
+    >
       <head>
         <meta charSet="utf-8" />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />

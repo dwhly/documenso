@@ -15,42 +15,44 @@ type FriendlyStatus = {
   color: string;
 };
 
+// Fleet design system status roles: pending = info (in progress), completed = success, draft and
+// cancelled = neutral, rejected = danger, expired = warning.
 export const FRIENDLY_STATUS_MAP: Record<ExtendedDocumentStatus, FriendlyStatus> = {
   PENDING: {
     label: msg`Pending`,
     labelExtended: msg`Document pending`,
     icon: Clock,
-    color: 'text-blue-600 dark:text-blue-300',
+    color: 'text-info',
   },
   COMPLETED: {
     label: msg`Completed`,
     labelExtended: msg`Document completed`,
     icon: CheckCircle2,
-    color: 'text-green-500 dark:text-green-300',
+    color: 'text-success',
   },
   DRAFT: {
     label: msg`Draft`,
     labelExtended: msg`Document draft`,
     icon: File,
-    color: 'text-yellow-500 dark:text-yellow-200',
+    color: 'text-neutral',
   },
   REJECTED: {
     label: msg`Rejected`,
     labelExtended: msg`Document rejected`,
     icon: XCircle,
-    color: 'text-red-500 dark:text-red-300',
+    color: 'text-danger',
   },
   CANCELLED: {
     label: msg`Cancelled`,
     labelExtended: msg`Document cancelled`,
     icon: XCircle,
-    color: 'text-red-500 dark:text-red-300',
+    color: 'text-neutral',
   },
   EXPIRED: {
     label: msg`Expired`,
     labelExtended: msg`Document expired`,
     icon: TimerOff,
-    color: 'text-orange-500 dark:text-orange-300',
+    color: 'text-warning',
   },
   INBOX: {
     label: msg`Inbox`,

@@ -1,0 +1,59 @@
+/*
+ * Fleet design system -> Documenso adapter. Imported AFTER Documenso's theme.css and the vendored fds
+ * tokens + brand, so it wins on source order. Only Documenso-specific variables live here, each mapped
+ * to a token role. Shared roles (background, primary, border, ring...) come straight from tokens.css.
+ *
+ * Dark mode is `[data-theme="dark"]` on <html> (remix-themes writes it; see root.tsx). Documenso's
+ * own `.dark` palette is never activated, so it cannot override the tokens.
+ */
+
+:root,
+.dark-mode-disabled {
+  --card-border: var(--border);
+
+  /* Signing-field chips are an interactive affordance, so they take the brand slot. */
+  --field-card: var(--brand-subtle);
+  --field-card-border: var(--brand);
+  --field-card-foreground: var(--foreground);
+  /* Fields sit on white PDF paper in both modes, so their border uses the mode-invariant scale. */
+  --field-border: var(--gray-200);
+
+  --widget: var(--canvas);
+  --widget-foreground: var(--muted);
+
+  --envelope-editor-background: var(--canvas);
+
+  /* Recipients are identities: tag hues, never status hues (DESIGN.md §3). */
+  --recipient-green: var(--tag-4);
+  --recipient-blue: var(--tag-3);
+  --recipient-purple: var(--tag-1);
+  --recipient-orange: var(--tag-5);
+  --recipient-yellow: var(--tag-6);
+  --recipient-pink: var(--tag-2);
+
+  --gold: var(--warning);
+}
+
+/*
+ * `.dark-mode-disabled` forces light: field chips over the PDF page and embeds. theme.css re-declares
+ * Documenso's old light palette on that class (lime primary), so point the roles a chip uses back at
+ * the mode-invariant fds scale instead.
+ */
+.dark-mode-disabled {
+  color-scheme: light;
+  --foreground: var(--gray-900);
+  --card-foreground: var(--gray-900);
+  --popover-foreground: var(--gray-900);
+  --muted: var(--gray-100);
+  --muted-foreground: var(--gray-600);
+  --border: var(--gray-200);
+  --input: var(--gray-300);
+  --primary: var(--gray-900);
+  --primary-foreground: var(--gray-50);
+  --ring: var(--af-brand-600);
+  --brand: var(--af-brand-600);
+  --brand-subtle: var(--af-brand-50);
+  --field-card: var(--af-brand-50);
+  --field-card-border: var(--af-brand-600);
+  --field-card-foreground: var(--gray-900);
+}
