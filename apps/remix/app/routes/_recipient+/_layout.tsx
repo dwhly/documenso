@@ -8,6 +8,7 @@ import { Trans } from '@lingui/react/macro';
 import { ChevronLeft } from 'lucide-react';
 import { useEffect } from 'react';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
+import { RecipientHeader } from '~/chief/recipient-header';
 import { Header as AuthenticatedHeader } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
 import type { Route } from './+types/_layout';
@@ -36,7 +37,7 @@ export default function RecipientLayout({ matches }: Route.ComponentProps) {
 
   return (
     <div className="min-h-screen">
-      {!hideHeader && sessionData?.user && <AuthenticatedHeader />}
+      {!hideHeader && (sessionData?.user ? <AuthenticatedHeader /> : <RecipientHeader />)}
 
       <main
         className={cn({

@@ -206,7 +206,7 @@ const SigningCardImage = ({ signingCelebrationImage }: SigningCardImageProps) =>
       <img
         src={signingCelebrationImage}
         alt="background pattern"
-        className="w-full dark:brightness-150 dark:contrast-[70%] dark:invert dark:sepia"
+        className="w-full opacity-70 grayscale dark:brightness-150 dark:contrast-[70%] dark:invert"
         style={{
           mask: 'radial-gradient(rgba(255, 255, 255, 1) 0%, transparent 67%)',
           WebkitMask: 'radial-gradient(rgba(255, 255, 255, 1) 0%, transparent 67%)',

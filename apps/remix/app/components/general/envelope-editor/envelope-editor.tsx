@@ -270,8 +270,8 @@ export const EnvelopeEditor = () => {
                   className={cn(
                     `cursor-pointer rounded-lg text-left transition-colors ${
                       isActive
-                        ? 'border border-green-200 bg-green-50 dark:border-green-500/20 dark:bg-green-500/10'
-                        : 'border border-gray-200 hover:bg-gray-50 dark:border-gray-400/20 dark:hover:bg-gray-400/10'
+                        ? 'border border-selected-border bg-selected'
+                        : 'border border-border hover:bg-accent'
                     }`,
                     {
                       'p-3': !minimizeLeftSidebar,
@@ -283,11 +283,11 @@ export const EnvelopeEditor = () => {
                     <div
                       className={`rounded border p-2 ${
                         isActive
-                          ? 'border-green-200 bg-green-50 dark:border-green-500/20 dark:bg-green-500/10'
-                          : 'border-gray-100 bg-gray-100 dark:border-gray-400/20 dark:bg-gray-400/10'
+                          ? 'border-border bg-background'
+                          : 'border-muted bg-muted'
                       }`}
                     >
-                      <Icon className={`h-4 w-4 ${isActive ? 'text-green-600' : 'text-gray-600'}`} />
+                      <Icon className={`h-4 w-4 ${isActive ? 'text-foreground' : 'text-muted-foreground'}`} />
                     </div>
 
                     {!minimizeLeftSidebar && (
@@ -295,8 +295,8 @@ export const EnvelopeEditor = () => {
                         <div
                           className={`font-medium text-sm ${
                             isActive
-                              ? 'text-green-900 dark:text-green-400'
-                              : 'text-foreground dark:text-muted-foreground'
+                              ? 'text-selected-foreground'
+                              : 'text-foreground'
                           }`}
                         >
                           {t(step.title)}

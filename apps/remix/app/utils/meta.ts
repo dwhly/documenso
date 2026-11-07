@@ -2,12 +2,12 @@ import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 import { i18n, type MessageDescriptor } from '@lingui/core';
 
 export const appMetaTags = (title?: MessageDescriptor) => {
-  // AmForge: product name in titles/OG. Powered by Documenso (AGPL-3.0).
-  const description = 'AmForge Sign: e-signatures for the AmForge Deal Suite.';
+  // Staff product name in titles/OG (recipient pages set their own tenant title). Powered by Documenso (AGPL-3.0).
+  const description = 'Fleet Dealroom: data rooms and e-signatures.';
 
   return [
     {
-      title: title ? `${i18n._(title)} - AmForge Sign` : 'AmForge Sign',
+      title: title ? `${i18n._(title)} · Fleet Dealroom` : 'Fleet Dealroom',
     },
     {
       name: 'description',
@@ -28,7 +28,7 @@ export const appMetaTags = (title?: MessageDescriptor) => {
     },
     {
       property: 'og:title',
-      content: 'AmForge Sign',
+      content: 'Fleet Dealroom',
     },
     {
       property: 'og:description',

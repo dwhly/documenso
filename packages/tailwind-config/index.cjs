@@ -2,6 +2,33 @@
 const { fontFamily } = require('tailwindcss/defaultTheme');
 const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenColorPalette');
 
+// Documenso's components use raw Tailwind hues with an implied meaning (green = done, red = error...).
+// Pointing those palettes at the fds status roles re-skins them centrally, in both modes, without
+// editing call sites: 50-100 -> subtle, 200-300 -> border, 400+ -> the text-safe solid.
+const role = (name) => {
+  const hsl = (v) => `hsl(var(--${v}) / <alpha-value>)`;
+  const steps = { 50: 'subtle', 100: 'subtle', 200: 'border', 300: 'border' };
+
+  return Object.fromEntries(
+    [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((step) => [
+      step,
+      hsl(steps[step] ? `${name}-${steps[step]}` : name),
+    ]),
+  );
+};
+
+const STATUS_PALETTES = {
+  green: role('success'),
+  emerald: role('success'),
+  red: role('danger'),
+  rose: role('danger'),
+  yellow: role('warning'),
+  amber: role('warning'),
+  orange: role('warning'),
+  blue: role('info'),
+  sky: role('info'),
+};
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // Fleet design system preset (vendored in packages/amforge-ui/fds). Dark mode keys off the tokens'
@@ -23,6 +50,13 @@ module.exports = {
         'signature-pad': '16 / 7',
       },
       colors: {
+        ...STATUS_PALETTES,
+        // fds selected state (active step, selected file): neutral, never brand or status.
+        selected: {
+          DEFAULT: 'hsl(var(--selected) / <alpha-value>)',
+          foreground: 'hsl(var(--selected-foreground) / <alpha-value>)',
+          border: 'hsl(var(--selected-border) / <alpha-value>)',
+        },
         border: 'hsl(var(--border))',
         'field-border': 'hsl(var(--field-border))',
         input: 'hsl(var(--input))',
