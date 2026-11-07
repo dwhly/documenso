@@ -197,7 +197,7 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
                 </div>
               ))
               .with({ status: 'PROCESSING' }, () => (
-                <div className="mt-4 flex items-center text-center text-orange-600">
+                <div className="mt-4 flex items-center text-center text-info">
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                   <span className="text-sm">
                     <Trans>Processing document</Trans>
@@ -205,7 +205,7 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
                 </div>
               ))
               .with({ deletedAt: null }, () => (
-                <div className="mt-4 flex items-center text-center text-blue-600">
+                <div className="mt-4 flex items-center text-center text-info">
                   <Clock8 className="mr-2 h-5 w-5" />
                   <span className="text-sm">
                     <Trans>Waiting for others to sign</Trans>
@@ -213,7 +213,7 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
                 </div>
               ))
               .otherwise(() => (
-                <div className="flex items-center text-center text-red-600">
+                <div className="flex items-center text-center text-danger">
                   <Clock8 className="mr-2 h-5 w-5" />
                   <span className="text-sm">
                     <Trans>Document no longer available to sign</Trans>

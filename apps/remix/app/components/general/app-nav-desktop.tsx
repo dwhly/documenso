@@ -72,7 +72,7 @@ export const AppNavDesktop = ({ className, setIsCommandMenuOpen, ...props }: App
                   key={href}
                   to={href}
                   className={cn(
-                    'rounded-md font-medium text-muted-foreground text-sm leading-5 ring-offset-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    'rounded-md text-[length:var(--text-sm)] text-muted-foreground leading-5 ring-offset-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                     {
                       'text-foreground': pathname?.startsWith(href),
                     },
