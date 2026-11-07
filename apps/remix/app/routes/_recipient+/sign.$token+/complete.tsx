@@ -29,6 +29,8 @@ import { DocumentSigningAuthPageView } from '~/components/general/document-signi
 import { RecipientBranding } from '~/components/general/recipient-branding';
 import { useCspNonce } from '~/utils/nonce';
 
+import { toFleetRecipientContext } from '~/chief/recipient-context';
+
 import type { Route } from './+types/complete';
 
 export async function loader({ params, request }: Route.LoaderArgs) {
@@ -99,6 +101,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     recipient,
     returnToHomePath,
     branding,
+    fleetContext: toFleetRecipientContext(document),
   };
 }
 

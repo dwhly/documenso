@@ -74,14 +74,6 @@ export const appMiddleware = async (c: Context, next: Next) => {
     return next();
   }
 
-  // AmForge layout prototype: `?layout=sidebar|topbar` persists the shell preference.
-  const layoutParam = req.query('layout');
-  const applyLayoutCookie = () => {
-    if (layoutParam === 'sidebar' || layoutParam === 'topbar') {
-      setCookie(c, 'amforge_layout', layoutParam, { path: '/', sameSite: 'lax', maxAge: 60 * 60 * 24 * 365 });
-    }
-  };
-
   // PRE-HANDLER CODE: Place code here to execute BEFORE the route handler runs.
   const redirectPath = handleRedirects(c);
 
@@ -89,14 +81,10 @@ export const appMiddleware = async (c: Context, next: Next) => {
     debug.log('Redirecting from', path);
     debug.log('Redirecting to', redirectPath);
 
-    applyLayoutCookie();
-
     return c.redirect(redirectPath);
   }
 
   await next();
-
-  applyLayoutCookie();
 
   // POST-HANDLER CODE: Place code here to execute AFTER the route handler completes.
   // This is useful for:

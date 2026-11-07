@@ -32,8 +32,14 @@ import { TemplatePageViewRecipients } from '~/components/general/template/templa
 import { TemplateType } from '~/components/general/template/template-type';
 import { TemplatesTableActionDropdown } from '~/components/tables/templates-table-action-dropdown';
 import { useCurrentTeam } from '~/providers/team';
+import { appMetaTags } from '~/utils/meta';
 
 import type { Route } from './+types/templates.$id._index';
+
+// Fleet: titles read `<page> · Fleet Dealroom` (shell spec §0).
+export function meta() {
+  return appMetaTags(msg`Template`);
+}
 
 export default function TemplatePage({ params }: Route.ComponentProps) {
   const { user } = useSession();

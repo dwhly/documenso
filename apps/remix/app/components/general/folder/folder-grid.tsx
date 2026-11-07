@@ -5,8 +5,7 @@ import type { TFolderWithSubfolders } from '@documenso/trpc/server/folder-router
 import { Skeleton } from '@documenso/ui/primitives/skeleton';
 import { Trans } from '@lingui/react/macro';
 import { FolderType } from '@prisma/client';
-import { FolderIcon, HomeIcon } from 'lucide-react';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { Link } from 'react-router';
 
 import { FolderCreateDialog } from '~/components/dialogs/folder-create-dialog';
@@ -14,7 +13,8 @@ import { FolderDeleteDialog } from '~/components/dialogs/folder-delete-dialog';
 import { FolderMoveDialog } from '~/components/dialogs/folder-move-dialog';
 import { FolderUpdateDialog } from '~/components/dialogs/folder-update-dialog';
 import { DocumentUploadButtonLegacy } from '~/components/general/document/document-upload-button-legacy';
-import { FolderCard, FolderCardEmpty } from '~/components/general/folder/folder-card';
+import { FleetPageHead } from '~/chief/fleet-page-head';
+import { FolderCard } from '~/components/general/folder/folder-card';
 import { useCurrentTeam } from '~/providers/team';
 
 import { EnvelopeUploadButton } from '../envelope/envelope-upload-button';
@@ -22,9 +22,12 @@ import { EnvelopeUploadButton } from '../envelope/envelope-upload-button';
 export type FolderGridProps = {
   type: FolderType;
   parentId: string | null;
+  /** Fleet page head (shell spec §3): the page's H1 and subtitle; the grid supplies the page actions. */
+  title: ReactNode;
+  subtitle?: ReactNode;
 };
 
-export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
+export const FolderGrid = ({ type, parentId, title, subtitle }: FolderGridProps) => {
   const team = useCurrentTeam();
   const organisation = useCurrentOrganisation();
 
@@ -65,44 +68,32 @@ export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
 
   return (
     <div>
-      <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div
-          className="flex flex-1 items-center font-medium text-muted-foreground text-sm hover:text-muted-foreground/80"
-          data-testid="folder-grid-breadcrumbs"
-        >
-          <Link to={formatRootPath()} className="flex items-center">
-            <HomeIcon className="mr-2 h-4 w-4" />
-            <Trans>Home</Trans>
-          </Link>
+      <FleetPageHead
+        className="mb-6"
+        breadcrumbs={
+          parentId
+            ? [
+                { label: title, to: formatRootPath() },
+                ...(foldersData?.breadcrumbs ?? []).map((folder) => ({
+                  label: folder.name,
+                  to: formatBreadCrumbPath(folder.id),
+                })),
+              ]
+            : undefined
+        }
+        title={parentId ? (foldersData?.breadcrumbs.at(-1)?.name ?? title) : title}
+        subtitle={subtitle}
+        actions={
+          <>
+            <EnvelopeUploadButton type={type} folderId={parentId || undefined} />
 
-          {isPending && parentId ? (
-            <div className="flex items-center">
-              <Skeleton className="mx-3 h-4 w-1 rotate-12" />
+            {/* If you delete this, delete the component as well. */}
+            {organisation.organisationClaim.flags.allowLegacyEnvelopes && <DocumentUploadButtonLegacy type={type} />}
 
-              <Skeleton className="h-4 w-20" />
-            </div>
-          ) : (
-            foldersData?.breadcrumbs.map((folder) => (
-              <div key={folder.id} className="flex items-center">
-                <span className="px-3">/</span>
-                <Link to={formatBreadCrumbPath(folder.id)} className="flex items-center">
-                  <FolderIcon className="mr-2 h-4 w-4" />
-                  <span>{folder.name}</span>
-                </Link>
-              </div>
-            ))
-          )}
-        </div>
-
-        <div className="flex gap-4 sm:flex-row sm:justify-end">
-          <EnvelopeUploadButton type={type} folderId={parentId || undefined} />
-
-          {/* If you delete this, delete the component as well. */}
-          {organisation.organisationClaim.flags.allowLegacyEnvelopes && <DocumentUploadButtonLegacy type={type} />}
-
-          <FolderCreateDialog type={type} />
-        </div>
-      </div>
+            <FolderCreateDialog type={type} />
+          </>
+        }
+      />
 
       {isPending ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -125,18 +116,7 @@ export const FolderGrid = ({ type, parentId }: FolderGridProps) => {
             </div>
           ))}
         </div>
-      ) : foldersData && foldersData.folders.length === 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <FolderCreateDialog
-            type={type}
-            trigger={
-              <button>
-                <FolderCardEmpty type={type} />
-              </button>
-            }
-          />
-        </div>
-      ) : (
+      ) : foldersData && foldersData.folders.length === 0 ? null : (
         foldersData && (
           <div key="content" className="space-y-4">
             {pinnedFolders.length > 0 && (

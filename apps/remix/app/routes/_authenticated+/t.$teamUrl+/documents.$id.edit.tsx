@@ -14,8 +14,14 @@ import { EnvelopeEditor } from '~/components/general/envelope-editor/envelope-ed
 import { EnvelopeEditorRenderProviderWrapper } from '~/components/general/envelope-editor/envelope-editor-renderer-provider-wrapper';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
 import { useCurrentTeam } from '~/providers/team';
+import { appMetaTags } from '~/utils/meta';
 
 import type { Route } from './+types/documents.$id.edit';
+
+// Fleet: titles read `<page> · Fleet Dealroom` (shell spec §0).
+export function meta() {
+  return appMetaTags(msg`Edit document`);
+}
 
 export default function EnvelopeEditorPage({ params }: Route.ComponentProps) {
   const navigate = useNavigate();

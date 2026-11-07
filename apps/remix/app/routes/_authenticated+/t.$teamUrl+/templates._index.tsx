@@ -1,23 +1,23 @@
 import { useSessionStorage } from '@documenso/lib/client-only/hooks/use-session-storage';
 import { useCurrentOrganisation } from '@documenso/lib/client-only/providers/organisation';
 import { FolderType } from '@documenso/lib/types/folder-type';
-import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { formatDocumentsPath, formatTemplatesPath } from '@documenso/lib/utils/teams';
 import { trpc } from '@documenso/trpc/react';
-import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 import { Button } from '@documenso/ui/primitives/button';
 import type { RowSelectionState } from '@documenso/ui/primitives/data-table';
 import { msg } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { EnvelopeType, OrganisationType } from '@prisma/client';
-import { Bird, XIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 import { useQueryStates } from 'nuqs';
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router';
 
+import { FleetEmptyState, FleetPageHead } from '~/chief/fleet-page-head';
 import { EnvelopesBulkDeleteDialog } from '~/components/dialogs/envelopes-bulk-delete-dialog';
 import { EnvelopesBulkMoveDialog } from '~/components/dialogs/envelopes-bulk-move-dialog';
 import { EnvelopeDropZoneWrapper } from '~/components/general/envelope/envelope-drop-zone-wrapper';
+import { EnvelopeUploadButton } from '~/components/general/envelope/envelope-upload-button';
 import { FolderGrid } from '~/components/general/folder/folder-grid';
 import { TemplateSearch } from '~/components/general/template/template-search';
 import { EnvelopesTableBulkActionBar } from '~/components/tables/envelopes-table-bulk-action-bar';
@@ -105,24 +105,24 @@ export default function TemplatesPage() {
 
   const activeQuery = isOrgView ? orgTemplatesQuery : teamTemplatesQuery;
 
+  const templatesSubtitle = <Trans>Reusable documents with recipients and fields already placed.</Trans>;
+
   return (
     <EnvelopeDropZoneWrapper type={EnvelopeType.TEMPLATE}>
       <div className="mx-auto max-w-screen-xl px-4 md:px-8">
-        {!isOrgView && <FolderGrid type={FolderType.TEMPLATE} parentId={folderId ?? null} />}
+        {isOrgView ? (
+          <FleetPageHead className="mb-6" title={<Trans>Templates</Trans>} subtitle={templatesSubtitle} />
+        ) : (
+          <FolderGrid
+            type={FolderType.TEMPLATE}
+            parentId={folderId ?? null}
+            title={<Trans>Templates</Trans>}
+            subtitle={templatesSubtitle}
+          />
+        )}
 
-        <div className="mt-8">
-          <div className="flex flex-row items-center">
-            <Avatar className="mr-3 h-12 w-12 border-2 border-white border-solid dark:border-border">
-              {team.avatarImageId && <AvatarImage src={formatAvatarUrl(team.avatarImageId)} />}
-              <AvatarFallback className="text-muted-foreground text-xs">{team.name.slice(0, 1)}</AvatarFallback>
-            </Avatar>
-
-            <h1 className="truncate font-semibold text-2xl md:text-3xl">
-              <Trans>Templates</Trans>
-            </h1>
-          </div>
-
-          <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-4">
+        <div>
+          <div className="fleet-filter-bar mt-6 flex flex-wrap items-center gap-x-2 gap-y-4">
             <div className="w-56">
               <TemplateSearch />
             </div>
@@ -139,25 +139,17 @@ export default function TemplatesPage() {
             )}
           </div>
 
-          <div className="mt-8">
+          <div className="mt-4">
             {activeQuery.data && activeQuery.data.count === 0 && !isSearchingOrFiltering ? (
-              <div className="flex h-96 flex-col items-center justify-center gap-y-4 text-muted-foreground/60">
-                <Bird className="h-12 w-12" strokeWidth={1.5} />
-
-                <div className="text-center">
-                  <h3 className="font-semibold text-lg">
-                    <Trans>We're all empty</Trans>
-                  </h3>
-
-                  <p className="mt-2 max-w-[50ch]">
-                    {isOrgView ? (
-                      <Trans>No organisation templates are shared with your team yet.</Trans>
-                    ) : (
-                      <Trans>You have not yet created any templates. To create a template please upload one.</Trans>
-                    )}
-                  </p>
-                </div>
-              </div>
+              <FleetEmptyState
+                action={!isOrgView && <EnvelopeUploadButton type={EnvelopeType.TEMPLATE} folderId={folderId ?? undefined} />}
+              >
+                {isOrgView ? (
+                  <Trans>No organisation templates are shared with your team yet.</Trans>
+                ) : (
+                  <Trans>No templates yet. Upload a PDF to start one.</Trans>
+                )}
+              </FleetEmptyState>
             ) : (
               <TemplatesTable
                 data={activeQuery.data}

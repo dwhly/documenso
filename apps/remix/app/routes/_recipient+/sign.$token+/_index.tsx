@@ -38,6 +38,7 @@ import { Link, redirect } from 'react-router';
 import { getOptionalLoaderContext } from 'server/utils/get-loader-session';
 import { match } from 'ts-pattern';
 
+import { toFleetRecipientContext } from '~/chief/recipient-context';
 import { Header as AuthenticatedHeader } from '~/components/general/app-header';
 import { CscRecipientBlockedPage } from '~/components/general/document-signing/csc-recipient-blocked-page';
 import { CscRecipientSigningInProgressPage } from '~/components/general/document-signing/csc-recipient-signing-in-progress-page';
@@ -347,6 +348,8 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
           internalVersion: true,
           teamId: true,
           userId: true,
+          externalId: true,
+          documentMeta: { select: { redirectUrl: true } },
         },
       },
     },
@@ -390,6 +393,7 @@ export async function loader(loaderArgs: Route.LoaderArgs) {
         version: 2,
         payload: payloadV2,
         branding,
+        fleetContext: toFleetRecipientContext(foundRecipient.envelope),
       } as const,
       responseHeaders ? { headers: responseHeaders } : undefined,
     );
@@ -480,7 +484,7 @@ const SigningPageV1 = ({ data }: { data: Awaited<ReturnType<typeof handleV1Loade
               <Trans>
                 Want to send slick signing links like this one?{' '}
                 <Link to="/articles/signature-disclosure" className="text-documenso-700 hover:text-documenso-600">
-                  AmForge Sign
+                  Fleet Dealroom
                 </Link>
                 .
               </Trans>
@@ -580,7 +584,7 @@ const SigningPageV2 = ({ data }: { data: Awaited<ReturnType<typeof handleV2Loade
               <Trans>
                 Want to send slick signing links like this one?{' '}
                 <Link to="/articles/signature-disclosure" className="text-documenso-700 hover:text-documenso-600">
-                  AmForge Sign
+                  Fleet Dealroom
                 </Link>
                 .
               </Trans>

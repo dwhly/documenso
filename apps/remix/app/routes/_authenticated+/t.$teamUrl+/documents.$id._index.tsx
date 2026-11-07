@@ -18,7 +18,6 @@ import { Spinner } from '@documenso/ui/primitives/spinner';
 import { msg } from '@lingui/core/macro';
 import { Plural, Trans, useLingui } from '@lingui/react/macro';
 import { DocumentStatus } from '@prisma/client';
-import { ChevronLeft, Users2 } from 'lucide-react';
 import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
@@ -27,6 +26,7 @@ import { DocumentPageViewDropdown } from '~/components/general/document/document
 import { DocumentPageViewInformation } from '~/components/general/document/document-page-view-information';
 import { DocumentPageViewRecentActivity } from '~/components/general/document/document-page-view-recent-activity';
 import { DocumentPageViewRecipients } from '~/components/general/document/document-page-view-recipients';
+import { FleetPageHead } from '~/chief/fleet-page-head';
 import { DocumentRecipientLinkCopyDialog } from '~/components/general/document/document-recipient-link-copy-dialog';
 import {
   DocumentStatus as DocumentStatusComponent,
@@ -39,8 +39,14 @@ import { EnvelopePdfViewer } from '~/components/general/pdf-viewer/envelope-pdf-
 import PDFViewerLazy from '~/components/general/pdf-viewer/pdf-viewer-lazy';
 import { StackAvatarsWithTooltip } from '~/components/general/stack-avatars-with-tooltip';
 import { useCurrentTeam } from '~/providers/team';
+import { appMetaTags } from '~/utils/meta';
 
 import type { Route } from './+types/documents.$id._index';
+
+// Fleet: titles read `<page> · Fleet Dealroom` (shell spec §0).
+export function meta() {
+  return appMetaTags(msg`Document`);
+}
 
 export default function DocumentPage({ params }: Route.ComponentProps) {
   const { t } = useLingui();
@@ -107,39 +113,24 @@ export default function DocumentPage({ params }: Route.ComponentProps) {
   const isMultiEnvelopeItem = envelope.envelopeItems.length > 1 && envelope.internalVersion === 2;
 
   return (
-    <div className="mx-auto -mt-4 w-full max-w-screen-xl px-4 md:px-8">
+    <div className="mx-auto w-full max-w-screen-xl px-4 md:px-8">
       {envelope.status === DocumentStatus.PENDING && (
         <DocumentRecipientLinkCopyDialog recipients={envelope.recipients} />
       )}
 
-      <Link to={documentRootPath} className="flex items-center text-documenso-700 hover:opacity-80">
-        <ChevronLeft className="mr-2 inline-block h-5 w-5" />
-        <Trans>Documents</Trans>
-      </Link>
-
-      <div className="flex flex-row justify-between gap-4">
-        <div className="min-w-0">
-          <h1 className="mt-4 block font-semibold text-2xl md:text-3xl" title={envelope.title}>
-            {envelope.title}
-          </h1>
-
-          <div className="mt-2.5 flex items-center gap-x-6">
-            <DocumentStatusComponent inheritColor status={envelope.status} className="text-muted-foreground" />
+      <FleetPageHead
+        breadcrumbs={[{ label: <Trans>Documents</Trans>, to: documentRootPath }, { label: envelope.title }]}
+        title={<span title={envelope.title}>{envelope.title}</span>}
+        subtitle={
+          <div className="flex items-center gap-x-4">
+            <DocumentStatusComponent status={envelope.status} />
 
             {envelope.recipients.length > 0 && (
-              <div className="flex items-center text-muted-foreground">
-                <Users2 className="mr-2 h-5 w-5" />
-
-                <StackAvatarsWithTooltip
-                  recipients={envelope.recipients}
-                  documentStatus={envelope.status}
-                  position="bottom"
-                >
-                  <span>
-                    <Plural value={envelope.recipients.length} one="# Recipient" other="# Recipients" />
-                  </span>
-                </StackAvatarsWithTooltip>
-              </div>
+              <StackAvatarsWithTooltip recipients={envelope.recipients} documentStatus={envelope.status} position="bottom">
+                <span>
+                  <Plural value={envelope.recipients.length} one="# recipient" other="# recipients" />
+                </span>
+              </StackAvatarsWithTooltip>
             )}
 
             {envelope.deletedAt && (
@@ -148,8 +139,8 @@ export default function DocumentPage({ params }: Route.ComponentProps) {
               </Badge>
             )}
           </div>
-        </div>
-      </div>
+        }
+      />
 
       <div className="mt-6 grid w-full grid-cols-12 gap-8">
         {envelope.internalVersion === 2 ? (
@@ -211,9 +202,9 @@ export default function DocumentPage({ params }: Route.ComponentProps) {
 
         <div className={cn('col-span-12 lg:col-span-6 xl:col-span-5', isMultiEnvelopeItem && 'mt-20')}>
           <div className="space-y-6">
-            <section className="flex flex-col rounded-xl border border-border bg-widget pt-6 pb-4">
+            <section className="flex flex-col fleet-detail-card rounded-lg border border-border bg-card pt-6 pb-4">
               <div className="flex flex-row items-center justify-between px-4">
-                <h3 className="font-semibold text-2xl text-foreground">
+                <h3 className="font-semibold text-base text-foreground">
                   {t(FRIENDLY_STATUS_MAP[envelope.status].labelExtended)}
                 </h3>
 

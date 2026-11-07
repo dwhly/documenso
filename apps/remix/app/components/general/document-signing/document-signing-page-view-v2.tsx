@@ -8,7 +8,6 @@ import { Plural, Trans, useLingui } from '@lingui/react/macro';
 import { EnvelopeType, RecipientRole } from '@prisma/client';
 import { motion } from 'framer-motion';
 import {
-  ArrowLeftIcon,
   BanIcon,
   DownloadCloudIcon,
   PanelLeftCloseIcon,
@@ -16,7 +15,6 @@ import {
   PaperclipIcon,
 } from 'lucide-react';
 import { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
 import { EnvelopeDownloadDialog } from '~/components/dialogs/envelope-download-dialog';
@@ -37,6 +35,7 @@ import { BrandingLogo } from '../branding-logo';
 import { DocumentSigningAttachmentsPopover } from '../document-signing/document-signing-attachments-popover';
 import { EnvelopeItemSelector } from '../envelope-editor/envelope-file-selector';
 import EnvelopeSignerForm from '../envelope-signing/envelope-signer-form';
+import { EnvelopeSignerCompleteDialog } from '../envelope-signing/envelope-signing-complete-dialog';
 import { EnvelopeSignerHeader } from '../envelope-signing/envelope-signer-header';
 import { DocumentSigningMobileWidget } from './document-signing-mobile-widget';
 import { DocumentSigningRejectDialog } from './document-signing-reject-dialog';
@@ -94,7 +93,7 @@ export const DocumentSigningPageViewV2 = () => {
       <EnvelopeSignerHeader />
 
       {/* Main Content Area */}
-      <div className="flex h-[calc(100vh-4rem)] w-screen">
+      <div className="flex h-[calc(100vh-var(--signer-chrome-h,4rem))] w-screen">
         {/* Left Section - Step Navigation */}
         <div
           className={cn(
@@ -159,6 +158,13 @@ export const DocumentSigningPageViewV2 = () => {
               <div className="embed--DocumentWidgetContent mt-6 space-y-3">
                 <EnvelopeSignerForm />
               </div>
+
+              {/* Fleet: outside embeds the header has no actions, so the complete step sits under the fields. */}
+              {!isEmbed && (
+                <div className="mt-6">
+                  <EnvelopeSignerCompleteDialog />
+                </div>
+              )}
             </div>
 
             <Separator className="my-6" />
@@ -222,17 +228,6 @@ export const DocumentSigningPageViewV2 = () => {
 
             <div className="embed--DocumentWidgetFooter mt-auto">
               {/* Footer of left sidebar. */}
-              {!isEmbed && (
-                <div className="px-4">
-                  <Button asChild variant="ghost" className="w-full justify-start">
-                    <Link to="/">
-                      <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                      <Trans>Return</Trans>
-                    </Link>
-                  </Button>
-                </div>
-              )}
-
               {!isEmbed && <PublicLegalLinks className="mt-4 justify-start px-4 pt-4" />}
             </div>
           </div>

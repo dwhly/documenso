@@ -52,3 +52,37 @@ test('r1 finding 3: recipient PDF URLs use the recipient origin', async () => {
     assert.notEqual(createChiefPublicEnv(new Request('http://staff.example/sign/token')).NEXT_PUBLIC_WEBAPP_URL,'http://127.0.0.1:8798');
   } finally { if(saved===undefined) delete process.env.CHIEF_RECIPIENT_URL; else process.env.CHIEF_RECIPIENT_URL=saved; }
 });
+test('fds r2: recipient origin behind a TLS proxy honours X-Forwarded-Proto/Host', async () => {
+  const {createChiefPublicEnv}=await import('../../apps/remix/app/chief/public-env.server');
+  const {isRecipientOrigin}=await import('../../apps/remix/server/chief/recipient-origin');
+  const saved=process.env.CHIEF_RECIPIENT_URL;process.env.CHIEF_RECIPIENT_URL='https://sign.example:9445';
+  try {
+    const proxied=(path:string,host:string,extra:Record<string,string>={})=>new Request(`http://${host}${path}`,{method:'POST',headers:{'X-Forwarded-Proto':'https','X-Forwarded-Host':host,...extra}});
+    assert.equal(createChiefPublicEnv(proxied('/sign/token','sign.example:9445')).NEXT_PUBLIC_WEBAPP_URL,'https://sign.example:9445');
+    assert.notEqual(createChiefPublicEnv(proxied('/sign/token','sign.example:9444')).NEXT_PUBLIC_WEBAPP_URL,'https://sign.example:9445');
+    // Without the proxy headers a plain-http request is not the https recipient origin.
+    assert.notEqual(createChiefPublicEnv(new Request('http://sign.example:9445/sign/token')).NEXT_PUBLIC_WEBAPP_URL,'https://sign.example:9445');
+    assert.equal(isRecipientOrigin(proxied('/api/trpc/envelope.field.sign','sign.example:9445',{Origin:'https://sign.example:9445'})),true);
+    assert.equal(isRecipientOrigin(proxied('/api/trpc/envelope.field.sign','sign.example:9445',{Origin:'https://attacker.example'})),false);
+    assert.equal(isRecipientOrigin(proxied('/api/deal/team/settings/update','sign.example:9445',{Origin:'https://sign.example:9445'})),false);
+  } finally { if(saved===undefined) delete process.env.CHIEF_RECIPIENT_URL; else process.env.CHIEF_RECIPIENT_URL=saved; }
+});
+test('fds r2: recipient listener answers the session poll as signed out, never with a staff session', async () => {
+  const {recipientFetch}=await import('../../apps/remix/server/chief/recipient-listener');
+  let reached=false;
+  const handler=recipientFetch(() => { reached=true; return new Response('app'); });
+  const res=await handler(new Request('https://sign.example:9445/api/auth/session-json',{headers:{cookie:'sessionId=staff'}}));
+  assert.equal(res.status,200);
+  assert.deepEqual(await res.json(),{json:{isAuthenticated:false,session:null,user:null}});
+  assert.equal(reached,false);
+  assert.equal((await handler(new Request('https://sign.example:9445/api/auth/session'))).status,404);
+  assert.equal((await handler(new Request('https://sign.example:9445/api/auth/session-json',{method:'POST'}))).status,404);
+});
+test('fds r2: email subjects read "Fleet Dealroom: <what>" only when the prefix env is set', async () => {
+  const {withSubjectPrefix}=await import('../../packages/email/chief-subject');
+  assert.equal(withSubjectPrefix('Please sign this document','Fleet Dealroom'),'Fleet Dealroom: please sign this document');
+  assert.equal(withSubjectPrefix('Your verification code','Fleet Dealroom'),'Fleet Dealroom: your verification code');
+  assert.equal(withSubjectPrefix('Raj has invited you to sign "NDA"','Fleet Dealroom'),'Fleet Dealroom: Raj has invited you to sign "NDA"');
+  assert.equal(withSubjectPrefix('Fleet Dealroom: already','Fleet Dealroom'),'Fleet Dealroom: already');
+  assert.equal(withSubjectPrefix('Please sign this document',undefined),'Please sign this document');
+});

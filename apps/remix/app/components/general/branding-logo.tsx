@@ -1,47 +1,49 @@
 import type { SVGAttributes } from 'react';
 
-import {
-  AMFORGE_MARK,
-  AMFORGE_PRODUCTS,
-  AMFORGE_VIEWBOX_HEIGHT,
-  AMFORGE_VIEWBOX_TOP,
-  AMFORGE_WORDMARK,
-} from '~/chief/amforge-brand-paths';
-
 export type LogoProps = SVGAttributes<SVGSVGElement> & {
-  /**
-   * Product name shown after the AmForge wordmark. Outside the app shell (signing pages, embeds,
-   * certificates) the lockup carries the product; inside the shell the product switcher does,
-   * so the app header passes `product={false}`.
-   */
+  /** Kept for callers; the Fleet lockup always carries the product word. */
   product?: 'sign' | false;
 };
 
-/** AmForge lockup: brand mark + wordmark (+ product). Text is `currentColor`; the mark uses --brand. */
-export const BrandingLogo = ({ product = 'sign', ...props }: LogoProps) => {
-  const productPath = product ? AMFORGE_PRODUCTS[product] : null;
-  const width = productPath ? productPath.width : AMFORGE_WORDMARK.width;
-  const label = productPath ? `AmForge ${productPath.label}` : 'AmForge';
-
+/**
+ * "Fleet | Dealroom" as one SVG, for places that size a logo by height (embeds, certificates, signing
+ * pages). Same geometry as `.fds-lockup`: 22px mark, 10px gaps, 18px words (700 / 500), 16px rule.
+ * Headers use the real `.fds-lockup` (~/chief/fleet-header) instead.
+ */
+export const BrandingLogo = ({ product: _product, ...props }: LogoProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox={`0 ${AMFORGE_VIEWBOX_TOP} ${width} ${AMFORGE_VIEWBOX_HEIGHT}`}
-      role="img"
-      aria-label={label}
-      {...props}
-    >
-      <rect
-        x={AMFORGE_MARK.x}
-        y={AMFORGE_MARK.y}
-        width={AMFORGE_MARK.size}
-        height={AMFORGE_MARK.size}
-        rx={AMFORGE_MARK.rx}
-        style={{ fill: 'hsl(var(--brand))' }}
-      />
-      <path style={{ fill: 'hsl(var(--brand-foreground))' }} d={AMFORGE_MARK.glyph} />
-      <path fill="currentColor" d={AMFORGE_WORDMARK.d} />
-      {productPath && <path fill="currentColor" fillOpacity={0.6} d={productPath.d} />}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 24" role="img" aria-label="Fleet Dealroom" {...props}>
+      <g transform="translate(0 1)" style={{ fill: 'hsl(var(--brand))' }}>
+        <g transform="scale(0.9167)">
+          <path d="M12 2.5 16.2 10.4 12 8.6 7.8 10.4Z" />
+          <path d="M6 10.5 10.2 18.4 6 16.6 1.8 18.4Z" opacity=".8" />
+          <path d="M18 10.5 22.2 18.4 18 16.6 13.8 18.4Z" opacity=".8" />
+        </g>
+      </g>
+      <text
+        x="32"
+        y="18.5"
+        fill="currentColor"
+        fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
+        fontSize="18"
+        fontWeight="700"
+        letterSpacing="-0.18"
+      >
+        Fleet
+      </text>
+      <rect x="84" y="4" width="1" height="16" style={{ fill: 'hsl(var(--border))' }} />
+      <text
+        x="94"
+        y="18.5"
+        fill="currentColor"
+        fillOpacity="0.62"
+        fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
+        fontSize="18"
+        fontWeight="500"
+        letterSpacing="-0.18"
+      >
+        Dealroom
+      </text>
     </svg>
   );
 };

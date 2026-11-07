@@ -1,21 +1,7 @@
-import { Link } from 'react-router';
-
-import { BrandingLogo } from '~/components/general/branding-logo';
-
-import { FleetThemeToggle } from './fleet-theme-toggle';
+import { FleetVisitorHeader } from './fleet-header';
 
 /**
- * Header for signed-out recipients outside the signing view (complete, expired, rejected...). Same fds
- * header spec, but the tenant brand (AmForge) takes the mark slot instead of the Fleet lockup.
+ * Header for signed-out recipients outside the signing view (complete, expired, rejected...): the Fleet
+ * visitor header (shell spec §4), same as the signing page and Send's room pages.
  */
-export const RecipientHeader = () => (
-  <header className="fds-header w-full">
-    <Link to="/" className="flex-shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-      <BrandingLogo className="h-6 w-auto text-foreground" />
-    </Link>
-
-    <div className="fds-header__utils">
-      <FleetThemeToggle />
-    </div>
-  </header>
-);
+export const RecipientHeader = () => <FleetVisitorHeader />;

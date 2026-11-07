@@ -1,4 +1,5 @@
 import { isRecipientRequest } from './policy';
+import { isRecipientPublicOrigin } from './public-origin';
 
 export const isRecipientOrigin = (request: Request) => {
   const configured = process.env.CHIEF_RECIPIENT_URL;
@@ -7,5 +8,9 @@ export const isRecipientOrigin = (request: Request) => {
   }
   const url = new URL(request.url);
   const origin = new URL(configured).origin;
-  return url.origin === origin && request.headers.get('origin') === origin && isRecipientRequest(request.method, url.pathname);
+  return (
+    isRecipientPublicOrigin(request) &&
+    request.headers.get('origin') === origin &&
+    isRecipientRequest(request.method, url.pathname)
+  );
 };

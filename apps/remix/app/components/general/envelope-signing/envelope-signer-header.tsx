@@ -16,6 +16,7 @@ import { match } from 'ts-pattern';
 
 import { EnvelopeDownloadDialog } from '~/components/dialogs/envelope-download-dialog';
 import { useEmbedSigningContext } from '~/components/embed/embed-signing-context';
+import { FleetSignerChrome } from '~/chief/fleet-signer-chrome';
 import { FleetThemeToggle } from '~/chief/fleet-theme-toggle';
 import { BrandingLogo } from '~/components/general/branding-logo';
 import { PublicLegalLinksDropdownMenuItems } from '~/components/general/public-legal-links';
@@ -30,6 +31,24 @@ export const EnvelopeSignerHeader = () => {
 
   const isEmbedSigning = useEmbedSigningContext() !== null;
   const hasCustomBrandingLogo = envelopeData.settings.brandingEnabled && Boolean(envelopeData.settings.brandingLogo);
+
+  if (!isEmbedSigning) {
+    return (
+      <FleetSignerChrome
+        documentTitle={envelope.title}
+        visitorName={recipient.name}
+        visitorEmail={recipient.email}
+        mobileActions={
+          <>
+            <MobileDropdownMenu />
+            <div className="w-40">
+              <EnvelopeSignerCompleteDialog />
+            </div>
+          </>
+        }
+      />
+    );
+  }
 
   return (
     <nav className="embed--DocumentWidgetHeader flex max-w-screen flex-row justify-between border-border border-b bg-background px-4 py-3 md:px-6">

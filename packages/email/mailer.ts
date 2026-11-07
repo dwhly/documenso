@@ -3,6 +3,7 @@ import { ResendTransport } from '@documenso/nodemailer-resend';
 import type { Transporter } from 'nodemailer';
 import { createTransport } from 'nodemailer';
 
+import { withSubjectPrefix } from './chief-subject';
 import { MailChannelsTransport } from './transports/mailchannels';
 
 /**
@@ -106,3 +107,12 @@ const getTransport = (): Transporter => {
 };
 
 export const mailer = getTransport();
+
+// Chief: one product prefix on every subject (see chief-subject.ts).
+mailer.use('compile', (mail, callback) => {
+  if (typeof mail.data.subject === 'string') {
+    mail.data.subject = withSubjectPrefix(mail.data.subject, env('NEXT_PRIVATE_EMAIL_SUBJECT_PREFIX'));
+  }
+
+  callback();
+});

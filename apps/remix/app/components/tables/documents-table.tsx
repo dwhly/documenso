@@ -13,16 +13,15 @@ import { TableCell } from '@documenso/ui/primitives/table';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Loader } from 'lucide-react';
-import { DateTime } from 'luxon';
 import { useMemo, useTransition } from 'react';
 import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
+import { formatFleetTimestamp } from '~/chief/fleet-format';
 import { DocumentStatus } from '~/components/general/document/document-status';
 import { useCurrentTeam } from '~/providers/team';
 
 import { StackAvatarsWithTooltip } from '../general/stack-avatars-with-tooltip';
-import { DocumentsTableActionButton } from './documents-table-action-button';
 import { DocumentsTableActionDropdown } from './documents-table-action-dropdown';
 
 export type DocumentsTableProps = {
@@ -46,7 +45,7 @@ export const DocumentsTable = ({
   rowSelection,
   onRowSelectionChange,
 }: DocumentsTableProps) => {
-  const { _, i18n } = useLingui();
+  const { _ } = useLingui();
 
   const team = useCurrentTeam();
   const [isPending, startTransition] = useTransition();
@@ -83,11 +82,6 @@ export const DocumentsTable = ({
 
     cols.push(
       {
-        header: _(msg`Created`),
-        accessorKey: 'createdAt',
-        cell: ({ row }) => i18n.date(row.original.createdAt, { ...DateTime.DATETIME_SHORT, hourCycle: 'h12' }),
-      },
-      {
         header: _(msg`Title`),
         cell: ({ row }) => <DataTableTitle row={row.original} teamUrl={team?.url} teamEmail={team?.teamEmail?.email} />,
       },
@@ -110,11 +104,19 @@ export const DocumentsTable = ({
         size: 140,
       },
       {
-        header: _(msg`Actions`),
+        // Fleet list pattern (shell spec §3): dates right-aligned and tabular, row actions in the ⋯ menu.
+        header: () => <span className="fds-num block">{_(msg`Created`)}</span>,
+        accessorKey: 'createdAt',
+        cell: ({ row }) => <span className="fds-num block">{formatFleetTimestamp(row.original.createdAt)}</span>,
+        size: 140,
+      },
+      {
+        id: 'actions',
+        header: () => <span className="sr-only">{_(msg`Actions`)}</span>,
+        size: 56,
         cell: ({ row }) =>
           (!row.original.deletedAt || isDocumentCompleted(row.original.status)) && (
-            <div className="flex items-center gap-x-4">
-              <DocumentsTableActionButton row={row.original} />
+            <div className="flex items-center justify-end">
               <DocumentsTableActionDropdown
                 row={row.original}
                 onMoveDocument={onMoveDocument ? () => onMoveDocument(row.original.envelopeId) : undefined}

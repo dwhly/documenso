@@ -8,6 +8,7 @@ import { Trans } from '@lingui/react/macro';
 import { ChevronLeft } from 'lucide-react';
 import { useEffect } from 'react';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
+import { FleetRecipientLayoutContextBar } from '~/chief/fleet-context-bar';
 import { RecipientHeader } from '~/chief/recipient-header';
 import { Header as AuthenticatedHeader } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
@@ -15,7 +16,7 @@ import type { Route } from './+types/_layout';
 
 export function meta() {
   return [
-    { title: i18n._(msg`Sign Document - AmForge Sign`) },
+    { title: i18n._(msg`Sign document · Fleet Dealroom`) },
     { name: 'robots', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
   ];
 }
@@ -38,6 +39,8 @@ export default function RecipientLayout({ matches }: Route.ComponentProps) {
   return (
     <div className="min-h-screen">
       {!hideHeader && (sessionData?.user ? <AuthenticatedHeader /> : <RecipientHeader />)}
+
+      {!hideHeader && !sessionData?.user && <FleetRecipientLayoutContextBar />}
 
       <main
         className={cn({

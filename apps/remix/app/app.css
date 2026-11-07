@@ -1,9 +1,8 @@
-/* Fleet design system: self-hosted Inter first, then Documenso's theme, then the tokens, brand and
+/* Fleet design system: self-hosted Inter first, then Documenso's theme, then the base Fleet tokens and the
    adapter, which override Documenso's variables by source order (keep them AFTER theme.css). */
 @import "@documenso/amforge-ui/fds/fonts.css";
 @import "@documenso/ui/styles/theme.css";
 @import "@documenso/amforge-ui/fds/tokens.css";
-@import "@documenso/amforge-ui/fds/brands/amforge.css";
 @import "@documenso/amforge-ui/fds/components.css";
 @import "./chief/fleet-documenso.css";
 

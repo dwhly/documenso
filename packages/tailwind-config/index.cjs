@@ -104,20 +104,21 @@ module.exports = {
           DEFAULT: 'hsl(var(--widget))',
           foreground: 'hsl(var(--widget-foreground))',
         },
-        // The `documenso` lime palette aliases the AmForge brand scale (legacy block in fds brands/amforge.css).
+        // The `documenso` lime palette maps onto the base Fleet brand roles (no brand layer, no scale):
+        // light steps = brand-subtle fills, mid steps = brand, dark steps = brand text on subtle fills.
         documenso: {
           DEFAULT: 'hsl(var(--brand) / <alpha-value>)',
-          50: 'hsl(var(--af-brand-50) / <alpha-value>)',
-          100: 'hsl(var(--af-brand-100) / <alpha-value>)',
-          200: 'hsl(var(--af-brand-200) / <alpha-value>)',
-          300: 'hsl(var(--af-brand-300) / <alpha-value>)',
-          400: 'hsl(var(--af-brand-400) / <alpha-value>)',
-          500: 'hsl(var(--af-brand-500) / <alpha-value>)',
-          600: 'hsl(var(--af-brand-600) / <alpha-value>)',
-          700: 'hsl(var(--af-brand-700) / <alpha-value>)',
-          800: 'hsl(var(--af-brand-800) / <alpha-value>)',
-          900: 'hsl(var(--af-brand-900) / <alpha-value>)',
-          950: 'hsl(var(--af-brand-950) / <alpha-value>)',
+          50: 'hsl(var(--brand-subtle) / <alpha-value>)',
+          100: 'hsl(var(--brand-subtle) / <alpha-value>)',
+          200: 'hsl(var(--brand-subtle) / <alpha-value>)',
+          300: 'hsl(var(--brand) / <alpha-value>)',
+          400: 'hsl(var(--brand) / <alpha-value>)',
+          500: 'hsl(var(--brand) / <alpha-value>)',
+          600: 'hsl(var(--brand) / <alpha-value>)',
+          700: 'hsl(var(--brand-muted-foreground) / <alpha-value>)',
+          800: 'hsl(var(--brand-muted-foreground) / <alpha-value>)',
+          900: 'hsl(var(--brand-muted-foreground) / <alpha-value>)',
+          950: 'hsl(var(--brand-muted-foreground) / <alpha-value>)',
         },
         recipient: {
           green: 'hsl(var(--recipient-green))',

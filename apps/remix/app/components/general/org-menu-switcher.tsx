@@ -16,7 +16,7 @@ import { canExecuteTeamAction, formatAnalyticsPath } from '@documenso/lib/utils/
 import { AnimateGenericFadeInOut } from '@documenso/ui/components/animate/animate-generic-fade-in-out';
 import { LanguageSwitcherDialog } from '@documenso/ui/components/common/language-switcher-dialog';
 import { cn } from '@documenso/ui/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage, AvatarWithText } from '@documenso/ui/primitives/avatar';
+import { AvatarWithText } from '@documenso/ui/primitives/avatar';
 import { Button } from '@documenso/ui/primitives/button';
 import {
   DropdownMenu,
@@ -29,26 +29,16 @@ import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { Building2Icon, ChevronsUpDown, Plus, Settings2Icon, SettingsIcon, UsersIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link, useLocation, useRouteLoaderData } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { useOptionalCurrentTeam } from '~/providers/team';
-import { type AmforgeLayout, switchAmforgeLayout } from '~/chief/amforge-layout';
 
-export type OrgMenuSwitcherProps = {
-  /** `sidebar`: Send's NavUser treatment, for the sidebar footer (AmForge layout prototype). */
-  variant?: 'header' | 'sidebar';
-  isCollapsed?: boolean;
-};
-
-export const OrgMenuSwitcher = ({ variant = 'header', isCollapsed = false }: OrgMenuSwitcherProps = {}) => {
+export const OrgMenuSwitcher = () => {
   const { _ } = useLingui();
 
   const { user, organisations } = useSession();
 
   const { pathname } = useLocation();
-
-  const layoutData = useRouteLoaderData('routes/_authenticated+/_layout') as { layout?: AmforgeLayout } | undefined;
-  const currentLayout: AmforgeLayout = layoutData?.layout ?? 'topbar';
 
   const [isOpen, setIsOpen] = useState(false);
   const [languageSwitcherOpen, setLanguageSwitcherOpen] = useState(false);
@@ -134,44 +124,25 @@ export const OrgMenuSwitcher = ({ variant = 'header', isCollapsed = false }: Org
   return (
     <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
-        {variant === 'sidebar' ? (
-          <Button
-            data-testid="menu-switcher"
-            variant="ghost"
-            className={cn('w-full justify-start gap-2', isCollapsed ? 'h-10 w-10 justify-center p-0' : 'px-3')}
-          >
-            <Avatar className="h-8 w-8">
-              {dropdownMenuAvatarText.avatarSrc && <AvatarImage src={dropdownMenuAvatarText.avatarSrc} />}
-              <AvatarFallback className="text-xs">{dropdownMenuAvatarText.avatarFallback}</AvatarFallback>
-            </Avatar>
-            <div className={cn('grid flex-1 text-left', isCollapsed && 'hidden')}>
-              <span className="truncate font-semibold text-sm">{dropdownMenuAvatarText.primaryText}</span>
-              <span className="truncate text-gray-500 text-xs">{dropdownMenuAvatarText.secondaryText}</span>
-            </div>
-            <ChevronsUpDown className={cn('ml-auto h-4 w-4', isCollapsed && 'hidden')} />
-          </Button>
-        ) : (
-          <Button
-            data-testid="menu-switcher"
-            variant="none"
-            className="relative flex h-12 flex-row items-center px-0 py-2 ring-0 focus:outline-none focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-transparent md:px-2"
-          >
-            <AvatarWithText
-              avatarSrc={dropdownMenuAvatarText.avatarSrc}
-              avatarFallback={dropdownMenuAvatarText.avatarFallback}
-              primaryText={dropdownMenuAvatarText.primaryText}
-              secondaryText={dropdownMenuAvatarText.secondaryText}
-              rightSideComponent={<ChevronsUpDown className="ml-auto h-4 w-4 text-muted-foreground" />}
-              textSectionClassName="hidden lg:flex"
-            />
-          </Button>
-        )}
+        <Button
+          data-testid="menu-switcher"
+          variant="none"
+          className="relative flex h-12 flex-row items-center px-0 py-2 ring-0 focus:outline-none focus-visible:border-0 focus-visible:ring-0 focus-visible:ring-transparent md:px-2"
+        >
+          <AvatarWithText
+            avatarSrc={dropdownMenuAvatarText.avatarSrc}
+            avatarFallback={dropdownMenuAvatarText.avatarFallback}
+            primaryText={dropdownMenuAvatarText.primaryText}
+            secondaryText={dropdownMenuAvatarText.secondaryText}
+            rightSideComponent={<ChevronsUpDown className="ml-auto h-4 w-4 text-muted-foreground" />}
+            textSectionClassName="hidden lg:flex"
+          />
+        </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         className={cn('z-[60] ml-6 flex w-full divide-x divide-border p-0 md:ml-0 md:min-w-[40rem]')}
-        side={variant === 'sidebar' ? 'top' : undefined}
-        align={variant === 'sidebar' ? 'start' : 'end'}
+        align="end"
         forceMount
       >
         <div className="flex h-[400px] w-full divide-x">
@@ -353,38 +324,6 @@ export const OrgMenuSwitcher = ({ variant = 'header', isCollapsed = false }: Org
               >
                 <Trans>Language</Trans>
               </DropdownMenuItem>
-
-              {/* AmForge layout prototype: flip the shell without editing the URL. Same Tabs-style
-                  treatment as the product switcher. Plain strings: not in the Lingui catalogs. */}
-              <div className="flex items-center justify-between gap-2 px-4 py-2 text-muted-foreground text-sm">
-                <span>Layout</span>
-                <div
-                  role="group"
-                  aria-label="Layout"
-                  className="inline-flex h-7 shrink-0 items-center rounded-md bg-muted p-0.5"
-                  data-testid="amforge-layout-toggle"
-                >
-                  {(
-                    [
-                      ['sidebar', 'Sidebar'],
-                      ['topbar', 'Top bar'],
-                    ] as const
-                  ).map(([value, label]) => (
-                    <button
-                      key={value}
-                      type="button"
-                      aria-pressed={currentLayout === value}
-                      onClick={() => currentLayout !== value && switchAmforgeLayout(value)}
-                      className={cn(
-                        'inline-flex h-6 items-center whitespace-nowrap rounded-sm px-2 font-medium text-xs transition-colors',
-                        currentLayout === value ? 'bg-background text-foreground shadow-sm' : 'hover:text-foreground',
-                      )}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               {currentOrganisation && (
                 <DropdownMenuItem className="px-4 py-2 text-muted-foreground" asChild>

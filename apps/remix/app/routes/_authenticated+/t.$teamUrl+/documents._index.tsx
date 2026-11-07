@@ -1,11 +1,9 @@
 import { useSessionStorage } from '@documenso/lib/client-only/hooks/use-session-storage';
 import { SKIP_QUERY_BATCH_META } from '@documenso/lib/constants/trpc';
-import { formatAvatarUrl } from '@documenso/lib/utils/avatars';
 import { formatDocumentsPath } from '@documenso/lib/utils/teams';
 import { ExtendedDocumentStatus } from '@documenso/prisma/types/extended-document-status';
 import { trpc } from '@documenso/trpc/react';
 import type { TFindDocumentsInternalResponse } from '@documenso/trpc/server/document-router/find-documents-internal.types';
-import { Avatar, AvatarFallback, AvatarImage } from '@documenso/ui/primitives/avatar';
 import { Button } from '@documenso/ui/primitives/button';
 import type { RowSelectionState } from '@documenso/ui/primitives/data-table';
 import { msg } from '@lingui/core/macro';
@@ -179,20 +177,14 @@ export default function DocumentsPage() {
   return (
     <EnvelopeDropZoneWrapper type={EnvelopeType.DOCUMENT}>
       <div className="mx-auto w-full max-w-screen-xl px-4 md:px-8">
-        <FolderGrid type={FolderType.DOCUMENT} parentId={folderId ?? null} />
+        <FolderGrid
+          type={FolderType.DOCUMENT}
+          parentId={folderId ?? null}
+          title={<Trans>Documents</Trans>}
+          subtitle={<Trans>Documents you have sent or been asked to sign.</Trans>}
+        />
 
-        <div className="mt-8 flex flex-row items-center">
-          <Avatar className="mr-3 h-12 w-12 border-2 border-white border-solid dark:border-border">
-            {team.avatarImageId && <AvatarImage src={formatAvatarUrl(team.avatarImageId)} />}
-            <AvatarFallback className="text-muted-foreground text-xs">{team.name.slice(0, 1)}</AvatarFallback>
-          </Avatar>
-
-          <h2 className="font-semibold text-4xl">
-            <Trans>Documents</Trans>
-          </h2>
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center gap-x-2 gap-y-4">
+        <div className="fleet-filter-bar mt-6 flex flex-wrap items-center gap-x-2 gap-y-4">
           <div className="w-56">
             <DocumentSearch />
           </div>
@@ -211,7 +203,7 @@ export default function DocumentsPage() {
           )}
         </div>
 
-        <div className="mt-8">
+        <div className="mt-4">
           <div>
             {data && data.count === 0 ? (
               <DocumentsTableEmptyState status={findDocumentSearchParams.status ?? ExtendedDocumentStatus.ALL} />

@@ -64,9 +64,8 @@ export const TemplateFooter = ({ isDocument = true, reportUrl }: TemplateFooterP
 
       {!branding.brandingEnabled && (
         <Text className="my-8 text-muted-foreground text-sm">
-          Documenso, Inc.
-          <br />
-          2261 Market Street, #5211, San Francisco, CA 94114, USA
+          {/* Chief: the un-branded footer names the deployment, not Documenso, Inc.'s office. */}
+          Fleet Dealroom
         </Text>
       )}
     </Section>

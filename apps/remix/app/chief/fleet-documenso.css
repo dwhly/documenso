@@ -1,6 +1,6 @@
 /*
  * Fleet design system -> Documenso adapter. Imported AFTER Documenso's theme.css and the vendored fds
- * tokens + brand, so it wins on source order. Only Documenso-specific variables live here, each mapped
+ * tokens, so it wins on source order. Only Documenso-specific variables live here, each mapped
  * to a token role. Shared roles (background, primary, border, ring...) come straight from tokens.css.
  *
  * Dark mode is `[data-theme="dark"]` on <html> (remix-themes writes it; see root.tsx). Documenso's
@@ -32,6 +32,10 @@
   --recipient-pink: var(--tag-2);
 
   --gold: var(--warning);
+
+  /* The light-mode base brand slot (tokens.css :root), for surfaces that stay light in dark mode (PDF paper). */
+  --fleet-paper-brand: 221 83% 50%;
+  --fleet-paper-brand-subtle: 221 90% 96%;
 }
 
 /*
@@ -50,10 +54,233 @@
   --input: var(--gray-300);
   --primary: var(--gray-900);
   --primary-foreground: var(--gray-50);
-  --ring: var(--af-brand-600);
-  --brand: var(--af-brand-600);
-  --brand-subtle: var(--af-brand-50);
-  --field-card: var(--af-brand-50);
-  --field-card-border: var(--af-brand-600);
+  --ring: var(--fleet-paper-brand);
+  --brand: var(--fleet-paper-brand);
+  --brand-subtle: var(--fleet-paper-brand-subtle);
+  --field-card: var(--fleet-paper-brand-subtle);
+  --field-card-border: var(--fleet-paper-brand);
   --field-card-foreground: var(--gray-900);
+}
+
+/* ==== Shell §1: header (staff + visitor share one geometry) ==== */
+.fleet-header {
+  height: 56px;
+  min-height: 56px;
+  padding: 0 24px;
+  gap: 24px;
+}
+.fleet-header .fds-header__utils {
+  gap: var(--space-2);
+}
+.fleet-header--visitor {
+  padding: 0;
+}
+.fleet-visitor-container {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+.fleet-header--visitor > .fleet-visitor-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.fleet-visitor-container > .fds-header__utils {
+  margin-left: auto;
+}
+
+/* Tabs (header + sub-nav): plain 14px/500; selected = foreground + 2px foreground underline. */
+.fleet-tabs a,
+.fleet-tabs a[aria-current="page"] {
+  font-size: var(--text-md);
+  font-weight: 500;
+}
+
+/* ==== Shell §2/§3: sub-nav and content container ==== */
+.fleet-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+.fleet-subnav {
+  background: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+}
+.fleet-subnav__inner {
+  display: flex;
+  height: 44px;
+}
+/* Tab text lines up with the content's left edge. */
+.fleet-subnav__inner > .fds-nav {
+  margin-left: calc(var(--space-3) * -1);
+}
+
+/* Documenso pages size themselves with `max-w-screen-xl px-4 md:px-8`; the shell container replaces that. */
+[data-fleet-shell] .max-w-screen-xl {
+  max-width: 1200px;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Page head: breadcrumb 13px muted -> H1 24px/600 -> 14px muted subtitle; actions right on the H1 row. */
+.fleet-page-head__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  color: hsl(var(--muted-foreground));
+}
+.fleet-page-head__crumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+.fleet-page-head__crumbs a:hover {
+  color: hsl(var(--foreground));
+}
+.fleet-page-head__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.fleet-page-head__title {
+  font-size: var(--text-2xl);
+  line-height: 2rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fleet-page-head__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--text-md);
+  color: hsl(var(--muted-foreground));
+}
+.fleet-page-head__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-2);
+}
+.fleet-page-head__actions button {
+  height: 36px;
+  padding-inline: var(--space-3);
+  font-size: var(--text-md);
+}
+.fleet-page-head__actions button svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* List pages: outline filter buttons (Documenso's faceted filters are dashed). */
+.fleet-filter-bar button.border-dashed {
+  border-style: solid;
+}
+
+/* Tables: bordered with --radius, row hairlines, 13px/500 muted header, 48px rows, tabular numbers. */
+[data-fleet-shell] .rounded-md.border:has(> div > table) {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: hsl(var(--background));
+}
+[data-fleet-shell] table {
+  font-variant-numeric: tabular-nums;
+}
+[data-fleet-shell] table thead th {
+  height: 40px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+}
+/* 48px rows (spec §3); no vertical padding so 40px avatars don't stretch them. */
+[data-fleet-shell] table tbody td {
+  height: 48px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Empty state: dashed outline card, one line + one primary action. */
+.fleet-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--space-6);
+  border: 1px dashed hsl(var(--input));
+  border-radius: var(--radius);
+  text-align: center;
+  font-size: var(--text-md);
+  color: hsl(var(--muted-foreground));
+}
+
+/* Detail pages: Documenso's info cards become fds outline cards with 16px/600 titles. */
+[data-fleet-shell] section.rounded-xl.border {
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+}
+[data-fleet-shell] section.rounded-xl.border > h1,
+[data-fleet-shell] section.rounded-xl.border > div:first-child > h1 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+/* ==== Shell §4: visitor context bar + signing page ==== */
+.fleet-context-bar {
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+}
+.fleet-context-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: 40px;
+  font-size: var(--text-sm);
+  color: hsl(var(--muted-foreground));
+}
+.fleet-context-bar__back {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-1);
+  color: hsl(var(--foreground));
+  font-weight: 500;
+  text-decoration: none;
+}
+.fleet-context-bar__back:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.fleet-context-bar__label {
+  color: hsl(var(--foreground));
+  font-weight: 500;
+}
+.fleet-context-bar__visitor {
+  min-width: 0;
+}
+
+/* The signing view fills the viewport under the chrome: 56px header + 40px context bar (+1px border). */
+div:has(> .fleet-signer-chrome) {
+  --signer-chrome-h: 97px;
+}
+@media (max-width: 1023px) {
+  div:has(> .fleet-signer-chrome) {
+    --signer-chrome-h: 149px;
+  }
+}
+
+/* Signing sidebar on Send's scale: 14px body, 16px/600 section titles. */
+.embed--DocumentWidgetContainer h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+.embed--DocumentWidgetContainer .embed--DocumentWidgetContent {
+  font-size: var(--text-md);
 }

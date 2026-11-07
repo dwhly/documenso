@@ -163,15 +163,12 @@ msgstr ""
 msgid "{0, plural, one {# recipient have been added from AI detection.} other {# recipients have been added from AI detection.}}"
 msgstr ""
 
+#. placeholder {0}: envelope.recipients.length
 #. placeholder {0}: template.recipients.length
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
 #: apps/remix/app/routes/_recipient+/d.$token+/_index.tsx
 msgid "{0, plural, one {# recipient} other {# recipients}}"
 msgstr "{0, plural, one {# destinatário} other {# destinatários}}"
-
-#. placeholder {0}: envelope.recipients.length
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
-msgid "{0, plural, one {# Recipient} other {# Recipients}}"
-msgstr "{0, plural, one {# Destinatário} other {# Destinatários}}"
 
 #. placeholder {0}: org.teams.length
 #: apps/remix/app/routes/_authenticated+/dashboard.tsx
@@ -1633,6 +1630,7 @@ msgstr "Admin"
 msgid "Admin Actions"
 msgstr "Ações de Admin"
 
+#: apps/remix/app/chief/fleet-account-menu.tsx
 #: apps/remix/app/components/general/org-menu-switcher.tsx
 msgid "Admin panel"
 msgstr "Painel de administração"
@@ -2158,10 +2156,6 @@ msgstr "Analisando páginas"
 msgid "and"
 msgstr ""
 
-#: apps/remix/app/routes/_authenticated+/inbox.tsx
-msgid "Any documents that you have been invited to will appear here"
-msgstr "Quaisquer documentos para os quais você foi convidado aparecerão aqui"
-
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 msgid "Any Source"
 msgstr "Qualquer Origem"
@@ -2480,6 +2474,14 @@ msgstr "Voltar"
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "Back home"
 msgstr "Voltar ao início"
+
+#: apps/remix/app/chief/fleet-context-bar.tsx
+msgid "Back to {roomName}"
+msgstr ""
+
+#: apps/remix/app/chief/fleet-context-bar.tsx
+msgid "Back to room"
+msgstr ""
 
 #: apps/remix/app/components/forms/branding-preferences-form.tsx
 msgid "Background"
@@ -4521,6 +4523,7 @@ msgid "Documenso will delete <0>all of your documents</0>, along with all of you
 msgstr "A Documenso excluirá <0>todos os seus documentos</0>, juntamente com todos os seus documentos concluídos, assinaturas e todos os outros recursos pertencentes à sua conta."
 
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id.logs.tsx
 msgid "Document"
 msgstr "Documento"
@@ -4941,6 +4944,7 @@ msgstr "O documento será excluído permanentemente"
 msgid "Documentation"
 msgstr "Documentação"
 
+#: apps/remix/app/chief/fleet-subnav.tsx
 #: apps/remix/app/components/general/app-command-menu.tsx
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
@@ -5054,6 +5058,14 @@ msgstr "Documentos Visualizados"
 
 #: apps/remix/app/routes/_authenticated+/admin+/unsealed-documents._index.tsx
 msgid "Documents where all recipients have signed but the document has not been sealed. Documents stuck for more than 6 hours are no longer retried by the sweep job."
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/inbox.tsx
+msgid "Documents you have been invited to sign, approve or view."
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents._index.tsx
+msgid "Documents you have sent or been asked to sign."
 msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/admin+/organisation-stats._index.tsx
@@ -5295,6 +5307,10 @@ msgstr ""
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index.tsx
 msgid "Edit"
 msgstr "Editar"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.$id.edit.tsx
+msgid "Edit document"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/email-transport-update-dialog.tsx
 msgid "Edit Email Transport"
@@ -6728,7 +6744,6 @@ msgid "Hide license key"
 msgstr ""
 
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
-#: apps/remix/app/components/general/folder/folder-grid.tsx
 #: apps/remix/app/components/general/generic-error-layout.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/documents.folders._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.folders._index.tsx
@@ -6883,10 +6898,13 @@ msgctxt "Subscription status"
 msgid "Inactive"
 msgstr "Inativo"
 
+#: apps/remix/app/chief/fleet-subnav.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/components/general/document/document-status.tsx
 #: apps/remix/app/components/general/org-menu-switcher.tsx
+#: apps/remix/app/routes/_authenticated+/inbox.tsx
+#: apps/remix/app/routes/_authenticated+/inbox.tsx
 msgid "Inbox"
 msgstr "Caixa de entrada"
 
@@ -8273,6 +8291,10 @@ msgstr ""
 msgid "No teams yet"
 msgstr "Nenhuma equipe ainda"
 
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
+msgid "No templates yet. Upload a PDF to start one."
+msgstr ""
+
 #: apps/remix/app/components/general/webhook-multiselect-combobox.tsx
 msgid "No triggers available"
 msgstr ""
@@ -8991,8 +9013,6 @@ msgid "Personal Account"
 msgstr "Conta Pessoal"
 
 #: apps/remix/app/routes/_authenticated+/dashboard.tsx
-#: apps/remix/app/routes/_authenticated+/inbox.tsx
-#: apps/remix/app/routes/_authenticated+/inbox.tsx
 msgid "Personal Inbox"
 msgstr "Caixa de Entrada Pessoal"
 
@@ -10192,7 +10212,6 @@ msgstr "Tentado novamente"
 msgid "Retry"
 msgstr "Tentar novamente"
 
-#: apps/remix/app/components/general/document-signing/document-signing-page-view-v2.tsx
 #: apps/remix/app/routes/_unauthenticated+/o.$orgUrl.signin.tsx
 #: apps/remix/app/routes/_unauthenticated+/organisation.invite.$token.tsx
 #: apps/remix/app/routes/_unauthenticated+/team.verify.email.$token.tsx
@@ -10222,6 +10241,10 @@ msgstr "Retornar para login"
 #: apps/remix/app/components/general/envelope-editor/envelope-editor.tsx
 msgid "Return to templates"
 msgstr "Retornar para modelos"
+
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
+msgid "Reusable documents with recipients and fields already placed."
+msgstr ""
 
 #: packages/email/templates/organisation-account-link-confirmation.tsx
 msgid "Review request"
@@ -10851,6 +10874,7 @@ msgstr "Configure as propriedades do seu modelo e informações do destinatário
 msgid "Set your password for Documenso"
 msgstr ""
 
+#: apps/remix/app/chief/fleet-account-menu.tsx
 #: apps/remix/app/components/general/app-command-menu.tsx
 #: apps/remix/app/components/general/app-command-menu.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
@@ -10985,7 +11009,7 @@ msgid "Sign Document"
 msgstr "Assinar Documento"
 
 #: apps/remix/app/routes/_recipient+/_layout.tsx
-msgid "Sign Document - Documenso"
+msgid "Sign document · Fleet Dealroom"
 msgstr ""
 
 #: apps/remix/app/components/embed/multisign/multi-sign-document-list.tsx
@@ -11046,6 +11070,10 @@ msgstr ""
 
 #: apps/remix/app/routes/embed+/auth+/popup.tsx
 msgid "Sign in with your signing provider to continue"
+msgstr ""
+
+#: apps/remix/app/chief/fleet-account-menu.tsx
+msgid "Sign out"
 msgstr ""
 
 #: apps/remix/app/components/general/app-nav-mobile.tsx
@@ -11713,6 +11741,10 @@ msgstr "Suporte"
 msgid "Support ticket created"
 msgstr "Ticket de suporte criado"
 
+#: apps/remix/app/chief/fleet-account-menu.tsx
+msgid "Switch team"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/admin-organisation-sync-subscription-dialog.tsx
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 msgid "Sync"
@@ -11956,6 +11988,7 @@ msgstr ""
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/components/general/template/template-page-view-documents-table.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id.legacy_editor.tsx
 msgid "Template"
 msgstr "Modelo"
@@ -12048,10 +12081,12 @@ msgstr "Modelo enviado"
 msgid "Template usage"
 msgstr ""
 
+#: apps/remix/app/chief/fleet-subnav.tsx
 #: apps/remix/app/components/general/app-command-menu.tsx
 #: apps/remix/app/components/general/app-nav-desktop.tsx
 #: apps/remix/app/components/general/app-nav-mobile.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.public-profile.tsx
+#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates.$id._index.tsx
@@ -14340,7 +14375,7 @@ msgstr "Aguardando Sua Vez"
 
 #: apps/remix/app/routes/_recipient+/sign.$token+/_index.tsx
 #: apps/remix/app/routes/_recipient+/sign.$token+/_index.tsx
-msgid "Want to send slick signing links like this one? <0>Check out Documenso</0>."
+msgid "Want to send slick signing links like this one? <0>Fleet Dealroom</0>."
 msgstr ""
 
 #: apps/remix/app/routes/_profile+/_layout.tsx
@@ -14755,7 +14790,6 @@ msgid "We'll send a 6-digit code to your email"
 msgstr "Enviaremos um código de 6 dígitos para seu e-mail"
 
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
 msgid "We're all empty"
 msgstr "Estamos vazios"
 
@@ -15412,10 +15446,6 @@ msgstr ""
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "You have no webhooks yet. Your webhooks will be shown here once you create them."
 msgstr "Você ainda não tem webhooks. Seus webhooks serão mostrados aqui assim que você criá-los."
-
-#: apps/remix/app/routes/_authenticated+/t.$teamUrl+/templates._index.tsx
-msgid "You have not yet created any templates. To create a template please upload one."
-msgstr "Você ainda não criou nenhum modelo. Para criar um modelo, por favor, envie um."
 
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "You have not yet created or received any documents. To create a document please upload one."

@@ -9,7 +9,7 @@ import { msg } from '@lingui/core/macro';
 import { Trans } from '@lingui/react/macro';
 import { Link, Outlet } from 'react-router';
 
-import { AmforgeSidebarLayout } from '~/chief/amforge-sidebar-layout';
+import { FleetSubNav } from '~/chief/fleet-subnav';
 import { AppBanner } from '~/components/general/app-banner';
 import { Header } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
@@ -18,7 +18,6 @@ import { OrganisationQuotaBanner } from '~/components/general/organisations/orga
 import { VerifyEmailBanner } from '~/components/general/verify-email-banner';
 import { authenticatedMiddleware } from '~/middleware/authenticated';
 import { TeamProvider } from '~/providers/team';
-import { resolveAmforgeLayout } from '~/chief/amforge-layout';
 
 import type { Route } from './+types/_layout';
 
@@ -31,20 +30,18 @@ export const shouldRevalidate = () => false;
 
 export const middleware = [authenticatedMiddleware];
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader() {
   const banner = await getSiteSettings().then((settings) =>
     settings.find((setting) => setting.id === SITE_SETTINGS_BANNER_ID),
   );
 
   return {
     banner,
-    // AmForge layout prototype: cookie/`?layout=` read on the server so SSR renders the right shell.
-    layout: resolveAmforgeLayout(request),
   };
 }
 
 export default function Layout({ loaderData, params, matches }: Route.ComponentProps) {
-  const { banner, layout } = loaderData;
+  const { banner } = loaderData;
 
   const { user, organisations } = useSession();
 
@@ -109,28 +106,6 @@ export default function Layout({ loaderData, params, matches }: Route.ComponentP
     );
   }
 
-  if (layout === 'sidebar' && !hideHeader) {
-    return (
-      <OrganisationProvider organisation={currentOrganisation}>
-        <TeamProvider team={currentTeam || null}>
-          <AmforgeSidebarLayout
-            isSettingsLayout={layoutMode === 'settings'}
-            banners={
-              <>
-                <OrganisationBillingBanner />
-                <OrganisationQuotaBanner />
-                {!user.emailVerified && <VerifyEmailBanner email={user.email} />}
-                {banner && <AppBanner banner={banner} />}
-              </>
-            }
-          >
-            <Outlet />
-          </AmforgeSidebarLayout>
-        </TeamProvider>
-      </OrganisationProvider>
-    );
-  }
-
   return (
     <OrganisationProvider organisation={currentOrganisation}>
       <TeamProvider team={currentTeam || null}>
@@ -145,9 +120,12 @@ export default function Layout({ loaderData, params, matches }: Route.ComponentP
 
           {!hideHeader && <Header fullWidth={layoutMode === 'settings'} />}
 
+          {!hideHeader && layoutMode !== 'settings' && <FleetSubNav />}
+
           <main
+            data-fleet-shell={hideHeader ? undefined : ''}
             className={cn({
-              'mt-8 pb-8 md:mt-12 md:pb-12': !hideHeader && layoutMode !== 'settings',
+              'pt-6 pb-12': !hideHeader && layoutMode !== 'settings',
               'md:flex md:min-h-0 md:flex-1 md:flex-col': layoutMode === 'settings',
             })}
           >
