@@ -32,7 +32,7 @@ export const FleetSubNav = () => {
 
   return (
     <div className="fleet-subnav">
-      <nav aria-label="Signatures" data-tabs="underline" className="fleet-container fleet-subnav__inner">
+      <nav aria-label="Signatures" className="fleet-container fleet-subnav__inner">
         <div className="fds-nav fleet-tabs">
           {tabs.map((tab) => (
             <Link key={tab.href} to={tab.href} aria-current={isActive(tab.match) ? 'page' : undefined}>

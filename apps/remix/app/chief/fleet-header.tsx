@@ -35,11 +35,11 @@ export const FleetLockup = ({ product = 'Dealroom', to = '/' }: { product?: stri
 );
 
 /**
- * Rooms | Signatures: plain tabs, selected = foreground text + 2px foreground underline (shell spec §1).
+ * Rooms | Signatures: pill tabs, the current tab = the neutral selected pill (fds v0.8.0 baseline, DESIGN.md §10).
  * The wrapper carries the responsive display: `.fds-nav` sets its own and would beat `hidden`.
  */
 export const FleetDealroomTabs = ({ className }: { className?: string }) => (
-  <nav aria-label="Fleet Dealroom" data-tabs="underline" className={cn('self-stretch', className)}>
+  <nav aria-label="Fleet Dealroom" className={cn('self-stretch', className)}>
     <div className="fds-nav fleet-tabs">
       {DEALROOM_TABS.map((tab) =>
         tab.envKey === null ? (

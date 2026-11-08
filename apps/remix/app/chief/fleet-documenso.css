@@ -73,10 +73,6 @@
 .fleet-header .fds-header__utils {
   gap: var(--space-2);
 }
-/* Rooms | Signatures sit flush (Send: Signatures at x295 = Rooms x226 + 69). */
-.fleet-header .fleet-tabs {
-  gap: 0;
-}
 .fleet-header--visitor {
   padding: 0;
 }
@@ -95,7 +91,7 @@
   margin-left: auto;
 }
 
-/* Tabs (header + sub-nav): plain 14px/500; selected = foreground + 2px foreground underline. */
+/* Tabs (header + sub-nav): fds v0.8.0 pill tabs (components.css .fds-nav), 14px/500 like Send's .dr-header/.dr-subnav. */
 .fleet-tabs a,
 .fleet-tabs a[aria-current="page"] {
   font-size: var(--text-md);
@@ -116,17 +112,12 @@
   display: flex;
   height: 44px;
 }
-/* Shell §7 (Send .dr-subnav): unpadded items, text flush with the content edge, 24px gap, and the
+/* Shell §7 (Send .dr-subnav): pill tabs (fds v0.8.0), the first pill's box on the content edge, and the
    hairline contained to the 1200 container. */
 .fleet-subnav__inner > .fds-nav {
   flex: 1;
-  gap: 24px;
   box-sizing: border-box;
   border-bottom: 1px solid hsl(var(--border));
-}
-.fleet-subnav__inner > .fds-nav a {
-  padding: 0;
-  margin-bottom: -1px;
 }
 
 /* Documenso pages size themselves with `max-w-screen-xl px-4 md:px-8`; the shell container replaces that. */
@@ -196,9 +187,18 @@
 .fleet-filter-bar button.border-dashed {
   border-style: solid;
 }
-/* Filter controls share the 36px search height, so the bar sits 24px under the page head (Send). */
+/* fds v0.8.0 baseline (Send .dr-filterbar): toolbar controls sit tight to their text at 26px, never stretched to
+   the 36px search input's height. */
 .fleet-filter-bar button {
-  height: 36px;
+  height: 26px;
+  padding-inline: 10px;
+  font-size: var(--text-sm);
+}
+/* Status pills in list tables: 22px chips (fds v0.8.0 baseline), small-control radius. */
+[data-fleet-shell] td .fds-pill {
+  box-sizing: border-box;
+  height: 22px;
+  font-size: 12px;
 }
 
 /* Search input (shell §7, Send): 280px, 36px, leading 16px search icon. */
@@ -249,7 +249,9 @@
   background: hsl(var(--popover));
   color: hsl(var(--popover-foreground));
   border: 1px solid hsl(var(--border));
-  box-shadow: 0 8px 24px hsl(var(--foreground) / 0.12);
+  box-shadow:
+    0 8px 24px hsl(var(--foreground) / 0.12),
+    0 2px 6px hsl(var(--foreground) / 0.06);
 }
 [data-theme='dark'] [data-radix-popper-content-wrapper] > [role='menu'],
 [data-theme='dark'] [data-radix-popper-content-wrapper] > [role='listbox'],
@@ -257,9 +259,10 @@
 [data-theme='dark'] [data-radix-popper-content-wrapper] > [data-side] {
   background: hsl(var(--popover));
   border-color: hsl(var(--input));
+  /* Same as Send's --dr-popover-shadow in dark: the canvas (near-black) role, never a literal. */
   box-shadow:
-    0 0 0 1px hsl(0 0% 0% / 0.2),
-    0 12px 32px hsl(0 0% 0% / 0.55);
+    0 12px 32px hsl(var(--canvas) / 0.75),
+    0 2px 8px hsl(var(--canvas) / 0.6);
 }
 
 /* Tables: bordered with --radius, row hairlines, 13px/500 muted header, 48px rows, tabular numbers. */

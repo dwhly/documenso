@@ -138,6 +138,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
       translate="no"
       lang={lang}
       data-theme={theme ?? ''}
+      data-edge="outline"
       data-density="spacious"
       suppressHydrationWarning
     >
