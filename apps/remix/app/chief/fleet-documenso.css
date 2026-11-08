@@ -372,3 +372,11 @@ div:has(> .fleet-signer-chrome) {
 .embed--DocumentWidgetContainer .embed--DocumentWidgetContent {
   font-size: var(--text-md);
 }
+
+/* Primary button = ink in both schemes (DESIGN.md: brand is links/focus only). Upstream's sign-in button adds
+   `dark:bg-documenso`, which painted it brand blue in dark mode only. */
+/* Doubled class: beats the variant's :is([data-theme="dark"]:not(.dark-mode-disabled) *) specificity (0,3,0). */
+html[data-theme='dark'] .dark\:bg-documenso.dark\:bg-documenso {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
