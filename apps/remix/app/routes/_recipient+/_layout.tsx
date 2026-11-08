@@ -9,6 +9,7 @@ import { ChevronLeft } from 'lucide-react';
 import { useEffect } from 'react';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { FleetRecipientLayoutContextBar } from '~/chief/fleet-context-bar';
+import { FleetVisitorFooter } from '~/chief/fleet-header';
 import { RecipientHeader } from '~/chief/recipient-header';
 import { Header as AuthenticatedHeader } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
@@ -49,6 +50,8 @@ export default function RecipientLayout({ matches }: Route.ComponentProps) {
       >
         <Outlet />
       </main>
+
+      {(hideHeader || !sessionData?.user) && <FleetVisitorFooter />}
     </div>
   );
 }

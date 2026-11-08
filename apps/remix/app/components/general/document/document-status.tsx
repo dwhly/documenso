@@ -67,6 +67,29 @@ export const FRIENDLY_STATUS_MAP: Record<ExtendedDocumentStatus, FriendlyStatus>
   },
 };
 
+// Shell §7: list tables show status as an fds pill with a word (Pending info, Completed success,
+// Draft neutral, Rejected danger).
+const STATUS_PILL: Record<ExtendedDocumentStatus, 'info' | 'success' | 'neutral' | 'danger' | 'warning'> = {
+  PENDING: 'info',
+  COMPLETED: 'success',
+  DRAFT: 'neutral',
+  REJECTED: 'danger',
+  CANCELLED: 'neutral',
+  EXPIRED: 'warning',
+  INBOX: 'neutral',
+  ALL: 'neutral',
+};
+
+export const DocumentStatusPill = ({ status, className }: { status: ExtendedDocumentStatus; className?: string }) => {
+  const { _ } = useLingui();
+
+  return (
+    <span className={cn('fds-pill', `fds-pill--${STATUS_PILL[status]}`, className)}>
+      {_(FRIENDLY_STATUS_MAP[status].label)}
+    </span>
+  );
+};
+
 export type DocumentStatusProps = HTMLAttributes<HTMLSpanElement> & {
   status: ExtendedDocumentStatus;
   inheritColor?: boolean;

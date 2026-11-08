@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { FleetContextBar, useFleetRecipientContext } from './fleet-context-bar';
+import { fleetContextLabel } from './recipient-context';
 import { FleetVisitorHeader } from './fleet-header';
 
 export type FleetSignerChromeProps = {
@@ -23,7 +24,7 @@ export const FleetSignerChrome = ({ documentTitle, visitorName, visitorEmail, mo
       <FleetVisitorHeader />
 
       <FleetContextBar
-        label={context?.roomName ?? documentTitle}
+        label={fleetContextLabel(context?.roomName, documentTitle)}
         roomName={context?.roomName}
         backUrl={context?.backUrl}
         visitorName={visitorName}

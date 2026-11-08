@@ -1,4 +1,4 @@
-import { RecipientStatusType } from '@documenso/lib/client-only/recipient-type';
+import type { RecipientStatusType } from '@documenso/lib/client-only/recipient-type';
 import { cn } from '@documenso/ui/lib/utils';
 import { Avatar, AvatarFallback } from '@documenso/ui/primitives/avatar';
 
@@ -18,8 +18,7 @@ export type StackAvatarProps = {
   className?: string;
 };
 
-export const StackAvatar = ({ first, zIndex, fallbackText = '', type, className }: StackAvatarProps) => {
-  let classes = '';
+export const StackAvatar = ({ first, zIndex, fallbackText = '', className }: StackAvatarProps) => {
   let zIndexClass = '';
   const firstClass = first ? '' : '-ml-3';
 
@@ -27,26 +26,8 @@ export const StackAvatar = ({ first, zIndex, fallbackText = '', type, className 
     zIndexClass = ZIndexes[zIndex] ?? '';
   }
 
-  // Fleet design system status roles: opened = info (in progress), unsigned and waiting = neutral.
-  switch (type) {
-    case RecipientStatusType.UNSIGNED:
-      classes = 'bg-neutral-subtle text-neutral';
-      break;
-    case RecipientStatusType.OPENED:
-      classes = 'bg-info-subtle text-info';
-      break;
-    case RecipientStatusType.WAITING:
-      classes = 'bg-neutral-subtle text-neutral';
-      break;
-    case RecipientStatusType.COMPLETED:
-      classes = 'bg-success-subtle text-success';
-      break;
-    case RecipientStatusType.REJECTED:
-      classes = 'bg-danger-subtle text-danger';
-      break;
-    default:
-      break;
-  }
+  // Shell §7: recipients are people, so their avatars are neutral; status lives in the Status pill.
+  const classes = 'bg-secondary text-secondary-foreground';
 
   return (
     <Avatar

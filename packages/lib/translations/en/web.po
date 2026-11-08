@@ -10405,7 +10405,7 @@ msgstr "Search documents, users, organizations…"
 
 #: apps/remix/app/components/general/document/document-search.tsx
 msgid "Search documents..."
-msgstr "Search documents..."
+msgstr "Search documents"
 
 #: apps/remix/app/components/dialogs/envelopes-bulk-move-dialog.tsx
 #: apps/remix/app/components/dialogs/folder-move-dialog.tsx
@@ -10453,7 +10453,7 @@ msgstr "Search teams…"
 
 #: apps/remix/app/components/general/template/template-search.tsx
 msgid "Search templates..."
-msgstr "Search templates..."
+msgstr "Search templates"
 
 #: apps/remix/app/components/general/app-command-menu.tsx
 msgid "Search themes…"

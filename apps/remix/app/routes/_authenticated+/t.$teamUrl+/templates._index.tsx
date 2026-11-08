@@ -123,7 +123,7 @@ export default function TemplatesPage() {
 
         <div>
           <div className="fleet-filter-bar mt-6 flex flex-wrap items-center gap-x-2 gap-y-4">
-            <div className="w-56">
+            <div className="fleet-search-slot">
               <TemplateSearch />
             </div>
 

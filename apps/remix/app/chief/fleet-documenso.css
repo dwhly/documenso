@@ -64,6 +64,7 @@
 
 /* ==== Shell §1: header (staff + visitor share one geometry) ==== */
 .fleet-header {
+  background: hsl(var(--background));
   height: 56px;
   min-height: 56px;
   padding: 0 24px;
@@ -71,6 +72,10 @@
 }
 .fleet-header .fds-header__utils {
   gap: var(--space-2);
+}
+/* Rooms | Signatures sit flush (Send: Signatures at x295 = Rooms x226 + 69). */
+.fleet-header .fleet-tabs {
+  gap: 0;
 }
 .fleet-header--visitor {
   padding: 0;
@@ -106,15 +111,22 @@
 }
 .fleet-subnav {
   background: hsl(var(--background));
-  border-bottom: 1px solid hsl(var(--border));
 }
 .fleet-subnav__inner {
   display: flex;
   height: 44px;
 }
-/* Tab text lines up with the content's left edge. */
+/* Shell §7 (Send .dr-subnav): unpadded items, text flush with the content edge, 24px gap, and the
+   hairline contained to the 1200 container. */
 .fleet-subnav__inner > .fds-nav {
-  margin-left: calc(var(--space-3) * -1);
+  flex: 1;
+  gap: 24px;
+  box-sizing: border-box;
+  border-bottom: 1px solid hsl(var(--border));
+}
+.fleet-subnav__inner > .fds-nav a {
+  padding: 0;
+  margin-bottom: -1px;
 }
 
 /* Documenso pages size themselves with `max-w-screen-xl px-4 md:px-8`; the shell container replaces that. */
@@ -144,11 +156,13 @@
 .fleet-page-head__row {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
 }
 .fleet-page-head__title {
+  /* Centred on the 36px action row like Send's (.dr-pagehead__row), so the H1 sits at the same y. */
+  margin-top: 2px;
   font-size: var(--text-2xl);
   line-height: 2rem;
   font-weight: 600;
@@ -181,6 +195,71 @@
 /* List pages: outline filter buttons (Documenso's faceted filters are dashed). */
 .fleet-filter-bar button.border-dashed {
   border-style: solid;
+}
+/* Filter controls share the 36px search height, so the bar sits 24px under the page head (Send). */
+.fleet-filter-bar button {
+  height: 36px;
+}
+
+/* Search input (shell §7, Send): 280px, 36px, leading 16px search icon. */
+.fleet-search-slot,
+.fleet-search {
+  position: relative;
+  width: 280px;
+  max-width: 100%;
+}
+.fleet-search input {
+  height: 36px;
+  padding-left: 36px;
+  font-size: var(--text-md);
+}
+.fleet-search__icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+}
+
+/* Table footer (shell §7): "Showing 1–10 of 47" + pager only when there is more than one page. */
+.fleet-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-inline: var(--space-2);
+  font-size: var(--text-sm);
+  color: hsl(var(--muted-foreground));
+}
+.fleet-table-footer__pager {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Popovers (menus, selects, popovers) are elevated: popover surface, border, shadow. */
+[data-radix-popper-content-wrapper] > [role='menu'],
+[data-radix-popper-content-wrapper] > [role='listbox'],
+[data-radix-popper-content-wrapper] > [role='dialog'],
+[data-radix-popper-content-wrapper] > [data-radix-select-viewport],
+[data-radix-popper-content-wrapper] > [data-side] {
+  background: hsl(var(--popover));
+  color: hsl(var(--popover-foreground));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 8px 24px hsl(var(--foreground) / 0.12);
+}
+[data-theme='dark'] [data-radix-popper-content-wrapper] > [role='menu'],
+[data-theme='dark'] [data-radix-popper-content-wrapper] > [role='listbox'],
+[data-theme='dark'] [data-radix-popper-content-wrapper] > [role='dialog'],
+[data-theme='dark'] [data-radix-popper-content-wrapper] > [data-side] {
+  background: hsl(var(--popover));
+  border-color: hsl(var(--input));
+  box-shadow:
+    0 0 0 1px hsl(0 0% 0% / 0.2),
+    0 12px 32px hsl(0 0% 0% / 0.55);
 }
 
 /* Tables: bordered with --radius, row hairlines, 13px/500 muted header, 48px rows, tabular numbers. */
@@ -232,17 +311,23 @@
 }
 
 /* ==== Shell §4: visitor context bar + signing page ==== */
-.fleet-context-bar {
-  border-bottom: 1px solid hsl(var(--border));
-  background: hsl(var(--background));
-}
+/* Shell §7 (Send .dr-context): 44px, 13px/20px muted, divider contained to the 960 container. */
 .fleet-context-bar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  height: 40px;
+  box-sizing: border-box;
+  min-height: 44px;
   font-size: var(--text-sm);
+  line-height: 20px;
+  color: hsl(var(--muted-foreground));
+  border-bottom: 1px solid hsl(var(--border));
+}
+.fleet-visitor-footer {
+  padding: var(--space-8) 0;
+  text-align: center;
+  font-size: var(--text-xs);
   color: hsl(var(--muted-foreground));
 }
 .fleet-context-bar__back {
@@ -266,13 +351,13 @@
   min-width: 0;
 }
 
-/* The signing view fills the viewport under the chrome: 56px header + 40px context bar (+1px border). */
+/* The signing view fills the viewport under the chrome: 56px header + 44px context bar. */
 div:has(> .fleet-signer-chrome) {
-  --signer-chrome-h: 97px;
+  --signer-chrome-h: 100px;
 }
 @media (max-width: 1023px) {
   div:has(> .fleet-signer-chrome) {
-    --signer-chrome-h: 149px;
+    --signer-chrome-h: 152px;
   }
 }
 

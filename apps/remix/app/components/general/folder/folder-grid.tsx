@@ -85,12 +85,13 @@ export const FolderGrid = ({ type, parentId, title, subtitle }: FolderGridProps)
         subtitle={subtitle}
         actions={
           <>
-            <EnvelopeUploadButton type={type} folderId={parentId || undefined} />
+            {/* Shell §7: secondary first, primary last (same order as Send). */}
+            <FolderCreateDialog type={type} />
 
             {/* If you delete this, delete the component as well. */}
             {organisation.organisationClaim.flags.allowLegacyEnvelopes && <DocumentUploadButtonLegacy type={type} />}
 
-            <FolderCreateDialog type={type} />
+            <EnvelopeUploadButton type={type} folderId={parentId || undefined} />
           </>
         }
       />

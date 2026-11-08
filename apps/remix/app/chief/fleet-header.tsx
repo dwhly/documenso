@@ -98,3 +98,8 @@ export const FleetVisitorHeader = ({ className }: { className?: string }) => (
     </div>
   </header>
 );
+
+/** Visitor footer (shell §7, same line as Send's room pages). */
+export const FleetVisitorFooter = () => (
+  <footer className="fleet-visitor-footer">Fleet Dealroom · Every copy is watermarked to the person it was issued to</footer>
+);

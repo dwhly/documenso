@@ -7,7 +7,6 @@ import type { TFindDocumentsResponse } from '@documenso/trpc/server/document-rou
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
 import type { DataTableColumnDef, RowSelectionState } from '@documenso/ui/primitives/data-table';
 import { DataTable } from '@documenso/ui/primitives/data-table';
-import { DataTablePagination } from '@documenso/ui/primitives/data-table-pagination';
 import { Skeleton } from '@documenso/ui/primitives/skeleton';
 import { TableCell } from '@documenso/ui/primitives/table';
 import { msg } from '@lingui/core/macro';
@@ -17,8 +16,9 @@ import { useMemo, useTransition } from 'react';
 import { Link } from 'react-router';
 import { match } from 'ts-pattern';
 
-import { formatFleetTimestamp } from '~/chief/fleet-format';
-import { DocumentStatus } from '~/components/general/document/document-status';
+import { formatFleetDate } from '~/chief/fleet-format';
+import { FleetTableFooter } from '~/chief/fleet-table-footer';
+import { DocumentStatusPill } from '~/components/general/document/document-status';
 import { useCurrentTeam } from '~/providers/team';
 
 import { StackAvatarsWithTooltip } from '../general/stack-avatars-with-tooltip';
@@ -100,14 +100,14 @@ export const DocumentsTable = ({
       {
         header: _(msg`Status`),
         accessorKey: 'status',
-        cell: ({ row }) => <DocumentStatus status={row.original.status} />,
+        cell: ({ row }) => <DocumentStatusPill status={row.original.status} />,
         size: 140,
       },
       {
         // Fleet list pattern (shell spec §3): dates right-aligned and tabular, row actions in the ⋯ menu.
         header: () => <span className="fds-num block">{_(msg`Created`)}</span>,
         accessorKey: 'createdAt',
-        cell: ({ row }) => <span className="fds-num block">{formatFleetTimestamp(row.original.createdAt)}</span>,
+        cell: ({ row }) => <span className="fds-num block">{formatFleetDate(row.original.createdAt)}</span>,
         size: 140,
       },
       {
@@ -195,7 +195,7 @@ export const DocumentsTable = ({
         onRowSelectionChange={onRowSelectionChange}
         getRowId={(row) => row.envelopeId}
       >
-        {(table) => <DataTablePagination additionalInformation="VisibleCount" table={table} />}
+        {(table) => <FleetTableFooter table={table} total={'count' in results ? results.count : undefined} />}
       </DataTable>
 
       {isPending && (

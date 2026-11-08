@@ -49,7 +49,7 @@ export const FleetAccountMenu = () => {
         <button
           type="button"
           data-testid="fleet-account-menu"
-          className="inline-flex h-8 max-w-[240px] items-center gap-2 rounded-control px-1.5 font-medium text-foreground text-[length:var(--text-md)] hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex h-8 max-w-[240px] items-center gap-2 rounded-control px-1.5 font-medium text-foreground text-[length:var(--text-sm)] hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <FleetAvatar name={displayName} />
           <span className="truncate">{displayName}</span>
@@ -57,7 +57,7 @@ export const FleetAccountMenu = () => {
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="z-[70] w-64">
+      <DropdownMenuContent align="end" sideOffset={6} className="z-[70] w-64">
         <DropdownMenuLabel className="font-normal">
           <div className="truncate font-medium text-foreground text-sm">{displayName}</div>
           <div className="truncate text-muted-foreground text-xs">{user.email}</div>

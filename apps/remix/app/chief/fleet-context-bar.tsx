@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { useRouteLoaderData } from 'react-router';
 import * as superjson from 'superjson';
 
-import type { FleetRecipientContext } from './recipient-context';
+import { type FleetRecipientContext, fleetContextLabel } from './recipient-context';
 
 const SIGNING_ROUTE_ID = 'routes/_recipient+/sign.$token+/_index';
 const COMPLETE_ROUTE_ID = 'routes/_recipient+/sign.$token+/complete';
@@ -45,8 +45,8 @@ export const FleetContextBar = ({
   roomName,
   className,
 }: FleetContextBarProps) => (
-  <div className={cn('fleet-context-bar', className)}>
-    <div className="fleet-visitor-container fleet-context-bar__inner">
+  <div className={cn('fleet-context-bar fleet-visitor-container', className)}>
+    <div className="fleet-context-bar__inner">
       <div className="flex min-w-0 items-center gap-3">
         {backUrl && (
           <a href={backUrl} className="fleet-context-bar__back">
@@ -90,7 +90,7 @@ export const FleetRecipientLayoutContextBar = () => {
 
   return (
     <FleetContextBar
-      label={context?.roomName ?? data.document.title}
+      label={fleetContextLabel(context?.roomName, data.document.title)}
       roomName={context?.roomName}
       backUrl={context?.backUrl}
       visitorName={data.recipientName !== data.recipientEmail ? data.recipientName : null}

@@ -102,7 +102,7 @@ export const DocumentsTableActionDropdown = ({ row, onMoveDocument }: DocumentsT
         <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-52" align="start" forceMount>
+      <DropdownMenuContent className="w-52" side="left" align="start" sideOffset={6} forceMount>
         <DropdownMenuLabel>
           <Trans>Action</Trans>
         </DropdownMenuLabel>

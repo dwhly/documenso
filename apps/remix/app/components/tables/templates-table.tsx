@@ -7,7 +7,6 @@ import { Alert, AlertDescription, AlertTitle } from '@documenso/ui/primitives/al
 import { Checkbox } from '@documenso/ui/primitives/checkbox';
 import type { DataTableColumnDef, RowSelectionState } from '@documenso/ui/primitives/data-table';
 import { DataTable } from '@documenso/ui/primitives/data-table';
-import { DataTablePagination } from '@documenso/ui/primitives/data-table-pagination';
 import { Skeleton } from '@documenso/ui/primitives/skeleton';
 import { TableCell } from '@documenso/ui/primitives/table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@documenso/ui/primitives/tooltip';
@@ -18,6 +17,8 @@ import { AlertTriangle, Building2Icon, Globe2Icon, InfoIcon, Link2Icon, Loader, 
 import { useMemo, useTransition } from 'react';
 import { Link } from 'react-router';
 
+import { formatFleetDate } from '~/chief/fleet-format';
+import { FleetTableFooter } from '~/chief/fleet-table-footer';
 import { TemplateType } from '~/components/general/template/template-type';
 import { useCurrentTeam } from '~/providers/team';
 
@@ -48,7 +49,7 @@ export const TemplatesTable = ({
   rowSelection,
   onRowSelectionChange,
 }: TemplatesTableProps) => {
-  const { _, i18n } = useLingui();
+  const { _ } = useLingui();
   const { remaining } = useLimits();
 
   const team = useCurrentTeam();
@@ -96,7 +97,7 @@ export const TemplatesTable = ({
       {
         header: _(msg`Created`),
         accessorKey: 'createdAt',
-        cell: ({ row }) => i18n.date(row.original.createdAt),
+        cell: ({ row }) => <span className="fds-num">{formatFleetDate(row.original.createdAt)}</span>,
       },
       {
         header: _(msg`Title`),
@@ -306,7 +307,7 @@ export const TemplatesTable = ({
           ),
         }}
       >
-        {(table) => <DataTablePagination additionalInformation="VisibleCount" table={table} />}
+        {(table) => <FleetTableFooter table={table} total={'count' in results ? results.count : undefined} />}
       </DataTable>
 
       {isPending && (

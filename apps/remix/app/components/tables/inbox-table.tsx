@@ -6,7 +6,6 @@ import type { TFindInboxResponse } from '@documenso/trpc/server/document-router/
 import { Button } from '@documenso/ui/primitives/button';
 import type { DataTableColumnDef } from '@documenso/ui/primitives/data-table';
 import { DataTable } from '@documenso/ui/primitives/data-table';
-import { DataTablePagination } from '@documenso/ui/primitives/data-table-pagination';
 import { Skeleton } from '@documenso/ui/primitives/skeleton';
 import { TableCell } from '@documenso/ui/primitives/table';
 import { useToast } from '@documenso/ui/primitives/use-toast';
@@ -15,12 +14,13 @@ import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { DocumentStatus as DocumentStatusEnum, RecipientRole, SigningStatus } from '@prisma/client';
 import { CheckCircleIcon, DownloadIcon, EyeIcon, Loader, PencilIcon } from 'lucide-react';
-import { DateTime } from 'luxon';
 import { useQueryStates } from 'nuqs';
 import { useMemo, useTransition } from 'react';
 import { match } from 'ts-pattern';
 
-import { DocumentStatus } from '~/components/general/document/document-status';
+import { formatFleetDate } from '~/chief/fleet-format';
+import { FleetTableFooter } from '~/chief/fleet-table-footer';
+import { DocumentStatusPill } from '~/components/general/document/document-status';
 import { useOptionalCurrentTeam } from '~/providers/team';
 import { inboxSearchParams, resolveInboxStatus } from '~/utils/inbox-search-params';
 
@@ -30,7 +30,7 @@ import { StackAvatarsWithTooltip } from '../general/stack-avatars-with-tooltip';
 type DocumentsTableRow = TFindInboxResponse['data'][number];
 
 export const InboxTable = () => {
-  const { _, i18n } = useLingui();
+  const { _ } = useLingui();
 
   const team = useOptionalCurrentTeam();
   const [isPending, startTransition] = useTransition();
@@ -63,7 +63,7 @@ export const InboxTable = () => {
       {
         header: _(msg`Created`),
         accessorKey: 'createdAt',
-        cell: ({ row }) => i18n.date(row.original.createdAt, { ...DateTime.DATETIME_SHORT, hourCycle: 'h12' }),
+        cell: ({ row }) => <span className="fds-num">{formatFleetDate(row.original.createdAt)}</span>,
       },
       {
         header: _(msg`Title`),
@@ -86,7 +86,7 @@ export const InboxTable = () => {
       {
         header: _(msg`Status`),
         accessorKey: 'status',
-        cell: ({ row }) => <DocumentStatus status={row.original.status} />,
+        cell: ({ row }) => <DocumentStatusPill status={row.original.status} />,
         size: 140,
       },
       {
@@ -174,7 +174,7 @@ export const InboxTable = () => {
         }}
       >
         {(table) =>
-          results.totalPages > 1 && <DataTablePagination additionalInformation="VisibleCount" table={table} />
+          <FleetTableFooter table={table} total={'count' in results ? results.count : undefined} />
         }
       </DataTable>
 
