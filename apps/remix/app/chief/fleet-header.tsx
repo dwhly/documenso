@@ -35,7 +35,7 @@ export const FleetLockup = ({ product = 'Dealroom', to = '/' }: { product?: stri
 );
 
 /**
- * Rooms | Signatures: pill tabs, the current tab = the neutral selected pill (fds v0.8.0 baseline, DESIGN.md §10).
+ * Rooms | Signatures: pill tabs, the current tab = the neutral selected pill (fds v0.8.1 baseline, DESIGN.md §10).
  * The wrapper carries the responsive display: `.fds-nav` sets its own and would beat `hidden`.
  */
 export const FleetDealroomTabs = ({ className }: { className?: string }) => (

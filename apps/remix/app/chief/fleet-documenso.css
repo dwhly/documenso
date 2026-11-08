@@ -91,7 +91,7 @@
   margin-left: auto;
 }
 
-/* Tabs (header + sub-nav): fds v0.8.0 pill tabs (components.css .fds-nav), 14px/500 like Send's .dr-header/.dr-subnav. */
+/* Tabs (header + sub-nav): fds v0.8.1 pill tabs (components.css .fds-nav), 14px/500 like Send's .dr-header/.dr-subnav. */
 .fleet-tabs a,
 .fleet-tabs a[aria-current="page"] {
   font-size: var(--text-md);
@@ -112,7 +112,7 @@
   display: flex;
   height: 44px;
 }
-/* Shell §7 (Send .dr-subnav): pill tabs (fds v0.8.0), the first pill's box on the content edge, and the
+/* Shell §7 (Send .dr-subnav): pill tabs (fds v0.8.1), the first pill's box on the content edge, and the
    hairline contained to the 1200 container. */
 .fleet-subnav__inner > .fds-nav {
   flex: 1;
@@ -187,14 +187,14 @@
 .fleet-filter-bar button.border-dashed {
   border-style: solid;
 }
-/* fds v0.8.0 baseline (Send .dr-filterbar): toolbar controls sit tight to their text at 26px, never stretched to
+/* fds v0.8.1 baseline (Send .dr-filterbar): toolbar controls sit tight to their text at 26px, never stretched to
    the 36px search input's height. */
 .fleet-filter-bar button {
   height: 26px;
   padding-inline: 10px;
   font-size: var(--text-sm);
 }
-/* Status pills in list tables: 22px chips (fds v0.8.0 baseline), small-control radius. */
+/* Status pills in list tables: 22px chips (fds v0.8.1 baseline), small-control radius. */
 [data-fleet-shell] td .fds-pill {
   box-sizing: border-box;
   height: 22px;
