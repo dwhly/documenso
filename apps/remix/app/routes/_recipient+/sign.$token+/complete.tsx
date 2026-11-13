@@ -142,6 +142,11 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
   // Use signing status from query if available, otherwise fall back to document status
   const signingStatus = signingStatusData?.status ?? 'PENDING';
 
+  // Fleet: offer Download as soon as the live status says everyone has signed. Upstream gated it on the
+  // status at page load, so the last signer (who lands while the PDF is still being sealed) never saw it
+  // without a reload.
+  const isCompletedNow = signingStatus === 'COMPLETED' || isDocumentCompleted(document);
+
   if (!isDocumentAccessValid) {
     return (
       <>
@@ -258,10 +263,10 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
                 className="w-full max-w-none md:flex-1"
               />
 
-              {isDocumentCompleted(document) && (
+              {isCompletedNow && (
                 <EnvelopeDownloadDialog
                   envelopeId={document.envelopeId}
-                  envelopeStatus={document.status}
+                  envelopeStatus={isCompletedNow ? DocumentStatus.COMPLETED : document.status}
                   envelopeItems={document.envelopeItems}
                   token={recipient?.token}
                   trigger={
