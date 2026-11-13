@@ -1,7 +1,13 @@
 /* Fleet design system: self-hosted Inter first, then Documenso's theme, then the base Fleet tokens and the
-   adapter, which override Documenso's variables by source order (keep them AFTER theme.css). */
+   adapter, which override Documenso's variables (keep them AFTER theme.css).
+   fds v0.9 ships in cascade layers (fds.tokens < fds.brand < fds.components) and unlayered CSS beats every layer.
+   Tailwind v3 flattens its own @layer blocks, so Documenso's theme (preflight, its :root/.dark variables, components
+   and plain utilities) goes into the native `sign.base` layer, ordered BELOW the package: that keeps the v0.8 cascade,
+   where it lost to fds by source order. Tailwind emits variant utilities (hover:, dark:, md:, [&...]) at the end of the
+   stylesheet, outside the layer, so they still beat fds and the adapter as before; fleet-documenso.css stays unlayered. */
+@layer sign.base, fds.tokens, fds.brand, fds.components;
 @import "@documenso/amforge-ui/fds/fonts.css";
-@import "@documenso/ui/styles/theme.css";
+@import "@documenso/ui/styles/theme.css" layer(sign.base);
 @import "@documenso/amforge-ui/fds/tokens.css";
 @import "@documenso/amforge-ui/fds/components.css";
 @import "./chief/fleet-documenso.css";
