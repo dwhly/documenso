@@ -162,6 +162,8 @@ test.describe('PDF Viewer Rendering', () => {
   });
 
   test.describe('Share Page', () => {
+    test.skip(true, 'PRD R8.4: Share removed.');
+
     test('should render PDF on share page (V1 and V2)', async ({ page }) => {
       const { user, team } = await seedUser();
 

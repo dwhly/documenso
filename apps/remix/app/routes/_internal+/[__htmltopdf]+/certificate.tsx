@@ -1,4 +1,3 @@
-import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 import { APP_I18N_OPTIONS, ZSupportedLanguageCodeSchema } from '@documenso/lib/constants/i18n';
 import { RECIPIENT_ROLE_SIGNING_REASONS, RECIPIENT_ROLES_DESCRIPTION } from '@documenso/lib/constants/recipient-roles';
 import { unsafeGetEntireEnvelope } from '@documenso/lib/server-only/admin/get-entire-document';
@@ -20,7 +19,6 @@ import { redirect } from 'react-router';
 import { prop, sortBy } from 'remeda';
 import { match } from 'ts-pattern';
 import { UAParser } from 'ua-parser-js';
-import { renderSVG } from 'uqr';
 
 import { BrandingLogo } from '~/components/general/branding-logo';
 
@@ -77,7 +75,6 @@ export async function loader({ request }: Route.LoaderArgs) {
         name: envelope.user.name,
         email: envelope.user.email,
       },
-      qrToken: envelope.qrToken,
       authOptions: envelope.authOptions,
       recipients: envelope.recipients,
       createdAt: envelope.createdAt,
@@ -365,17 +362,6 @@ export default function SigningCertificate({ loaderData }: Route.ComponentProps)
 
       {!hidePoweredBy && (
         <div className="my-8 flex-row-reverse space-y-4">
-          <div className="flex items-end justify-end gap-x-4">
-            <div
-              className="flex h-24 w-24 justify-center"
-              dangerouslySetInnerHTML={{
-                __html: renderSVG(`${NEXT_PUBLIC_WEBAPP_URL()}/share/${document.qrToken}`, {
-                  ecc: 'Q',
-                }),
-              }}
-            />
-          </div>
-
           <div className="flex items-end justify-end gap-x-4">
             <p className="flex-shrink-0 font-medium text-sm print:text-xs">
               {_(msg`Signing certificate provided by`)}:

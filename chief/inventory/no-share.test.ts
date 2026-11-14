@@ -142,6 +142,55 @@ for (const file of [
   });
 }
 
+for (const file of [
+  'packages/lib/server-only/pdf/generate-certificate-pdf.ts',
+  'apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx',
+]) {
+  test(`C0: static source check: certificate has no share URL or non-null QR token in ${file}`, () => {
+    const source = read(file);
+    assert.doesNotMatch(source, /\/share\/\$\{/);
+    for (const [, value] of source.matchAll(/\bqrToken\s*:\s*([^,\n}]+)/g)) {
+      assert.equal(value.trim(), 'null', `${file}: qrToken must be null`);
+    }
+  });
+}
+
+test('C0: certificate renderer receives no QR token even when the envelope has one', async () => {
+  let renderedQrToken: unknown;
+  const { generateCertificatePdf } = load('packages/lib/server-only/pdf/generate-certificate-pdf.ts', {
+    '@libpdf/core': { PDF: { merge: async () => new Uint8Array() } },
+    '@lingui/core': { i18n: { loadAndActivate: () => {} } },
+    '@lingui/core/macro': {},
+    '@prisma/client': {},
+    remeda: {},
+    '../../constants/i18n': { ZSupportedLanguageCodeSchema: z.string() },
+    '../../utils/document-auth': {},
+    '../../utils/i18n': { getTranslations: async () => ({}) },
+    '../document/get-document-certificate-audit-logs': { getDocumentCertificateAuditLogs: async () => ({}) },
+    '../organisation/get-organisation-claims': {
+      getOrganisationClaimByTeamId: async () => ({ flags: { hidePoweredBy: false } }),
+    },
+    './render-certificate': {
+      renderCertificate: ({ qrToken }: { qrToken: string | null }) => {
+        renderedQrToken = qrToken;
+        return Promise.resolve([]);
+      },
+    },
+  });
+
+  await generateCertificatePdf({
+    envelope: { id: 'envelope_certificate', teamId: 1, qrToken: 'qr_existing-document' },
+    envelopeOwner: { name: 'Owner', email: 'owner@example.test' },
+    recipients: [],
+    fields: [],
+    language: 'en',
+    pageWidth: 612,
+    pageHeight: 792,
+  });
+
+  assert.equal(renderedQrToken, null);
+});
+
 test('C0: inventory policy denies sharing on staff, bearer and recipient surfaces', () => {
   for (const path of ['/share/existing-share', '/share/existing-share/opengraph', '/share/qr_existing-document']) {
     for (const suffix of ['', '.data']) {
