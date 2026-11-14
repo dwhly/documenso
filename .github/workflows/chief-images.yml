@@ -23,6 +23,19 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
+      # Vendored fleet-design-system integrity, before anything is installed or built: full inventory, no extra
+      # files, and every file equal to the package AT THE LOCKED COMMIT (catches an edit with a recomputed lock).
+      # The package repo is private: FDS_READ_TOKEN is a read-only token for dwhly/fleet-design-system.
+      - name: Vendored design system integrity
+        if: hashFiles('packages/fleet-ui/fds/fds.lock') != ''
+        env:
+          FDS_READ_TOKEN: ${{ secrets.FDS_READ_TOKEN }}
+        run: |
+          test -n "$FDS_READ_TOKEN" || { echo "::error::secret FDS_READ_TOKEN (read access to dwhly/fleet-design-system) is required to verify packages/fleet-ui/fds"; exit 1; }
+          commit="$(sed -n 's/^commit //p' packages/fleet-ui/fds/fds.lock)"
+          git clone --quiet --filter=blob:none "https://x-access-token:${FDS_READ_TOKEN}@github.com/dwhly/fleet-design-system.git" "$RUNNER_TEMP/fds"
+          git -C "$RUNNER_TEMP/fds" checkout --quiet "$commit"
+          bash chief/inventory/check-fds-vendored.sh "$RUNNER_TEMP/fds"
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -42,6 +55,7 @@ jobs:
         run: |
           if [ -f chief/docker/prepare-context.sh ]; then
             npm ci
+            CI=true npx tsx --test chief/inventory/review-r1.test.ts
             NEXT_PRIVATE_ENCRYPTION_KEY=CAFEBABE NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY=DEADBEEF NODE_OPTIONS=--max-old-space-size=8192 npx turbo run build --filter=@documenso/remix...
             bash chief/docker/prepare-context.sh "$RUNNER_TEMP/chief-sign-context"
             docker build --label org.opencontainers.image.revision="$GITHUB_SHA" -t chief-sign:ci "$RUNNER_TEMP/chief-sign-context"
