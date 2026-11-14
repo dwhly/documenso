@@ -14,6 +14,7 @@ const path = require('node:path');
 const TEST_ENV = path.join(__dirname, 'test.env');
 const LOOPBACK = new Set(['127.0.0.1', 'localhost']);
 const DATABASES = new Set(['documenso_test', 'documenso_replica']);
+const LOCAL_DOCKER = 'unix:///var/run/docker.sock';
 
 /** KEY=VALUE lines of test.env (optional surrounding quotes; # comments). */
 const readTestEnv = () => {
@@ -78,8 +79,15 @@ const violations = (env) => {
 
       const db = url.pathname.replace(/^\//, '');
 
-      if (!/^postgres(ql)?:\/\//.test(raw) || !LOOPBACK.has(url.hostname) || url.port !== pgPort || !DATABASES.has(db)) {
-        bad.push(`${key} points at ${url.hostname}:${url.port || '(default)'}/${db}, not the throwaway Postgres 127.0.0.1:${pgPort}`);
+      if (
+        !/^postgres(ql)?:\/\//.test(raw) ||
+        !LOOPBACK.has(url.hostname) ||
+        url.port !== pgPort ||
+        !DATABASES.has(db)
+      ) {
+        bad.push(
+          `${key} points at ${url.hostname}:${url.port || '(default)'}/${db}, not the throwaway Postgres 127.0.0.1:${pgPort}`,
+        );
       }
     }
   }
@@ -91,7 +99,9 @@ const violations = (env) => {
   }
 
   if (!LOOPBACK.has(env.NEXT_PRIVATE_SMTP_HOST ?? '') || env.NEXT_PRIVATE_SMTP_PORT !== smtpPort) {
-    bad.push(`SMTP is ${env.NEXT_PRIVATE_SMTP_HOST ?? ''}:${env.NEXT_PRIVATE_SMTP_PORT ?? ''}, not the Mailpit sink 127.0.0.1:${smtpPort}`);
+    bad.push(
+      `SMTP is ${env.NEXT_PRIVATE_SMTP_HOST ?? ''}:${env.NEXT_PRIVATE_SMTP_PORT ?? ''}, not the Mailpit sink 127.0.0.1:${smtpPort}`,
+    );
   }
 
   if (env.NEXT_PRIVATE_SMTP_SECURE === 'true') {
@@ -118,6 +128,16 @@ const violations = (env) => {
 
   if (env.NEXT_PUBLIC_UPLOAD_TRANSPORT !== 'database') {
     bad.push(`NEXT_PUBLIC_UPLOAD_TRANSPORT is "${env.NEXT_PUBLIC_UPLOAD_TRANSPORT ?? ''}", not database`);
+  }
+
+  // Docker (review r5 [14]): only the local daemon. A remote DOCKER_HOST or context would run the containers (and
+  // publish their loopback ports) elsewhere while this process still talks to the local 127.0.0.1.
+  if (env.DOCKER_HOST && env.DOCKER_HOST !== LOCAL_DOCKER) {
+    bad.push(`DOCKER_HOST is ${env.DOCKER_HOST}, not the local Docker endpoint ${LOCAL_DOCKER}`);
+  }
+
+  if (env.DOCKER_CONTEXT && env.DOCKER_CONTEXT !== 'default') {
+    bad.push(`DOCKER_CONTEXT is ${env.DOCKER_CONTEXT} (only the local daemon at ${LOCAL_DOCKER})`);
   }
 
   return bad;
