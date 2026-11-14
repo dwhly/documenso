@@ -3,6 +3,7 @@ import { useAnalytics } from '@documenso/lib/client-only/hooks/use-analytics';
 import { SessionProvider } from '@documenso/lib/client-only/providers/session';
 import { getBasePath } from '@documenso/lib/constants/app';
 import { APP_I18N_OPTIONS, type SupportedLanguageCodes } from '@documenso/lib/constants/i18n';
+import { FleetThemeHead } from '~/chief/fleet-theme';
 import { createChiefPublicEnv } from '~/chief/public-env.server';
 import { extractLocaleData } from '@documenso/lib/utils/i18n';
 import { TrpcProvider } from '@documenso/trpc/react';
@@ -22,7 +23,7 @@ import {
   useLoaderData,
   useMatches,
 } from 'react-router';
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes';
+import { ThemeProvider, useTheme } from 'remix-themes';
 import { nonceMiddleware } from '~/middleware/nonce';
 import type { Route } from './+types/root';
 import stylesheet from './app.css?url';
@@ -127,13 +128,13 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const isRecipientRoute = matches.some((m) => m.id?.startsWith('routes/_recipient+'));
 
   return (
-    // `suppressHydrationWarning` because `remix-themes` intentionally mutates
-    // `data-theme`/`class` on <html> before hydration (PreventFlashOnWrongTheme),
+    // `suppressHydrationWarning` because the theme boot script (FleetThemeHead, which replaces remix-themes'
+    // PreventFlashOnWrongTheme) mutates `data-theme` on <html> before hydration,
     // so the server-rendered attributes never match the client render when the
     // theme is resolved from the system preference. Attribute-only, one level deep.
     // Fleet design system: tokens read `data-theme`, never the `.dark` class (that would activate
-    // Documenso's own palette). An empty attribute makes PreventFlashOnWrongTheme fill in the OS
-    // preference before paint; without it the script would add a `.dark` class instead.
+    // Documenso's own palette). An empty attribute makes the boot script fill in the OS
+    // preference before paint.
     <html
       translate="no"
       lang={lang}
@@ -152,7 +153,8 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links nonce={nonce(cspNonce)} />
         <meta name="google" content="notranslate" />
-        <PreventFlashOnWrongTheme ssrTheme={Boolean(data.theme)} nonce={nonce(cspNonce)} />
+        {/* Fleet: one colour-scheme meta to the fds contract + the no-flash boot script (replaces PreventFlashOnWrongTheme). */}
+        <FleetThemeHead ssrTheme={Boolean(data.theme)} nonce={nonce(cspNonce)} />
 
         {disableAnimations && (
           <style

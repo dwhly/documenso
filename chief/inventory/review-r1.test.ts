@@ -128,3 +128,31 @@ test('review r1 [2]: remix-themes posts the theme as application/json (tracked p
   }
 });
 
+// [5] Label shows the resolved scheme in auto; one colour-scheme meta with the single chosen scheme.
+test('review r1 [5]: Theme label and colour-scheme meta follow the fds contract', async () => {
+  const { themeLabel, colorSchemeContent, FLEET_THEME_BOOT } = await import('../../apps/remix/app/chief/fleet-theme-contract');
+  assert.equal(themeLabel('light', 'SYSTEM'), 'Theme: auto (light)');
+  assert.equal(themeLabel('dark', 'SYSTEM'), 'Theme: auto (dark)');
+  assert.equal(themeLabel(null, 'SYSTEM'), 'Theme: auto', 'server render without a cookie');
+  assert.equal(themeLabel('dark', 'USER'), 'Theme: dark');
+  assert.equal(themeLabel('light', 'USER'), 'Theme: light');
+  assert.equal(colorSchemeContent('dark', 'SYSTEM'), 'light dark');
+  assert.equal(colorSchemeContent(null, 'SYSTEM'), 'light dark');
+  assert.equal(colorSchemeContent('dark', 'USER'), 'dark');
+  assert.equal(colorSchemeContent('light', 'USER'), 'light');
+  // Boot: fills an empty data-theme from the OS, keeps a server-rendered choice, never touches the meta.
+  for (const [initial, prefersLight, expected] of [['', true, 'light'], ['', false, 'dark'], ['dark', true, 'dark']] as const) {
+    let value: string = initial;
+    const documentElement = { getAttribute: () => value, setAttribute: (_: string, v: string) => (value = v) };
+    new Function('document', 'window', FLEET_THEME_BOOT)(
+      { documentElement, querySelector: () => assert.fail('boot must not touch the meta') },
+      { matchMedia: () => ({ matches: prefersLight }) },
+    );
+    assert.equal(value, expected, `${initial || 'empty'} prefersLight=${prefersLight}`);
+  }
+  const root = read('apps/remix/app/root.tsx');
+  assert.doesNotMatch(root, /<PreventFlashOnWrongTheme/);
+  assert.match(root, /<FleetThemeHead ssrTheme=\{Boolean\(data\.theme\)\}/);
+  assert.match(read('apps/remix/app/chief/fleet-theme-toggle.tsx'), /themeLabel\(/);
+});
+
