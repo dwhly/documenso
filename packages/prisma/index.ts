@@ -87,5 +87,13 @@ export const prismaWithReplicas = remember('prismaWithReplicas', () => {
   ) as unknown as typeof prisma;
 });
 
+/**
+ * Fleet (review r4 [13]): the client that always talks to the primary (NEXT_PRIVATE_DATABASE_URL), never a read
+ * replica. `prisma` (below) routes every non-transactional read to a replica when NEXT_PRIVATE_DATABASE_REPLICA_URLS
+ * is set, so a read that permanently decides something (e.g. "this envelope is not COMPLETED, send nothing") must use
+ * this one: a lagging replica would otherwise make that decision on stale data.
+ */
+export const primaryPrisma = prisma;
+
 export { sql } from 'kysely';
 export { prismaWithReplicas as prisma };

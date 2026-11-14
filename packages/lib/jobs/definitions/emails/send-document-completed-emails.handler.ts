@@ -1,5 +1,5 @@
 import { DocumentCompletedEmailTemplate } from '@documenso/email/templates/document-completed';
-import { prisma } from '@documenso/prisma';
+import { prisma, primaryPrisma } from '@documenso/prisma';
 import { msg } from '@lingui/core/macro';
 import { DocumentSource, EnvelopeType, RecipientRole } from '@prisma/client';
 import { createElement } from 'react';
@@ -24,7 +24,11 @@ import type { TSendDocumentCompletedEmailsJobDefinition } from './send-document-
 export const run = async ({ payload, io }: { payload: TSendDocumentCompletedEmailsJobDefinition; io: JobRunIO }) => {
   const { envelopeId, requestMetadata } = payload;
 
-  const envelope = await prisma.envelope.findUnique({
+  // Fleet (review r4 [13]): the status guard below permanently decides whether anyone gets this email, and the
+  // documentData read here is what gets attached. Both come from the PRIMARY: with read replicas configured, `prisma`
+  // would read a lagging replica that may still say PENDING (or point at the pre-seal bytes) right after the seal
+  // committed, and the job would complete having sent nothing, with no sweep left to recover it.
+  const envelope = await primaryPrisma.envelope.findUnique({
     where: unsafeBuildEnvelopeIdQuery({ type: 'envelopeId', id: envelopeId }, EnvelopeType.DOCUMENT),
     include: {
       envelopeItems: {
