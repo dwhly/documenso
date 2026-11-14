@@ -1,6 +1,6 @@
 chief/
 packages/community-ee/
-packages/amforge-ui/
+packages/fleet-ui/
 apps/remix/app/chief/
 apps/remix/public/chief/
 apps/remix/server/chief/

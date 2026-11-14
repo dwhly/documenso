@@ -74,7 +74,7 @@
     "ts-pattern": "^5.9.0",
     "ua-parser-js": "^1.0.41",
     "uqr": "^0.1.2",
-    "@documenso/amforge-ui": "*"
+    "@documenso/fleet-ui": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",

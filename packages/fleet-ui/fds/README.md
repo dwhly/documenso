@@ -2,7 +2,7 @@
 
 Source: `dwhly/fleet-design-system` **v0.9.2** (commit `f81d06e`), copied with `scripts/vendor.sh` (which never copies the
 prototype-only `fds-lab.js`). `fds.lock` pins the version, commit and a sha256 per vendored file; verify with
-`scripts/check-vendored.sh packages/amforge-ui/fds` from the package. Do not edit vendored files here: change the system
+`scripts/check-vendored.sh packages/fleet-ui/fds` from the package. Do not edit vendored files here: change the system
 upstream, bump its version, re-vendor.
 
 Used: `fonts.css` + `fonts/`, `tokens.css`, `components.css` (imported by `apps/remix/app/app.css`), `tailwind.preset.cjs`

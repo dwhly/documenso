@@ -31,9 +31,9 @@ const STATUS_PALETTES = {
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // Fleet design system preset (vendored in packages/amforge-ui/fds). Dark mode keys off the tokens'
+  // Fleet design system preset (vendored in packages/fleet-ui/fds). Dark mode keys off the tokens'
   // `data-theme`, so Documenso's `.dark` palette in theme.css never activates.
-  presets: [require('../amforge-ui/fds/tailwind.preset.cjs')],
+  presets: [require('../fleet-ui/fds/tailwind.preset.cjs')],
   darkMode: ['variant', '&:is([data-theme="dark"]:not(.dark-mode-disabled) *)'],
   content: ['src/**/*.{ts,tsx}'],
   theme: {

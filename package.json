@@ -16,7 +16,7 @@
     "packages/trpc",
     "packages/tsconfig",
     "packages/ui",
-    "packages/amforge-ui"
+    "packages/fleet-ui"
   ],
   "version": "2.21.1",
   "scripts": {

@@ -6,10 +6,10 @@
    where it lost to fds by source order. Tailwind emits variant utilities (hover:, dark:, md:, [&...]) at the end of the
    stylesheet, outside the layer, so they still beat fds and the adapter as before; fleet-documenso.css stays unlayered. */
 @layer sign.base, fds.tokens, fds.brand, fds.components;
-@import "@documenso/amforge-ui/fds/fonts.css";
+@import "@documenso/fleet-ui/fds/fonts.css";
 @import "@documenso/ui/styles/theme.css" layer(sign.base);
-@import "@documenso/amforge-ui/fds/tokens.css";
-@import "@documenso/amforge-ui/fds/components.css";
+@import "@documenso/fleet-ui/fds/tokens.css";
+@import "@documenso/fleet-ui/fds/components.css";
 @import "./chief/fleet-documenso.css";
 
 /* Caveat Variable Font */
