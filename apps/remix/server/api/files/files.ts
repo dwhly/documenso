@@ -9,6 +9,7 @@ import type { Prisma } from '@prisma/client';
 import { Hono } from 'hono';
 
 import type { HonoEnv } from '../../router';
+import { tokenDownloadRefusal } from '../../chief/token-download';
 import { checkEnvelopeFileAccess, handleEnvelopeItemFileRequest, resolveFileUploadUserId } from './files.helpers';
 import {
   ZGetEnvelopeItemFileDownloadRequestParamsSchema,
@@ -325,6 +326,13 @@ export const filesRoute = new Hono<HonoEnv>()
 
       if (!envelopeItem.documentData) {
         return c.json({ error: 'Document data not found' }, 404);
+      }
+
+      // Fleet: the signed version only exists once the envelope is COMPLETED (never for cancelled/rejected/pending).
+      const refusal = tokenDownloadRefusal(envelopeItem.envelope.status, version);
+
+      if (refusal) {
+        return c.json(refusal, 400);
       }
 
       return await handleEnvelopeItemFileRequest({

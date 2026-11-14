@@ -9,7 +9,6 @@ import { getFieldsForToken } from '@documenso/lib/server-only/field/get-fields-f
 import { getRecipientByToken } from '@documenso/lib/server-only/recipient/get-recipient-by-token';
 import { getRecipientSignatures } from '@documenso/lib/server-only/recipient/get-recipient-signatures';
 import { getUserByEmail } from '@documenso/lib/server-only/user/get-user-by-email';
-import { isDocumentCompleted } from '@documenso/lib/utils/document';
 import { trpc } from '@documenso/trpc/react';
 import { DocumentShareButton } from '@documenso/ui/components/document/document-share-button';
 import { SigningCard3D } from '@documenso/ui/components/signing-card';
@@ -29,6 +28,7 @@ import { DocumentSigningAuthPageView } from '~/components/general/document-signi
 import { RecipientBranding } from '~/components/general/recipient-branding';
 import { useCspNonce } from '~/utils/nonce';
 
+import { isSignedDownloadReady } from '~/chief/completion-download';
 import { toFleetRecipientContext } from '~/chief/recipient-context';
 
 import type { Route } from './+types/complete';
@@ -153,8 +153,8 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
 
   // Fleet: offer Download as soon as the live status says everyone has signed. Upstream gated it on the
   // status at page load, so the last signer (who lands while the PDF is still being sealed) never saw it
-  // without a reload.
-  const isCompletedNow = signingStatus === 'COMPLETED' || isDocumentCompleted(document);
+  // without a reload. Only a real COMPLETED counts (never REJECTED/CANCELLED; review r1 [1]).
+  const isCompletedNow = isSignedDownloadReady(signingStatus, document.status);
 
   return (
     <>
@@ -266,7 +266,7 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
               {isCompletedNow && (
                 <EnvelopeDownloadDialog
                   envelopeId={document.envelopeId}
-                  envelopeStatus={isCompletedNow ? DocumentStatus.COMPLETED : document.status}
+                  envelopeStatus={DocumentStatus.COMPLETED}
                   envelopeItems={document.envelopeItems}
                   token={recipient?.token}
                   trigger={
