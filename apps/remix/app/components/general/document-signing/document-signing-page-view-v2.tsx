@@ -115,7 +115,9 @@ export const DocumentSigningPageViewV2 = () => {
           )}
 
           <div className={cn('flex flex-1 flex-col overflow-hidden py-4', isSidebarCollapsed && 'invisible w-0')}>
-            <div className="px-4">
+            {/* Fleet (review r1 [4]): a long field list scrolls inside this region (min-h-0 lets it shrink), so the
+                complete step below it stays on screen on desktop. */}
+            <div className="min-h-0 overflow-y-auto px-4">
               <h3 className="flex items-end justify-between font-semibold text-foreground text-sm">
                 {match(recipient.role)
                   .with(RecipientRole.VIEWER, () => <Trans>View Document</Trans>)
@@ -158,14 +160,15 @@ export const DocumentSigningPageViewV2 = () => {
               <div className="embed--DocumentWidgetContent mt-6 space-y-3">
                 <EnvelopeSignerForm />
               </div>
-
-              {/* Fleet: outside embeds the header has no actions, so the complete step sits under the fields. */}
-              {!isEmbed && (
-                <div className="mt-6">
-                  <EnvelopeSignerCompleteDialog />
-                </div>
-              )}
             </div>
+
+            {/* Fleet: outside embeds the header has no actions, so the complete step sits under the fields, outside
+                the scrolling region so it is always visible. */}
+            {!isEmbed && (
+              <div className="mt-6 flex-shrink-0 px-4">
+                <EnvelopeSignerCompleteDialog />
+              </div>
+            )}
 
             <Separator className="my-6" />
 
