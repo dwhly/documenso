@@ -14,6 +14,7 @@ import { loadRecipientBrandingByTeamId } from '@documenso/lib/server-only/brandi
 import { getDocumentAndSenderByToken } from '@documenso/lib/server-only/document/get-document-by-token';
 import { viewedDocument } from '@documenso/lib/server-only/document/viewed-document';
 import { getEnvelopeForRecipientSigning } from '@documenso/lib/server-only/envelope/get-envelope-for-recipient-signing';
+import { withoutDocumentBytes } from '@documenso/lib/utils/envelope-artifact';
 import { getEnvelopeRequiredAccessData } from '@documenso/lib/server-only/envelope/get-envelope-required-access-data';
 import { getCompletedFieldsForToken } from '@documenso/lib/server-only/field/get-completed-fields-for-token';
 import { getFieldsForToken } from '@documenso/lib/server-only/field/get-fields-for-token';
@@ -169,7 +170,8 @@ const handleV1Loader = async ({ params, request }: Route.LoaderArgs) => {
 
   return {
     isDocumentAccessValid: true,
-    document,
+    // Fleet (review r2 [1]): no PDF bytes or storage keys in loader data (a REJECTED envelope's `data` is sealed).
+    document: withoutDocumentBytes(document),
     fields,
     recipient,
     recipientWithFields,

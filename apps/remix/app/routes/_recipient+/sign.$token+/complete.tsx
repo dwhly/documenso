@@ -28,7 +28,7 @@ import { DocumentSigningAuthPageView } from '~/components/general/document-signi
 import { RecipientBranding } from '~/components/general/recipient-branding';
 import { useCspNonce } from '~/utils/nonce';
 
-import { isSignedDownloadReady } from '~/chief/completion-download';
+import { isSignedDownloadReady, toCompletionDocument, toCompletionRecipient } from '~/chief/completion-download';
 import { toFleetRecipientContext } from '~/chief/recipient-context';
 
 import type { Route } from './+types/complete';
@@ -97,8 +97,9 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     recipientName,
     recipientEmail: recipient.email,
     signatures,
-    document,
-    recipient,
+    // Fleet (review r2 [9]): metadata only, never documentData (PDF bytes / storage keys).
+    document: toCompletionDocument(document),
+    recipient: toCompletionRecipient(recipient),
     returnToHomePath,
     branding,
     fleetContext: toFleetRecipientContext(document),

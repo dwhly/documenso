@@ -2,6 +2,7 @@ import { DEFAULT_DOCUMENT_DATE_FORMAT } from '@documenso/lib/constants/date-form
 import { PDF_VIEWER_PAGE_SELECTOR } from '@documenso/lib/constants/pdf-viewer';
 import { DEFAULT_DOCUMENT_TIME_ZONE } from '@documenso/lib/constants/time-zones';
 import type { DocumentAndSender } from '@documenso/lib/server-only/document/get-document-by-token';
+import type { WithoutDocumentBytes } from '@documenso/lib/utils/envelope-artifact';
 import type { TRecipientAccessAuth } from '@documenso/lib/types/document-auth';
 import {
   ZCheckboxFieldMeta,
@@ -55,7 +56,7 @@ type DocumentSigningBranding = {
 
 export type DocumentSigningPageViewV1Props = {
   recipient: RecipientWithFields;
-  document: DocumentAndSender;
+  document: WithoutDocumentBytes<DocumentAndSender>;
   fields: Field[];
   completedFields: CompletedField[];
   isRecipientsTurn: boolean;
@@ -81,7 +82,7 @@ export const DocumentSigningPageViewV1 = ({
   includeSenderDetails,
   branding,
 }: DocumentSigningPageViewV1Props) => {
-  const { documentData, documentMeta } = document;
+  const { documentMeta } = document;
 
   const { derivedRecipientAccessAuth, user: authUser } = useRequiredDocumentSigningAuthContext();
 

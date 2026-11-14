@@ -1,5 +1,6 @@
 import { AppError } from '@documenso/lib/errors/app-error';
 import type { DocumentAndSender } from '@documenso/lib/server-only/document/get-document-by-token';
+import type { WithoutDocumentBytes } from '@documenso/lib/utils/envelope-artifact';
 import type { TRecipientAccessAuth } from '@documenso/lib/types/document-auth';
 import { isFieldUnsignedAndRequired } from '@documenso/lib/utils/advanced-fields-helpers';
 import { sortFieldsByPosition } from '@documenso/lib/utils/fields';
@@ -27,7 +28,7 @@ import { DocumentSigningCompleteDialog } from './document-signing-complete-dialo
 import { useRequiredDocumentSigningContext } from './document-signing-provider';
 
 export type DocumentSigningFormProps = {
-  document: DocumentAndSender;
+  document: WithoutDocumentBytes<DocumentAndSender>;
   recipient: Recipient;
   fields: Field[];
   isRecipientsTurn: boolean;
