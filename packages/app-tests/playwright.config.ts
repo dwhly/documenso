@@ -18,11 +18,19 @@ function calculateWorkers() {
 
 const ENV_FILES = ['.env', '.env.local', `.env.${process.env.NODE_ENV || 'development'}`];
 
-ENV_FILES.forEach((file) => {
-  dotenv.config({
-    path: path.join(__dirname, `../../${file}`),
+// Fleet (review r4 [14]): under chief/inventory/e2e/run.sh the environment is scrubbed and test.env is the only
+// configuration, so the repo .env files must not fill in a replica, a mail service or credentials. The preflight
+// re-checks the test process's own environment before any spec runs.
+if (process.env.CHIEF_E2E_ISOLATED) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+  require('../../chief/inventory/e2e/preflight.cjs').assertIsolated('playwright test process');
+} else {
+  ENV_FILES.forEach((file) => {
+    dotenv.config({
+      path: path.join(__dirname, `../../${file}`),
+    });
   });
-});
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
