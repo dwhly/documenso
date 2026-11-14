@@ -5,7 +5,7 @@ import { addRejectionStampToPdf } from '@documenso/lib/server-only/pdf/add-rejec
 import { generateAuditLogPdf } from '@documenso/lib/server-only/pdf/generate-audit-log-pdf';
 import { generateCertificatePdf } from '@documenso/lib/server-only/pdf/generate-certificate-pdf';
 import { getLastPageDimensions } from '@documenso/lib/server-only/pdf/get-page-size';
-import { prisma } from '@documenso/prisma';
+import { primaryPrisma, prisma } from '@documenso/prisma';
 import { signPdf } from '@documenso/signing';
 import { PDF } from '@libpdf/core';
 import type { DocumentData, Envelope, EnvelopeItem, Field } from '@prisma/client';
@@ -323,7 +323,10 @@ export const run = async ({ payload, io }: { payload: TSealDocumentJobDefinition
     };
   });
 
-  const updatedEnvelope = await prisma.envelope.findFirstOrThrow({
+  // Fleet (review r5 [18]): this read becomes the DOCUMENT_COMPLETED/REJECTED webhook payload. It runs right after the
+  // seal committed, so it reads the PRIMARY: with read replicas configured, `prisma` would read a lagging replica and
+  // announce the completion with status PENDING and completedAt null.
+  const updatedEnvelope = await primaryPrisma.envelope.findFirstOrThrow({
     where: {
       id: envelopeId,
     },
@@ -344,8 +347,7 @@ export const run = async ({ payload, io }: { payload: TSealDocumentJobDefinition
   // reseals a stuck PENDING envelope with `envelopeStatus` = PENDING (the status before this seal), so without the
   // `!isRejected` here a rejection recovered by the sweep emailed its sealed rejection record as "Signing Complete!".
   // Rejections are announced by the rejection/cancellation emails the reject flow sends itself.
-  const shouldSendCompletedEmail =
-    sendEmail && !isRejected && (!isResealing || !isDocumentCompleted(envelopeStatus));
+  const shouldSendCompletedEmail = sendEmail && !isRejected && (!isResealing || !isDocumentCompleted(envelopeStatus));
 
   if (shouldSendCompletedEmail) {
     await jobs.triggerJob({
