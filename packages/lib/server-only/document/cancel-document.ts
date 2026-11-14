@@ -75,15 +75,26 @@ export const cancelDocument = async ({ id, userId, teamId, reason, requestMetada
   }
 
   const updatedEnvelope = await prisma.$transaction(async (tx) => {
-    const updated = await tx.envelope.update({
+    // Fleet (review r4 [12]): the PENDING check above was a separate read. Sealing (or a rejection seal) can commit
+    // COMPLETED/REJECTED between that read and this write, and its completion email may already be on its way, so
+    // the transition itself is conditional: only a still-PENDING envelope becomes CANCELLED. Otherwise nothing is
+    // written, no cancellation email or webhook goes out, and the caller gets the same clear error as above.
+    const { count } = await tx.envelope.updateMany({
       where: {
         id: envelope.id,
+        status: DocumentStatus.PENDING,
       },
       data: {
         status: DocumentStatus.CANCELLED,
         completedAt: new Date(),
       },
     });
+
+    if (count === 0) {
+      throw new AppError(AppErrorCode.INVALID_REQUEST, {
+        message: 'Only pending documents can be cancelled',
+      });
+    }
 
     await tx.documentAuditLog.create({
       data: createDocumentAuditLogData({
@@ -96,7 +107,11 @@ export const cancelDocument = async ({ id, userId, teamId, reason, requestMetada
       }),
     });
 
-    return updated;
+    return tx.envelope.findUniqueOrThrow({
+      where: {
+        id: envelope.id,
+      },
+    });
   });
 
   const legacyDocumentId = mapSecondaryIdToDocumentId(envelope.secondaryId);

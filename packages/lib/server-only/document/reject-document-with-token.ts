@@ -62,19 +62,40 @@ export async function rejectDocumentWithToken({ token, id, reason, requestMetada
 
   assertRecipientNotExpired(recipient);
 
-  // Update the recipient status to rejected
-  const [updatedRecipient] = await prisma.$transaction([
-    prisma.recipient.update({
+  // Update the recipient status to rejected.
+  // Fleet (review r4 [12]): the PENDING/NOT_SIGNED checks above were separate reads. The envelope row is locked and
+  // re-checked here, so a cancellation (or seal) that committed in between makes this rejection fail instead of
+  // rejecting, re-sealing and announcing a document that is no longer pending; a concurrent cancellation waits for it.
+  const updatedRecipient = await prisma.$transaction(async (tx) => {
+    const [locked] = await tx.$queryRaw<Array<{ status: DocumentStatus }>>`
+      SELECT "status" FROM "Envelope" WHERE "id" = ${envelope.id} FOR UPDATE
+    `;
+
+    if (locked?.status !== DocumentStatus.PENDING) {
+      throw new AppError(AppErrorCode.INVALID_REQUEST, {
+        message: `Document ${envelope.id} must be pending to reject`,
+      });
+    }
+
+    const { count } = await tx.recipient.updateMany({
       where: {
         id: recipient.id,
+        signingStatus: SigningStatus.NOT_SIGNED,
       },
       data: {
         signedAt: new Date(),
         signingStatus: SigningStatus.REJECTED,
         rejectionReason: reason,
       },
-    }),
-    prisma.documentAuditLog.create({
+    });
+
+    if (count === 0) {
+      throw new AppError(AppErrorCode.INVALID_REQUEST, {
+        message: `Recipient ${recipient.id} has already actioned this document`,
+      });
+    }
+
+    await tx.documentAuditLog.create({
       data: createDocumentAuditLogData({
         envelopeId: envelope.id,
         type: DOCUMENT_AUDIT_LOG_TYPE.DOCUMENT_RECIPIENT_REJECTED,
@@ -91,8 +112,14 @@ export async function rejectDocumentWithToken({ token, id, reason, requestMetada
         },
         requestMetadata,
       }),
-    }),
-  ]);
+    });
+
+    return tx.recipient.findUniqueOrThrow({
+      where: {
+        id: recipient.id,
+      },
+    });
+  });
 
   const legacyDocumentId = mapSecondaryIdToDocumentId(envelope.secondaryId);
 
