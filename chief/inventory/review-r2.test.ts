@@ -2,22 +2,12 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
-import { createRequire } from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 
 const read = (p: string) => fs.readFileSync(p, 'utf8');
-// The real Hono routes are loaded through CJS (default-import interop of the generated zod schemas). Lingui's
-// compile-time macros have no runtime; the routes only use them for translated constants, so give them a literal one.
-const require = createRequire(import.meta.url);
-const literal = (s: unknown, ...v: unknown[]) =>
-  Array.isArray(s) ? { id: String.raw({ raw: s as string[] }, ...v), message: String.raw({ raw: s as string[] }, ...v) } : s;
-const macro = require.resolve('@lingui/core/macro');
-require.cache[macro] = { id: macro, filename: macro, loaded: true, exports: { msg: literal, t: literal, defineMessage: literal } } as never;
-process.env.DANGEROUS_BYPASS_RATE_LIMITS = 'true';
-
-// ---- [1] / [9] fixtures: database storage (BYTES_64), the seal job's before/after -----------------------------
+// ---- [1] / [9] pure-helper fixtures: database storage (BYTES_64), the seal job's before/after -----------------------------
 const ORIGINAL = '%PDF-1.4 fleet-r2 ORIGINAL upload';
 const SEALED = '%PDF-1.4 fleet-r2 SEALED artifact';
 const b64 = (s: string) => Buffer.from(s).toString('base64');
@@ -31,35 +21,6 @@ const documentDataFor = (s: State) => ({
   initialData: b64(ORIGINAL),
   data: s === 'REJECTED-SEALED' || s === 'COMPLETED' ? b64(SEALED) : b64(ORIGINAL),
 });
-const itemFor = (s: State) => ({
-  id: 'envelope_item_r2',
-  envelopeId: 'envelope_r2',
-  title: 'contract.pdf',
-  order: 1,
-  documentDataId: `dd_${s}`,
-  documentData: documentDataFor(s),
-  envelope: { id: 'envelope_r2', status: statusOf(s), internalVersion: 2, recipients: [], teamId: 1 },
-});
-
-const stubPrisma = async (state: State) => {
-  const { prisma } = await import('@documenso/prisma');
-  const item = itemFor(state);
-  const set = (model: string, impl: Record<string, unknown>) =>
-    Object.defineProperty(prisma, model, { configurable: true, writable: true, value: impl });
-  set('envelopeItem', { findUnique: async () => item, findFirst: async () => item });
-  set('apiToken', {
-    findFirst: async () => ({
-      id: 1,
-      teamId: 1,
-      expires: null,
-      lastUsedAt: new Date(),
-      user: { id: 1, name: 'Owner', email: 'owner@example.test', disabled: false },
-      team: { organisationId: 'org_1', organisation: { organisationClaim: {}, owner: { disabled: false } } },
-    }),
-    updateMany: async () => ({ count: 0 }),
-  });
-};
-
 const appWith = async (mount: (app: import('hono').Hono<any>) => Promise<void>) => {
   const { Hono } = await import('hono');
   const app = new Hono<any>();
@@ -72,62 +33,9 @@ const appWith = async (mount: (app: import('hono').Hono<any>) => Promise<void>) 
   return app;
 };
 
-const body = async (res: Response) => {
-  const text = Buffer.from(await res.arrayBuffer()).toString();
-  if (res.status !== 200) return `${res.status} ${JSON.parse(text).code ?? ''}`.trim();
-  return text === ORIGINAL ? 'ORIGINAL' : text === SEALED ? 'SEALED' : `?${text.slice(0, 20)}`;
-};
-const filename = (res: Response) => /filename="?([^";]+)/.exec(res.headers.get('content-disposition') ?? '')?.[1] ?? null;
-
-test('review r2 [1]: recipient/QR token paths never serve the sealed artifact before COMPLETED (BYTES_64)', async () => {
-  const { filesRoute } = require('../../apps/remix/server/api/files/files');
-  const app = await appWith(async (a) => void a.route('/api/files', filesRoute));
-  const expected: Record<State, Record<string, string>> = {
-    PENDING: { preview: 'ORIGINAL', current: 'ORIGINAL', initial: 'ORIGINAL', dl: '400 DOCUMENT_NOT_COMPLETE', signed: '400 DOCUMENT_NOT_COMPLETE', original: 'ORIGINAL' },
-    CANCELLED: { preview: 'ORIGINAL', current: 'ORIGINAL', initial: 'ORIGINAL', dl: '400 DOCUMENT_NOT_COMPLETE', signed: '400 DOCUMENT_NOT_COMPLETE', original: 'ORIGINAL' },
-    'REJECTED-SEALED': { preview: 'ORIGINAL', current: 'ORIGINAL', initial: 'ORIGINAL', dl: '400 DOCUMENT_NOT_COMPLETE', signed: '400 DOCUMENT_NOT_COMPLETE', original: 'ORIGINAL' },
-    COMPLETED: { preview: 'SEALED', current: 'SEALED', initial: 'ORIGINAL', dl: 'SEALED', signed: 'SEALED', original: 'ORIGINAL' },
-  };
-  for (const state of STATES) {
-    await stubPrisma(state);
-    for (const token of ['recipient_token_r2', 'qr_token_r2']) {
-      const base = `/api/files/token/${token}`;
-      const dataId = `${base}/envelope/envelope_r2/envelopeItem/envelope_item_r2/dataId/dd_${state}`;
-      const got = {
-        preview: await body(await app.request(`${base}/envelopeItem/envelope_item_r2`)),
-        current: await body(await app.request(`${dataId}/current/item.pdf`)),
-        initial: await body(await app.request(`${dataId}/initial/item.pdf`)),
-        dl: await body(await app.request(`${base}/envelopeItem/envelope_item_r2/download`)),
-        signed: await body(await app.request(`${base}/envelopeItem/envelope_item_r2/download/signed`)),
-        original: await body(await app.request(`${base}/envelopeItem/envelope_item_r2/download/original`)),
-      };
-      assert.deepEqual(got, expected[state], `${state} via ${token.split('_')[0]}`);
-    }
-  }
-});
-
-test('review r2 [1]: staff/API downloads keep their bytes but are named signed only for COMPLETED', async () => {
-  const { downloadRoute } = require('../../apps/remix/server/api/download/download');
-  const app = await appWith(async (a) => void a.route('/api/v2', downloadRoute));
-  const auth = { headers: { authorization: 'Bearer api_r2_test' } };
-  const expected: Record<State, { signed: [string, string]; original: [string, string] }> = {
-    PENDING: { signed: ['ORIGINAL', 'contract.pdf'], original: ['ORIGINAL', 'contract.pdf'] },
-    CANCELLED: { signed: ['ORIGINAL', 'contract.pdf'], original: ['ORIGINAL', 'contract.pdf'] },
-    // Upstream deliberately keeps the sealed rejection record available to the owner; it is not "signed".
-    'REJECTED-SEALED': { signed: ['SEALED', 'contract_rejected.pdf'], original: ['ORIGINAL', 'contract.pdf'] },
-    COMPLETED: { signed: ['SEALED', 'contract_signed.pdf'], original: ['ORIGINAL', 'contract.pdf'] },
-  };
-  for (const state of STATES) {
-    await stubPrisma(state);
-    const got: Record<string, [string, string | null]> = {};
-    for (const version of ['signed', 'original'] as const) {
-      const res = await app.request(`/api/v2/envelope/item/envelope_item_r2/download?version=${version}`, auth);
-      got[version] = [await body(res), filename(res)];
-    }
-    assert.deepEqual(got, expected[state], state);
-  }
-});
-
+// The routes and loaders that apply these rules are covered against the real database and server by
+// packages/app-tests/e2e/api/chief/recipient-artifact-access.spec.ts (chief/inventory/e2e/run.sh); this file keeps the
+// pure helpers.
 test('review r2 [1]: one rule (envelope-artifact) for every path, S3 presign included', async () => {
   const a = await import('../../packages/lib/utils/envelope-artifact');
   const dd = { data: 'SEALED', initialData: 'ORIGINAL' };
@@ -157,7 +65,7 @@ test('review r2 [1]: one rule (envelope-artifact) for every path, S3 presign inc
   assert.match(read('packages/trpc/server/document-router/get-document-by-token.ts'), /data: recipientViewableData\(envelope\.status, firstDocumentData\)/);
 });
 
-test('review r2 [9]: recipient loader data carries item metadata, never documentData bytes or keys', async () => {
+test('review r2 [9]: the recipient loader DTO helpers drop documentData bytes and keys', async () => {
   const { toCompletionDocument, toCompletionRecipient } = await import('../../apps/remix/app/chief/completion-download');
   const { withoutDocumentBytes } = await import('../../packages/lib/utils/envelope-artifact');
   for (const state of STATES) {
@@ -188,12 +96,6 @@ test('review r2 [9]: recipient loader data carries item metadata, never document
     toCompletionDocument({ id: 7, envelopeId: 'e', title: 't', status: 'REJECTED', deletedAt: null, envelopeItems: [{ id: 'i', envelopeId: 'e', title: 't', order: 1, documentData: documentDataFor('REJECTED-SEALED') } as never] }),
     { id: 7, envelopeId: 'e', title: 't', status: 'REJECTED', deletedAt: null, envelopeItems: [{ id: 'i', envelopeId: 'e', title: 't', order: 1 }] },
   );
-  const complete = read('apps/remix/app/routes/_recipient+/sign.$token+/complete.tsx');
-  assert.match(complete, /document: toCompletionDocument\(document\),\s*recipient: toCompletionRecipient\(recipient\),/);
-  const loaderSrc = complete.slice(complete.indexOf('isDocumentAccessValid: true'), complete.indexOf('export default function'));
-  assert.doesNotMatch(loaderSrc, /^\s*(document|recipient),$/m, 'no raw document/recipient in the loader result');
-  const sign = read('apps/remix/app/routes/_recipient+/sign.$token+/_index.tsx');
-  assert.match(sign, /document: withoutDocumentBytes\(document\),/);
 });
 
 // ---- [2] the Theme action refuses a foreign Origin (no cookie), through middleware + listener + action ----------
