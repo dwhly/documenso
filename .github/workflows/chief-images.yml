@@ -53,6 +53,8 @@ jobs:
             npm ci
             CI=true npx tsx --test chief/inventory/review-r1.test.ts chief/inventory/review-r2.test.ts
             NEXT_PRIVATE_ENCRYPTION_KEY=CAFEBABE NEXT_PRIVATE_ENCRYPTION_SECONDARY_KEY=DEADBEEF NODE_OPTIONS=--max-old-space-size=8192 npx turbo run build --filter=@documenso/remix...
+            # Real Postgres + Mailpit + the built server (review r3 [10][11]): artifact access, loaders, completion email.
+            bash chief/inventory/e2e/run.sh
             bash chief/docker/prepare-context.sh "$RUNNER_TEMP/chief-sign-context"
             docker build --label org.opencontainers.image.revision="$GITHUB_SHA" -t chief-sign:ci "$RUNNER_TEMP/chief-sign-context"
             docker image save chief-sign:ci -o "$RUNNER_TEMP/chief-sign.tar"

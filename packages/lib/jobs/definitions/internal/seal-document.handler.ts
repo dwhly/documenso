@@ -340,11 +340,12 @@ export const run = async ({ payload, io }: { payload: TSealDocumentJobDefinition
     teamId: updatedEnvelope.teamId ?? undefined,
   });
 
-  let shouldSendCompletedEmail = sendEmail && !isResealing && !isRejected;
-
-  if (isResealing && !isDocumentCompleted(envelopeStatus)) {
-    shouldSendCompletedEmail = sendEmail;
-  }
+  // Fleet (review r3 [10]): a rejected envelope never gets completion emails, recovery reseals included. The sweep
+  // reseals a stuck PENDING envelope with `envelopeStatus` = PENDING (the status before this seal), so without the
+  // `!isRejected` here a rejection recovered by the sweep emailed its sealed rejection record as "Signing Complete!".
+  // Rejections are announced by the rejection/cancellation emails the reject flow sends itself.
+  const shouldSendCompletedEmail =
+    sendEmail && !isRejected && (!isResealing || !isDocumentCompleted(envelopeStatus));
 
   if (shouldSendCompletedEmail) {
     await jobs.triggerJob({

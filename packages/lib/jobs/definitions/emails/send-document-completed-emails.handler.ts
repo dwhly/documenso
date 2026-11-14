@@ -13,6 +13,7 @@ import { extractDerivedDocumentEmailSettings } from '../../../types/document-ema
 import { getFileServerSide } from '../../../universal/upload/get-file.server';
 import { createDocumentAuditLogData } from '../../../utils/document-audit-logs';
 import { unsafeBuildEnvelopeIdQuery } from '../../../utils/envelope';
+import { isSignedArtifactAvailable } from '../../../utils/envelope-artifact';
 import { isRecipientEmailValidForSending } from '../../../utils/recipients';
 import { renderCustomEmailTemplate } from '../../../utils/render-custom-email-template';
 import { renderEmailWithI18N } from '../../../utils/render-email-with-i18n';
@@ -64,6 +65,19 @@ export const run = async ({ payload, io }: { payload: TSendDocumentCompletedEmai
 
   if (envelope.recipients.length === 0) {
     throw new Error('Document has no recipients');
+  }
+
+  // Fleet (review r3 [10]): the attachments are the stored current bytes, which the seal job also replaces for a
+  // REJECTED envelope. Only a COMPLETED envelope's bytes are the signed document; anything else (a stale or wrongly
+  // scheduled job) sends no "Signing Complete!" email and attaches nothing. Returning (not throwing) avoids retries.
+  if (!isSignedArtifactAvailable(envelope.status)) {
+    io.logger.warn({
+      msg: 'Completion emails skipped: envelope is not COMPLETED',
+      envelopeId: envelope.id,
+      status: envelope.status,
+    });
+
+    return;
   }
 
   const { branding, emailLanguage, senderEmail, replyToEmail, organisationId, claims, emailsDisabled, emailTransport } =
