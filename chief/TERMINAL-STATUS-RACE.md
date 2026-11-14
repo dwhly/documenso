@@ -32,8 +32,11 @@ Run it with `chief/inventory/e2e/run.sh --phase main e2e/api/chief/terminal-stat
    and returns `superseded`, and no completion email is sent. The sweep only selects PENDING, so it cannot recover the
    envelope. Upstream already covers this scenario in
    `packages/app-tests/e2e/api/v1/document-sending.spec.ts:446` ("should complete document immediately when all
-   recipients are CC"), and that test FAILS on this branch. Fix: atomically move the draft to PENDING before queueing the
-   immediate seal, and keep the seal's terminal-status restrictions.
+   recipients are CC"). Chief Sign does not serve `/api/v1`, so `fleet/fds-proto` ports that test to the harness as
+   `packages/app-tests/e2e/api/chief/cc-only-send.spec.ts`, which sends through `/api/v2/envelope/distribute`. Run
+   against this branch (b40ef17f3), it FAILS: the envelope stays `DRAFT`, while the four race tests pass. Copy that spec
+   here when you fix this item. Fix: atomically move the draft to PENDING before queueing the immediate seal, and keep
+   the seal's terminal-status restrictions.
 3. **r5 [17] MINOR: the rejection `FOR UPDATE` lock order can deadlock.**
    `packages/lib/server-only/document/reject-document-with-token.ts:71` locks the Envelope `FOR UPDATE`, then waits on
    the recipient. Meanwhile completion has already updated the recipient (`complete-document-with-token.ts:325`), and
