@@ -87,6 +87,13 @@ test('[10] a rejection recovered by the seal sweep sends no "Signing Complete!" 
     Buffer.from('not a pdf').toString('base64'),
   );
 
+  // Layer 1: the recovery seal does not even schedule completion emails for the rejected envelope.
+  const scheduled = await prisma.backgroundJob.count({
+    where: { jobId: 'send.document.completed.emails', payload: { path: ['envelopeId'], equals: envelope.id } },
+  });
+  expect(scheduled, 'completion-email jobs scheduled for the rejected envelope').toBe(0);
+
+  // Layer 2 (and the user-visible result): nobody got a completion email or the sealed PDF.
   const afterSweep = await mailTo([rejecter, other, user.email]);
   expect(completionMail(afterSweep), 'no completion email / PDF attachment for a rejected envelope').toEqual([]);
 });
