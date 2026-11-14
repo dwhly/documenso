@@ -1092,7 +1092,7 @@
     "type": "mutation",
     "input": 1,
     "output": true,
-    "classification": "human",
+    "classification": "denied",
     "widensAccess": true,
     "wideningReason": "Conservative approval for mutation; unknown mutations are widening."
   },

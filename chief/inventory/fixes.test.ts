@@ -23,7 +23,7 @@ test('r1 finding 12: recipient brand links target a recipient-allowed page', () 
   assert.doesNotMatch(source,/<Link to="\/"/);
   assert.match(source,/<Link to="\/articles\/signature-disclosure"/);
 });
-test('r1 finding 4: public share remains human-only', () => {
+test('r1 finding 4: public share remains denied to bearer callers', () => {
   assert.equal(routeDecision('POST','/api/deal/document/share',true),'denied');
   assert.equal(routeDecision('POST','/api/trpc/document.share',true),'denied');
 });

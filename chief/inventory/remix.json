@@ -1559,11 +1559,9 @@
     "index": false,
     "loader": true,
     "action": false,
-    "classification": "presentation",
-    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
-    "nativeServices": [
-      "@documenso/lib/server-only/document/get-document-by-access-token"
-    ],
+    "classification": "denied",
+    "equivalent": "Sharing disabled; loader always returns 404",
+    "nativeServices": [],
     "trpcCalls": []
   },
   {
@@ -1573,11 +1571,9 @@
     "index": false,
     "loader": true,
     "action": false,
-    "classification": "presentation",
-    "equivalent": "Native deal procedures and downloads; loader composes the same permitted native services",
-    "nativeServices": [
-      "@documenso/lib/server-only/document/get-recipient-or-sender-by-share-link-slug"
-    ],
+    "classification": "denied",
+    "equivalent": "Sharing disabled; loader always returns 404",
+    "nativeServices": [],
     "trpcCalls": []
   },
   {

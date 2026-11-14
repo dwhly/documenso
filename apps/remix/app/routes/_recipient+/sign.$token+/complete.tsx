@@ -10,7 +10,6 @@ import { getRecipientByToken } from '@documenso/lib/server-only/recipient/get-re
 import { getRecipientSignatures } from '@documenso/lib/server-only/recipient/get-recipient-signatures';
 import { getUserByEmail } from '@documenso/lib/server-only/user/get-user-by-email';
 import { trpc } from '@documenso/trpc/react';
-import { DocumentShareButton } from '@documenso/ui/components/document/document-share-button';
 import { SigningCard3D } from '@documenso/ui/components/signing-card';
 import { cn } from '@documenso/ui/lib/utils';
 import { Badge } from '@documenso/ui/primitives/badge';
@@ -257,36 +256,32 @@ export default function CompletedSigningPage({ loaderData }: Route.ComponentProp
                 </p>
               ))}
 
-            <div className="mt-8 flex w-full max-w-xs flex-col items-stretch gap-4 md:w-auto md:max-w-none md:flex-row md:items-center">
-              <DocumentShareButton
-                documentId={document.id}
-                token={recipient.token}
-                className="w-full max-w-none md:flex-1"
-              />
+            {(isCompletedNow || user) && (
+              <div className="mt-8 flex w-full max-w-xs flex-col items-stretch gap-4 md:w-auto md:max-w-none md:flex-row md:items-center">
+                {isCompletedNow && (
+                  <EnvelopeDownloadDialog
+                    envelopeId={document.envelopeId}
+                    envelopeStatus={DocumentStatus.COMPLETED}
+                    envelopeItems={document.envelopeItems}
+                    token={recipient?.token}
+                    trigger={
+                      <Button type="button" variant="outline" className="flex-1 md:flex-initial">
+                        <DownloadIcon className="mr-2 h-5 w-5" />
+                        <Trans>Download</Trans>
+                      </Button>
+                    }
+                  />
+                )}
 
-              {isCompletedNow && (
-                <EnvelopeDownloadDialog
-                  envelopeId={document.envelopeId}
-                  envelopeStatus={DocumentStatus.COMPLETED}
-                  envelopeItems={document.envelopeItems}
-                  token={recipient?.token}
-                  trigger={
-                    <Button type="button" variant="outline" className="flex-1 md:flex-initial">
-                      <DownloadIcon className="mr-2 h-5 w-5" />
-                      <Trans>Download</Trans>
-                    </Button>
-                  }
-                />
-              )}
-
-              {user && (
-                <Button asChild>
-                  <Link to={returnToHomePath}>
-                    <Trans>Go Back Home</Trans>
-                  </Link>
-                </Button>
-              )}
-            </div>
+                {user && (
+                  <Button asChild>
+                    <Link to={returnToHomePath}>
+                      <Trans>Go Back Home</Trans>
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col items-center">

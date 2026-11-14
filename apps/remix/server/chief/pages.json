@@ -349,11 +349,11 @@
   },
   {
     "path": "/share/:slug",
-    "classification": "staff"
+    "classification": "denied"
   },
   {
     "path": "/share/:slug/opengraph",
-    "classification": "staff"
+    "classification": "denied"
   },
   {
     "path": "/articles/signature-disclosure",
