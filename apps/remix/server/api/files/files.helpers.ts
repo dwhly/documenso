@@ -4,6 +4,7 @@ import { verifyEmbeddingPresignToken } from '@documenso/lib/server-only/embeddin
 import { generatePartialSignedPdf } from '@documenso/lib/server-only/pdf/generate-partial-signed-pdf';
 import { getTeamById } from '@documenso/lib/server-only/team/get-team';
 import { sha256 } from '@documenso/lib/universal/crypto';
+import { envelopeDownloadFilename, staffDownloadData } from '@documenso/lib/utils/envelope-artifact';
 import { getFileServerSide } from '@documenso/lib/universal/upload/get-file.server';
 import { prisma } from '@documenso/prisma';
 import {
@@ -109,7 +110,9 @@ const handleStaticFileRequest = async ({
   isDownload,
   context: c,
 }: StaticFileRequestOptions) => {
-  const documentDataToUse = version === 'signed' ? documentData.data : documentData.initialData;
+  // Fleet (review r2 [1]): callers pick the version; recipient/QR routes ask envelope-artifact first, so they only
+  // reach `signed` (the current, possibly sealed bytes) for a COMPLETED envelope.
+  const documentDataToUse = staffDownloadData(version, documentData);
 
   const etag = Buffer.from(sha256(documentDataToUse)).toString('hex');
 
@@ -142,10 +145,8 @@ const handleStaticFileRequest = async ({
   }
 
   if (isDownload) {
-    // Generate filename following the pattern from envelope-download-dialog.tsx
-    const baseTitle = title.replace(/\.pdf$/, '');
-    const suffix = version === 'signed' ? '_signed.pdf' : '.pdf';
-    const filename = `${baseTitle}${suffix}`;
+    // Fleet (review r2 [1]): `_signed.pdf` only for a COMPLETED envelope (REJECTED -> `_rejected.pdf`, else `.pdf`).
+    const filename = envelopeDownloadFilename(title, version, status);
 
     c.header('Content-Disposition', contentDisposition(filename));
 
@@ -251,8 +252,7 @@ const handlePendingFileRequest = async ({
   c.header('Cache-Control', 'no-store, private');
   c.header('ETag', etag);
 
-  const baseTitle = title.replace(/\.pdf$/i, '');
-  const filename = `${baseTitle}_pending.pdf`;
+  const filename = envelopeDownloadFilename(title, 'pending', envelope.status);
 
   c.header('Content-Disposition', contentDisposition(filename));
 

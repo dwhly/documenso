@@ -3,6 +3,7 @@ import { APP_DOCUMENT_UPLOAD_SIZE_LIMIT } from '@documenso/lib/constants/app';
 import { AppError } from '@documenso/lib/errors/app-error';
 import { verifyEmbeddingPresignToken } from '@documenso/lib/server-only/embedding-presign/verify-embedding-presign-token';
 import { putNormalizedPdfFileServerSide } from '@documenso/lib/universal/upload/put-file.server';
+import { recipientPreviewVersion } from '@documenso/lib/utils/envelope-artifact';
 import { prisma } from '@documenso/prisma';
 import { sValidator } from '@hono/standard-validator';
 import type { Prisma } from '@prisma/client';
@@ -276,11 +277,13 @@ export const filesRoute = new Hono<HonoEnv>()
         return c.json({ error: 'Document data not found' }, 404);
       }
 
+      // Fleet (review r2 [1]): a token preview serves the current (possibly sealed) bytes only for a COMPLETED
+      // envelope; pending, cancelled and rejected-and-sealed envelopes serve the original.
       return await handleEnvelopeItemFileRequest({
         title: envelopeItem.title,
         status: envelopeItem.envelope.status,
         documentData: envelopeItem.documentData,
-        version: 'signed',
+        version: recipientPreviewVersion(envelopeItem.envelope.status),
         isDownload: false,
         context: c,
       });

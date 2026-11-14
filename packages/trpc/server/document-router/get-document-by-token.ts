@@ -1,4 +1,5 @@
 import { AppError, AppErrorCode } from '@documenso/lib/errors/app-error';
+import { recipientViewableData } from '@documenso/lib/utils/envelope-artifact';
 import { prisma } from '@documenso/prisma';
 import { EnvelopeType } from '@prisma/client';
 
@@ -48,7 +49,11 @@ export const getDocumentByTokenRoute = authenticatedProcedure
       documentId: envelope.id,
     });
 
+    // Fleet (review r2 [1]): a recipient token gets the current (possibly sealed) bytes only once COMPLETED.
     return {
-      documentData: firstDocumentData,
+      documentData: {
+        ...firstDocumentData,
+        data: recipientViewableData(envelope.status, firstDocumentData),
+      },
     };
   });

@@ -1,15 +1,13 @@
 /**
- * Fleet (review r1 [1]): a recipient or QR token may download the SIGNED PDF only once the envelope is really
- * COMPLETED. Before that, `documentData.data` is the unsealed document (for a cancelled or rejected envelope it is
- * the original), and the download would still be named `<title>_signed.pdf`. The original stays downloadable, as
- * upstream allows. The token lookup itself (recipient token or QR token of THIS envelope) is done by the route.
+ * Fleet (review r1 [1], centralised in review r2): a recipient or QR token may download the SIGNED PDF only once the
+ * envelope is really COMPLETED. The rule lives in @documenso/lib/utils/envelope-artifact (shared with the preview,
+ * dataId, staff and API paths); this module keeps the route-facing names.
  */
+import { SIGNED_DOCUMENT_NOT_COMPLETE, recipientDownloadRefusal } from '@documenso/lib/utils/envelope-artifact';
+
 export type TokenDownloadVersion = 'signed' | 'original';
 
-export const TOKEN_DOWNLOAD_NOT_COMPLETE = {
-  error: 'The signed document is available once everyone has signed',
-  code: 'DOCUMENT_NOT_COMPLETE',
-} as const;
+export const TOKEN_DOWNLOAD_NOT_COMPLETE = SIGNED_DOCUMENT_NOT_COMPLETE;
 
 export const tokenDownloadRefusal = (envelopeStatus: string, version: TokenDownloadVersion) =>
-  version === 'signed' && envelopeStatus !== 'COMPLETED' ? TOKEN_DOWNLOAD_NOT_COMPLETE : null;
+  recipientDownloadRefusal(envelopeStatus, version);

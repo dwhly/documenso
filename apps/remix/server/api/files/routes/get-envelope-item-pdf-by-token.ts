@@ -1,3 +1,4 @@
+import { recipientDocumentDataVersion } from '@documenso/lib/utils/envelope-artifact';
 import { prisma } from '@documenso/prisma';
 import { sValidator } from '@hono/standard-validator';
 import type { Prisma } from '@prisma/client';
@@ -61,6 +62,11 @@ route.get(
       where: envelopeItemWhereQuery,
       include: {
         documentData: true,
+        envelope: {
+          select: {
+            status: true,
+          },
+        },
       },
     });
 
@@ -68,10 +74,12 @@ route.get(
       return c.json({ error: 'Not found' }, 404);
     }
 
+    // Fleet (review r2 [1]): `current` is the sealed artifact once the seal job ran (COMPLETED or REJECTED). A token
+    // gets it only for a COMPLETED envelope; otherwise `current` serves the original (`initial`).
     return await handleEnvelopeItemPdfRequest({
       c,
       envelopeItem,
-      version,
+      version: recipientDocumentDataVersion(envelopeItem.envelope.status, version),
       cacheStrategy: 'private',
     });
   },
