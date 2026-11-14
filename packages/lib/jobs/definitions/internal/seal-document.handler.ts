@@ -39,7 +39,7 @@ import type { TSealDocumentJobDefinition } from './seal-document';
 export const run = async ({ payload, io }: { payload: TSealDocumentJobDefinition; io: JobRunIO }) => {
   const { documentId, sendEmail = true, isResealing = false, requestMetadata } = payload;
 
-  const { envelopeId, envelopeStatus, isRejected, superseded } = await io.runTask('seal-document', async () => {
+  const { envelopeId, envelopeStatus, isRejected } = await io.runTask('seal-document', async () => {
     const envelope = await prisma.envelope.findFirstOrThrow({
       where: {
         type: EnvelopeType.DOCUMENT,
@@ -190,7 +190,6 @@ export const run = async ({ payload, io }: { payload: TSealDocumentJobDefinition
         envelopeId: envelope.id,
         envelopeStatus: envelope.status,
         isRejected,
-        superseded: false,
       };
     }
 
@@ -289,26 +288,7 @@ export const run = async ({ payload, io }: { payload: TSealDocumentJobDefinition
       newDocumentData.push(result);
     }
 
-    // Fleet (review r4 [12]): the envelope was read before the (slow) PDF work, and cancellation can commit in
-    // between. Sealing may only move a PENDING envelope to its final status (or re-seal one already in that status),
-    // never turn CANCELLED (or the other terminal status) into COMPLETED/REJECTED. A superseded seal writes nothing
-    // (the item keeps its document data) and sends no webhook or completion email.
-    const sealed = await prisma.$transaction(async (tx) => {
-      const { count } = await tx.envelope.updateMany({
-        where: {
-          id: envelope.id,
-          status: { in: [DocumentStatus.PENDING, finalEnvelopeStatus] },
-        },
-        data: {
-          status: finalEnvelopeStatus,
-          completedAt: new Date(),
-        },
-      });
-
-      if (count === 0) {
-        return false;
-      }
-
+    await prisma.$transaction(async (tx) => {
       for (const { oldDocumentDataId, newDocumentDataId } of newDocumentData) {
         await tx.envelopeItem.update({
           where: {
@@ -321,30 +301,27 @@ export const run = async ({ payload, io }: { payload: TSealDocumentJobDefinition
         });
       }
 
+      await tx.envelope.update({
+        where: {
+          id: envelope.id,
+        },
+        data: {
+          status: finalEnvelopeStatus,
+          completedAt: new Date(),
+        },
+      });
+
       await tx.documentAuditLog.create({
         data: envelopeCompletedAuditLog,
       });
-
-      return true;
     });
 
     return {
       envelopeId: envelope.id,
       envelopeStatus: envelope.status,
       isRejected,
-      superseded: !sealed,
     };
   });
-
-  if (superseded) {
-    io.logger.warn({
-      msg: 'Seal skipped: the envelope left PENDING (e.g. cancelled) before the seal committed',
-      envelopeId,
-      finalStatus: isRejected ? DocumentStatus.REJECTED : DocumentStatus.COMPLETED,
-    });
-
-    return;
-  }
 
   const updatedEnvelope = await prisma.envelope.findFirstOrThrow({
     where: {
