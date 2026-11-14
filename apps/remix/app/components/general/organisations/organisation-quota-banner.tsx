@@ -60,7 +60,7 @@ export const OrganisationQuotaBanner = () => {
     <>
       <div
         className={cn({
-          'bg-yellow-200 text-yellow-900 dark:bg-yellow-400': !isAnyQuotaExceeded,
+          'bg-yellow-200 text-yellow-900 dark:bg-warning-subtle': !isAnyQuotaExceeded,
           'bg-destructive text-destructive-foreground': isAnyQuotaExceeded,
         })}
       >
@@ -78,7 +78,7 @@ export const OrganisationQuotaBanner = () => {
           <Button
             variant="outline"
             className={cn({
-              'text-yellow-900 hover:bg-yellow-100 dark:hover:bg-yellow-500': !isAnyQuotaExceeded,
+              'text-yellow-900 hover:bg-yellow-100 dark:hover:bg-warning-border': !isAnyQuotaExceeded,
               'text-destructive-foreground hover:bg-destructive hover:text-white': isAnyQuotaExceeded,
             })}
             onClick={() => setIsOpen(true)}

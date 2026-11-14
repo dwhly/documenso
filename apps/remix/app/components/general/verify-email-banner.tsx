@@ -76,7 +76,7 @@ export const VerifyEmailBanner = ({ email }: VerifyEmailBannerProps) => {
 
   return (
     <>
-      <div className="bg-yellow-200 dark:bg-yellow-400">
+      <div className="bg-yellow-200 dark:bg-warning-subtle">
         <div className="mx-auto flex max-w-screen-xl items-center justify-center gap-x-4 px-4 py-2 font-medium text-sm text-yellow-900">
           <div className="flex items-center">
             <AlertTriangle className="mr-2.5 h-5 w-5" />
@@ -86,7 +86,7 @@ export const VerifyEmailBanner = ({ email }: VerifyEmailBannerProps) => {
           <div>
             <Button
               variant="ghost"
-              className="h-auto px-2.5 py-1.5 text-yellow-900 hover:bg-yellow-100 hover:text-yellow-900 dark:hover:bg-yellow-500"
+              className="h-auto px-2.5 py-1.5 text-yellow-900 hover:bg-yellow-100 hover:text-yellow-900 dark:hover:bg-warning-border"
               disabled={isButtonDisabled}
               onClick={() => setIsOpen(true)}
               size="sm"

@@ -156,3 +156,61 @@ test('review r1 [5]: Theme label and colour-scheme meta follow the fds contract'
   assert.match(read('apps/remix/app/chief/fleet-theme-toggle.tsx'), /themeLabel\(/);
 });
 
+// [3] No fill/text pair resolves to the same colour (status palettes collapse many shades onto one role).
+test('review r1 [3]: no element pairs a fill and a text colour that resolve to the same colour, light or dark', () => {
+  const resolveConfig = require('tailwindcss/resolveConfig');
+  const flatten = require('tailwindcss/lib/util/flattenColorPalette').default;
+  const colors: Record<string, string> = flatten(resolveConfig(require('../../packages/tailwind-config/index.cjs')).theme.colors);
+  const norm = (v: unknown) => (typeof v === 'string' ? v.replace(/\s*\/\s*<alpha-value>/, '').replace(/\s+/g, '') : null);
+  const token = /(?<![\w:/-])((?:[a-z-]+:)*)(bg|text)-([a-z]+(?:-[a-z]+)*(?:-\d{2,3})?)(\/\d+)?(?![\w/-])/g;
+  // Class strings: single-line '...' / "..." (so an apostrophe in JSX text can't swallow lines), or `...`.
+  const literal = /'([^'\n]*)'|"([^"\n]*)"|`([^`]*)`/g;
+  type Tok = { variant: string; prop: 'bg' | 'text'; color: string; alpha: boolean; cls: string };
+  const parse = (s: string): Tok[] =>
+    [...s.matchAll(token)]
+      .filter((m) => norm(colors[m[3]]))
+      .map((m) => ({ variant: m[1], prop: m[2] as 'bg' | 'text', color: norm(colors[m[3]])!, alpha: !!m[4], cls: m[0] }));
+  const pick = (toks: Tok[], prop: 'bg' | 'text', mode: 'light' | 'dark', state: '' | 'hover') => {
+    const order = ['', ...(state ? [`${state}:`] : []), ...(mode === 'dark' ? ['dark:', ...(state ? [`dark:${state}:`] : [])] : [])];
+    let found: Tok | undefined;
+    for (const v of order) found = toks.filter((t) => t.prop === prop && t.variant === v).pop() ?? found;
+    return found;
+  };
+  const files: string[] = [];
+  const walk = (dir: string) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.name === 'node_modules' || e.name.startsWith('.')) continue;
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (/\.tsx?$/.test(e.name)) files.push(p);
+    }
+  };
+  ['apps/remix/app', 'packages/ui'].forEach(walk);
+  const collisions: string[] = [];
+  for (const file of files) {
+    const src = read(file);
+    const strings = [...src.matchAll(literal)].map((m) => ({
+      line: src.slice(0, m.index).split('\n').length,
+      toks: parse(m[1] ?? m[2] ?? m[3]),
+      // `<span className="..." />` has no children to inherit a text colour.
+      selfClosing: /^\s*\/>/.test(src.slice(m.index! + m[0].length)),
+    }));
+    strings.forEach((s, i) => {
+      if (!s.toks.some((t) => t.prop === 'bg')) return;
+      // Text colour from the same class string, else inherited from the next class string within 2 lines (a child).
+      const child = s.selfClosing
+        ? undefined
+        : strings.slice(i + 1).find((n) => n.line - s.line <= 2 && n.toks.some((t) => t.prop === 'text'));
+      for (const mode of ['light', 'dark'] as const) {
+        for (const state of ['', 'hover'] as const) {
+          const bg = pick(s.toks, 'bg', mode, state);
+          const text = pick(s.toks, 'text', mode, state) ?? (child && pick(child.toks, 'text', mode, state));
+          if (bg && text && !bg.alpha && !text.alpha && bg.color === text.color) {
+            collisions.push(`${file}:${s.line} ${mode}${state ? ' ' + state : ''}: ${bg.cls} + ${text.cls} -> ${bg.color}`);
+          }
+        }
+      }
+    });
+  }
+  assert.deepEqual(collisions, []);
+});

@@ -5,6 +5,11 @@ const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenCo
 // Documenso's components use raw Tailwind hues with an implied meaning (green = done, red = error...).
 // Pointing those palettes at the fds status roles re-skins them centrally, in both modes, without
 // editing call sites: 50-100 -> subtle, 200-300 -> border, 400+ -> the text-safe solid.
+// Four roles can't keep eleven shades apart, and no per-shade mapping is right in both modes (a dark 900 is text on
+// a light tint in light mode but would have to be text on the solid in dark mode). So a call site that pairs two
+// 400+ shades as fill + text (upstream `dark:bg-yellow-400 text-yellow-900`) uses explicit role pairs instead
+// (`dark:bg-warning-subtle`); chief/inventory/review-r1.test.ts fails on any fill/text pair that resolves to the
+// same colour in either mode.
 const role = (name) => {
   const hsl = (v) => `hsl(var(--${v}) / <alpha-value>)`;
   const steps = { 50: 'subtle', 100: 'subtle', 200: 'border', 300: 'border' };

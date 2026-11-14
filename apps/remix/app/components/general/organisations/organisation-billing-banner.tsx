@@ -64,7 +64,7 @@ export const OrganisationBillingBanner = () => {
     <>
       <div
         className={cn({
-          'bg-yellow-200 text-yellow-900 dark:bg-yellow-400': bannerVariant === 'PAST_DUE',
+          'bg-yellow-200 text-yellow-900 dark:bg-warning-subtle': bannerVariant === 'PAST_DUE',
           'bg-destructive text-destructive-foreground':
             bannerVariant === 'INACTIVE' || bannerVariant === 'PENDING_PAYMENT',
         })}
@@ -83,7 +83,7 @@ export const OrganisationBillingBanner = () => {
           <Button
             variant="outline"
             className={cn({
-              'text-yellow-900 hover:bg-yellow-100 dark:hover:bg-yellow-500': bannerVariant === 'PAST_DUE',
+              'text-yellow-900 hover:bg-yellow-100 dark:hover:bg-warning-border': bannerVariant === 'PAST_DUE',
               'text-destructive-foreground hover:bg-destructive hover:text-white':
                 bannerVariant === 'INACTIVE' || bannerVariant === 'PENDING_PAYMENT',
             })}
