@@ -45,3 +45,86 @@ test('review r1 [1]: the completion page offers Download only for a real COMPLET
   assert.match(page, /isSignedDownloadReady\(signingStatus, document\.status\)/);
 });
 
+// [2] The Theme choice persists: JSON to POST /api/theme on both listeners, middleware still strict.
+const callMiddleware = async (rawPath: string, init: { method?: string; type?: string; body?: string; recipient?: boolean }) => {
+  const { Hono } = await import('hono');
+  const { appMiddleware } = await import('../../apps/remix/server/middleware');
+  let reached = false;
+  const app = new Hono();
+  app.use('*', appMiddleware);
+  app.all('*', (c) => {
+    reached = true;
+    return c.json({ ok: true });
+  });
+  const headers: Record<string, string> = {};
+  if (init.type) headers['content-type'] = init.type;
+  if (init.recipient) headers['x-chief-recipient-listener'] = '1';
+  const res = await app.request(
+    rawPath,
+    { method: init.method ?? 'POST', headers, body: init.body },
+    { incoming: { socket: { remoteAddress: '100.64.0.7', remotePort: 40000, remoteFamily: 'IPv4' } } },
+  );
+  return { status: res.status, reached };
+};
+const dark = JSON.stringify({ theme: 'dark' });
+test('review r1 [2]: middleware stays strict: a non-JSON POST /api/theme is still 415', async () => {
+  for (const recipient of [false, true]) {
+    const r = await callMiddleware('/api/theme', { type: 'text/plain;charset=UTF-8', body: dark, recipient });
+    assert.deepEqual(r, { status: 415, reached: false }, `recipient=${recipient}`);
+    const malformed = await callMiddleware('/api/theme', { type: 'application/json', body: '{theme:', recipient });
+    assert.deepEqual(malformed, { status: 400, reached: false }, `malformed recipient=${recipient}`);
+  }
+});
+test('review r1 [2]: a JSON POST /api/theme reaches the theme action on the staff and recipient listeners', async () => {
+  assert.deepEqual(await callMiddleware('/api/theme', { type: 'application/json', body: dark }), { status: 200, reached: true });
+  assert.deepEqual(await callMiddleware('/api/theme', { type: 'application/json', body: dark, recipient: true }), {
+    status: 200,
+    reached: true,
+  });
+});
+test('review r1 [2]: the recipient allowance is exactly POST /api/theme', async () => {
+  for (const [method, rawPath] of [
+    ['POST', '/api/theme.data'],
+    ['POST', '/api/theme/'],
+    ['POST', '/api/locale'],
+    ['POST', '/api/preferred-team'],
+    ['PUT', '/api/theme'],
+  ]) {
+    const r = await callMiddleware(rawPath, { method, type: 'application/json', body: dark, recipient: true });
+    assert.deepEqual(r, { status: 404, reached: false }, `${method} ${rawPath}`);
+  }
+  const { recipientFetch } = await import('../../apps/remix/server/chief/recipient-listener');
+  const app = recipientFetch(() => new Response('app'));
+  const post = (p: string) =>
+    app(new Request(`https://sign.example:9445${p}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: dark }));
+  assert.equal(await (await post('/api/theme')).text(), 'app');
+  assert.equal((await post('/api/theme.data')).status, 404);
+  assert.equal((await post('/api/locale')).status, 404);
+});
+test('review r1 [2]: the recipient-origin CSRF allowance covers /api/theme only from the recipient origin', async () => {
+  const { isRecipientOrigin } = await import('../../apps/remix/server/chief/recipient-origin');
+  const saved = process.env.CHIEF_RECIPIENT_URL;
+  process.env.CHIEF_RECIPIENT_URL = 'http://127.0.0.1:8798';
+  try {
+    const req = (origin: string) =>
+      new Request('http://127.0.0.1:8798/api/theme', { method: 'POST', headers: { Origin: origin } });
+    assert.equal(isRecipientOrigin(req('http://127.0.0.1:8798')), true);
+    assert.equal(isRecipientOrigin(req('https://attacker.example')), false);
+  } finally {
+    if (saved === undefined) delete process.env.CHIEF_RECIPIENT_URL;
+    else process.env.CHIEF_RECIPIENT_URL = saved;
+  }
+});
+test('review r1 [2]: remix-themes posts the theme as application/json (tracked patch, applied to the installed copy)', () => {
+  const patch = read('patches/remix-themes+2.0.4.patch');
+  assert.equal(patch.match(/^\+ {10}headers: \{ "Content-Type": "application\/json" \},$/gm)?.length, 4);
+  const pkg = 'node_modules/remix-themes'; // the copy the app build bundles (package.json is not exported)
+  assert.equal(JSON.parse(read(`${pkg}/package.json`)).version, '2.0.4', 'patch matches the locked version');
+  for (const file of ['index.js', 'index.cjs']) {
+    const dist = read(`${pkg}/dist/${file}`);
+    const posts = dist.split('fetch(`${themeAction}`').slice(1).map((rest) => rest.slice(0, rest.indexOf('});')));
+    assert.equal(posts.length, 2, file);
+    for (const post of posts) assert.match(post, /headers: \{ "Content-Type": "application\/json" \}/, file);
+  }
+});
+

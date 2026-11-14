@@ -153,6 +153,11 @@ export const isRecipientRequest = (method: string, rawPath: string) => {
         return entry?.classification === 'recipient' && method === (entry.type === 'query' ? 'GET' : 'POST');
       });
   }
+  // Fleet (review r1 [2]): the Theme button saves the visitor's choice. Exactly this path, raw (no .data suffix, no
+  // encoding); the security middleware still requires a JSON body and the CSRF middleware the recipient origin.
+  if (method === 'POST' && rawPath === '/api/theme') {
+    return true;
+  }
   if (method !== 'GET') {
     return false;
   }

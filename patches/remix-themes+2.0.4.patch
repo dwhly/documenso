@@ -1,0 +1,48 @@
+diff --git a/node_modules/remix-themes/dist/index.cjs b/node_modules/remix-themes/dist/index.cjs
+index 512d86f..8d9f0b5 100644
+--- a/node_modules/remix-themes/dist/index.cjs
++++ b/node_modules/remix-themes/dist/index.cjs
+@@ -159,6 +159,9 @@ function ThemeProvider({
+         });
+         fetch(`${themeAction}`, {
+           method: "POST",
++          // DOCUMENSO/FLEET PATCH: the body is JSON; say so. Chief Sign's security middleware answers 415 to a
++          // non-JSON /api/* POST, so without the header the theme choice was never saved.
++          headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ theme: null })
+         });
+       } else {
+@@ -169,6 +172,9 @@ function ThemeProvider({
+         broadcastThemeChange({ theme: nextTheme, definedBy: "USER" });
+         fetch(`${themeAction}`, {
+           method: "POST",
++          // DOCUMENSO/FLEET PATCH: the body is JSON; say so. Chief Sign's security middleware answers 415 to a
++          // non-JSON /api/* POST, so without the header the theme choice was never saved.
++          headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ theme: nextTheme })
+         });
+       }
+diff --git a/node_modules/remix-themes/dist/index.js b/node_modules/remix-themes/dist/index.js
+index ca2c00a..ce047bd 100644
+--- a/node_modules/remix-themes/dist/index.js
++++ b/node_modules/remix-themes/dist/index.js
+@@ -133,6 +133,9 @@ function ThemeProvider({
+         });
+         fetch(`${themeAction}`, {
+           method: "POST",
++          // DOCUMENSO/FLEET PATCH: the body is JSON; say so. Chief Sign's security middleware answers 415 to a
++          // non-JSON /api/* POST, so without the header the theme choice was never saved.
++          headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ theme: null })
+         });
+       } else {
+@@ -143,6 +146,9 @@ function ThemeProvider({
+         broadcastThemeChange({ theme: nextTheme, definedBy: "USER" });
+         fetch(`${themeAction}`, {
+           method: "POST",
++          // DOCUMENSO/FLEET PATCH: the body is JSON; say so. Chief Sign's security middleware answers 415 to a
++          // non-JSON /api/* POST, so without the header the theme choice was never saved.
++          headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ theme: nextTheme })
+         });
+       }
