@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/../.."
-CI=true npx tsx --test chief/inventory/policy.test.ts chief/inventory/fixes.test.ts chief/inventory/review-r1.test.ts chief/inventory/review-r2.test.ts
+CI=true npx tsx --test chief/inventory/policy.test.ts chief/inventory/fixes.test.ts chief/inventory/review-r1.test.ts chief/inventory/review-r2.test.ts chief/inventory/review-r4.test.ts
 bash chief/inventory/check-fds-vendored.sh
-# Real-DB/real-server e2e against the built apps/remix (throwaway Postgres + Mailpit; never a stack DB).
+# Real-DB/real-server e2e against the built apps/remix (throwaway Postgres + its logical replica + Mailpit; scrubbed
+# environment and an isolation preflight, never a stack DB or real mail).
 bash chief/inventory/e2e/run.sh
 python3 chief/inventory/fixes.test.py
 # The image must be running against its isolated acceptance DB. Do not point at a production DB.
