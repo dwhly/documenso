@@ -125,7 +125,8 @@ docker run -d --rm --name "$MAIL" --memory 256m \
   --label "chief-e2e-$CHIEF_E2E_RUN_ID" >/dev/null ||
   { echo "chief e2e REFUSED: could not start the Mailpit sink on 127.0.0.1 (ports already taken?)" >&2; exit 2; }
 
-for _ in $(seq 60); do docker exec "$PG" pg_isready -U postgres -d documenso_test -q && break; sleep 1; done
+# Over TCP: the image's init phase runs a temporary server on the unix socket only, then restarts it.
+for _ in $(seq 60); do docker exec "$PG" pg_isready -h 127.0.0.1 -U postgres -d documenso_test -q && break; sleep 1; done
 for _ in $(seq 30); do curl -sf -o /dev/null "$CHIEF_E2E_MAILPIT_URL/api/v1/webui" && break; sleep 1; done
 # Mark this run's Postgres from inside its container, then require the application URLs to see that mark.
 psql_ -d documenso_test -c "ALTER DATABASE documenso_test SET chief_e2e.run_id = '$CHIEF_E2E_RUN_ID'"
