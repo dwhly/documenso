@@ -109,8 +109,11 @@ const renderBranding = async (file: string) => {
 
 test('C1a: certificate renderer emits Fleet attribution (behavioral; drawing I/O stubs)', async () => {
   const { nodes } = await renderBranding(certificate);
-  const text = nodes.map((node) => node.attrs.text ?? '').join(' ');
-  assert.match(text, /Signing record by Fleet \| Dealroom/);
+  const text = nodes
+    .map((node) => node.attrs.text ?? '')
+    .join(' ')
+    .trim();
+  assert.equal(text, 'Signing record by');
   assert.doesNotMatch(text, forbidden);
   const source = read(certificate);
   assert.doesNotMatch(source.slice(source.indexOf('export async function renderCertificate')), /\bhidePoweredBy\b/);
@@ -126,12 +129,12 @@ for (const file of [certificate, audit]) {
   });
 }
 
-test('C1a: HTML certificate uses Fleet attribution and the mounted logo (static)', () => {
+test('C1a: HTML certificate uses Fleet attribution and the inline logo (static)', () => {
   const source = read('apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx');
   const branding = source.slice(source.lastIndexOf('<p className="flex-shrink-0'));
-  assert.match(branding, /Signing record by Fleet \| Dealroom/);
-  assert.match(branding, /src="\/static\/logo\.png"/);
-  assert.match(branding, /alt="Fleet \| Dealroom"/);
+  assert.match(branding, /msg`Signing record by`/);
+  assert.match(branding, /<BrandingLogo className="max-h-6 print:max-h-4" \/>/);
+  assert.doesNotMatch(source, /\/static\/logo\.png/);
   assert.doesNotMatch(branding, forbidden);
   assert.doesNotMatch(branding, /qrToken|\/share\//);
   assert.doesNotMatch(source.slice(source.indexOf('export default function SigningCertificate')), /\bhidePoweredBy\b/);

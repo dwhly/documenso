@@ -1,14 +1,17 @@
 # C1a — certificate and seal branding
 
-Base: `6c4757feb` on `agent/c1a-brand`. Changes are uncommitted. Scope follows
+Base: `6c4757feb` on `agent/c1a-brand`; r1 is committed at `38f6d1e14`, and the
+Gate-3 r2 changes are uncommitted. Scope follows
 EDD C1a/A8 as narrowed by Gate-2 r2 finding 6: no mail, distribution, recipient
 page or Share changes.
 
-Both certificate implementations say **Signing record by Fleet | Dealroom**.
-The certificate keeps Fleet attribution even when the legacy vendor
-`hidePoweredBy` flag is true. Certificate and audit raster renderers read the
-client's mounted PNG. The HTML certificate uses `/static/logo.png`; the HTML
-audit appendix already uses the Fleet `BrandingLogo` SVG. Seal reason is
+Both certificate implementations say **Signing record by** followed by the
+Fleet | Dealroom logo. The certificate always keeps Fleet attribution, even
+when the legacy vendor `hidePoweredBy` flag is true. Both audit surfaces (PDF
+and HTML) honour `hidePoweredBy`: when true, they show no brand. Certificate
+and audit raster renderers read the client's mounted PNG. Both the HTML
+certificate and audit appendix use the inline Fleet `BrandingLogo` SVG,
+independently of the PNG mount. Seal reason is
 **Signed by Fleet | Dealroom**; contact and location are **Fleet | Dealroom**.
 These seal properties come from `chief/branding.ts`, independently of old
 reason/contact/web-origin environment values. Existing cryptographic signing,
@@ -43,19 +46,25 @@ Documenso/AmForge/sslip settings supplied as adversarial fixtures.
 
 | Execution | Passed | Failed |
 | --- | ---: | ---: |
-| C1a tests against `6c4757feb` before implementation | 0 | 5 |
-| Final C1a tests against a temporary copy of those same baseline source files | 0 | 5 |
-| C1a tests after implementation | 5 | 0 |
-| Existing C0 `no-share.test.ts` after implementation | 11 | 0 |
+| r1 C1a tests against `6c4757feb` before implementation | 0 | 5 |
+| r1 final C1a tests against a temporary copy of those same baseline source files | 0 | 5 |
+| r1 C1a tests after implementation | 5 | 0 |
+| r1 existing C0 `no-share.test.ts` after implementation | 11 | 0 |
+| r2 strengthened HTML logo assertions against unchanged `38f6d1e14` production source | 4 | 1 |
+| r2 logo and exact-copy assertions against unchanged `38f6d1e14` production source | 3 | 2 |
+| r2 C1a tests after implementation | 5 | 0 |
+| r2 existing C0 `no-share.test.ts` after implementation | 11 | 0 |
 
 These counts use `CI=true node --import tsx chief/inventory/c1a-brand.test.ts`
-and the analogous C0 command. The requested
-`CI=true npx tsx --test chief/inventory/*.test.ts` was attempted and blocked before
+and the analogous C0 command. The r2 HTML test requires the inline `BrandingLogo`
+and rejects `/static/logo.png` anywhere in the certificate source. Both captions
+must match **Signing record by** exactly, so the brand is not repeated in text.
+In r1, `CI=true npx tsx --test chief/inventory/*.test.ts` was attempted and blocked before
 test execution: the sandbox rejects the tsx IPC socket with `listen EPERM` at
 `/tmp/tsx-0/16.pipe`. The manager must rerun that exact command outside this sandbox.
-No full-inventory pass is claimed. Scoped Biome checks and `git diff --check` pass;
-Biome reports five existing warnings and one existing informational diagnostic.
-`npm run typecheck -w @documenso/remix` also passes (route type generation and tsc).
+No full-inventory pass is claimed. Scoped r2 Biome checks pass with four existing
+warnings across the three changed TypeScript files. `git diff --check` and
+`npm run typecheck -w @documenso/remix` pass (route type generation and tsc).
 
 These are source/module checks, not a deployed PDF/OCR or P12 validation. After
 mounting the logo, inspect a newly issued certificate, audit PDF and seal
@@ -67,14 +76,15 @@ identity before issuing new fixtures. Do not rewrite old sealed evidence.
 ## Footprint against 6c4757feb
 
 Counts are added plus deleted lines, with the existing first-party exclusions
-unchanged. C1a uses **4 upstream files / 45 lines**, leaving **256 of the 301
-remaining upstream lines** for the other slices (before their own changes).
+unchanged. C1a uses **4 upstream files / 41 lines** (r1: 45), leaving **260 of the
+301 remaining upstream lines** for the other slices (before their own changes).
+This excludes the pre-existing translation catalog edits, which r2 did not change.
 
 | Upstream file | Changed locations in working tree | Added | Deleted | Total |
 | --- | --- | ---: | ---: | ---: |
 | `packages/lib/server-only/pdf/render-certificate.ts` | 17, 577, 584, 590, 603, 719, 792, 826 | 7 | 7 | 14 |
 | `packages/lib/server-only/pdf/render-audit-logs.ts` | 17, 446 | 2 | 1 | 3 |
-| `apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx` | 23, 100, 361 | 8 | 12 | 20 |
+| `apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx` | 102, 363, 368 | 6 | 10 | 16 |
 | `packages/signing/index.ts` | 1, 8, 44 | 2 | 6 | 8 |
 
 First-party files: `chief/branding.ts`, `chief/inventory/c1a-brand.test.ts`,
@@ -93,6 +103,9 @@ The following are source findings, not assertions about unseen runtime data.
 | Owner | File:line | Remaining visible string / data path |
 | --- | --- | --- |
 | C4 — pages | `apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx:19`, `:130` | Disclosure names Documenso. |
+| C4 — pages | `apps/remix/app/utils/meta.ts:19`, `:23`, `:51` | Default metadata includes Documenso keywords, author `Documenso, Inc.` and `twitter:site` value `@documenso`. Inherited by pages such as signature disclosure; recipient layouts override their metadata. |
+| C4 — direct-link flow | `apps/remix/app/components/general/direct-template/direct-template-configure-form.tsx:104` | Recipient email placeholder `recipient@documenso.com`, if the direct-link flow is reachable. |
+| C4 — staff flow | `packages/lib/server-only/pdf/helpers.ts:140` | PDF placeholders create stored auto-recipient emails `recipient.N@documenso.com`; if sent without editing, these can appear in certificates and audit logs. |
 | C4 — pages | `apps/remix/app/components/general/document-signing/document-signing-page-view-v2.tsx:287` | Conditional powered-by link to `https://documenso.com`. |
 | C4 — pages | `apps/remix/app/root.tsx:178` | Expired-license banner names Documenso. |
 | C4 — pages | `apps/remix/app/routes/_recipient+/report.$token.tsx:65`; `packages/lib/constants/app.ts:75` | Report-sender mailto uses the `support@documenso.com` fallback. |

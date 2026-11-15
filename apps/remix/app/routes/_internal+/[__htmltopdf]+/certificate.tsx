@@ -20,6 +20,8 @@ import { prop, sortBy } from 'remeda';
 import { match } from 'ts-pattern';
 import { UAParser } from 'ua-parser-js';
 
+import { BrandingLogo } from '~/components/general/branding-logo';
+
 import type { Route } from './+types/certificate';
 
 const FRIENDLY_SIGNING_REASONS = {
@@ -360,10 +362,8 @@ export default function SigningCertificate({ loaderData }: Route.ComponentProps)
 
       <div className="my-8 flex-row-reverse space-y-4">
         <div className="flex items-end justify-end gap-x-4">
-          <p className="flex-shrink-0 font-medium text-sm print:text-xs">
-            {_(msg`Signing record by Fleet | Dealroom`)}
-          </p>
-          <img src="/static/logo.png" alt="Fleet | Dealroom" className="max-h-6 print:max-h-4" />
+          <p className="flex-shrink-0 font-medium text-sm print:text-xs">{_(msg`Signing record by`)}</p>
+          <BrandingLogo className="max-h-6 print:max-h-4" />
         </div>
       </div>
     </div>
