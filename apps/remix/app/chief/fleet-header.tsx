@@ -86,11 +86,12 @@ export const FleetHeader = ({ tabs = false, account, homeHref, className, childr
 /**
  * Visitor header (shell spec §4): the same 56px header with its content in the 960px visitor container.
  * Lockup left, Theme right, nothing else, so the lockup doesn't jump between Send room pages and Sign.
+ * The app is "Sign" while signing and "Dealroom" once you're in the room (owner, 15 Nov 2026).
  */
 export const FleetVisitorHeader = ({ className }: { className?: string }) => (
   <header className={cn('fds-header fleet-header fleet-header--visitor w-full', className)}>
     <div className="fleet-visitor-container flex w-full items-center">
-      <FleetLockup />
+      <FleetLockup product="Sign" />
 
       <div className="fds-header__utils">
         <FleetThemeToggle />

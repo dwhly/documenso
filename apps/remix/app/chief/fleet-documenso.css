@@ -380,3 +380,10 @@ html[data-theme='dark'] .dark\:bg-documenso.dark\:bg-documenso {
   background-color: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
 }
+
+/* C4a: buttons use the Fleet button type (DESIGN.md fds-btn: --text-sm / 600), the same as Send's pages.
+   Documenso's Button primitive is text-sm (14px) / font-medium. The shell spec's page-head actions keep 14px. */
+.inline-flex.rounded-md.text-sm.font-medium:not(.fleet-page-head__actions *) {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
