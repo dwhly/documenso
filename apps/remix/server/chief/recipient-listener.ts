@@ -63,15 +63,19 @@ export const staffFetch = (fetch: Fetch): Fetch => async (request, ...args) => {
   const url = new URL(request.url);
   let path: string;
   try {
-    path = decodeURIComponent(url.pathname).replace(/\/$/, '').replace(/\.data$/, '');
+    path = decodeURIComponent(url.pathname).replace(/\/$/, '').replace(/\.data$/i, '');
+    const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/, '');
+    if (basePath && path.toLowerCase().startsWith(`${basePath.toLowerCase()}/`)) {
+      path = path.slice(basePath.length);
+    }
     if (path.includes('\\') || path.includes('//') || path.includes('%')) {
       return deny();
     }
-    if (/^\/sign\/[^/]+(?:\/(complete|expired|rejected|waiting))?$/.test(path) ||
-        path.startsWith('/api/files/token/')) {
+    if (/^\/sign\/[^/]+(?:\/(complete|expired|rejected|waiting))?$/i.test(path) ||
+        path.toLowerCase().startsWith('/api/files/token/')) {
       return deny();
     }
-    if (path.startsWith('/api/trpc/')) {
+    if (path.toLowerCase().startsWith('/api/trpc/')) {
       const names = path.slice('/api/trpc/'.length).split(',');
       if (names.some((name) => TOKEN_ONLY_PROCEDURES.includes(name))) {
         return deny();
@@ -93,7 +97,7 @@ export const staffFetch = (fetch: Fetch): Fetch => async (request, ...args) => {
         }
       }
     }
-    if (/^\/api\/v2(?:-beta)?\/envelope\/attachment$/.test(path)) {
+    if (/^\/api\/v2(?:-beta)?\/envelope\/attachment$/i.test(path)) {
       const value = request.method === 'GET'
         ? Object.fromEntries(url.searchParams)
         : JSON.parse(await request.clone().text());

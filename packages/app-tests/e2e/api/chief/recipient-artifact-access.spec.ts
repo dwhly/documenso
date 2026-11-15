@@ -9,12 +9,21 @@ import { seedUser } from '@documenso/prisma/seed/users';
 import { type APIRequestContext, type APIResponse, expect, test } from '@playwright/test';
 import { nanoid } from 'nanoid';
 
+// Manager runs live with FLEET_PROXY_KEY_FILE and CHIEF_E2E_RECIPIENT_URL.
 // Fleet review r2 [1]/[9], r3 [11]: which stored bytes a recipient token, a QR token, a staff API token and a
 // recipient page can reach, against the real database and the running server (staff and recipient listeners).
 // Replaces the Prisma-stubbed route tests, whose lookups ignored their predicates.
 
 const STAFF = NEXT_PUBLIC_WEBAPP_URL();
 const RECIPIENT = process.env.CHIEF_E2E_RECIPIENT_URL ?? '';
+
+const proxyHeaders = () => {
+  const keyFile = process.env.FLEET_PROXY_KEY_FILE;
+  expect(keyFile, 'FLEET_PROXY_KEY_FILE is required').toBeTruthy();
+  const key = fs.readFileSync(keyFile!, 'utf8').trim();
+  expect(key, 'proxy key is nonblank').not.toBe('');
+  return { 'x-fleet-proxy-key': key };
+};
 
 const ORIGINAL = fs.readFileSync(path.join(__dirname, '../../../../../assets/example.pdf'));
 const SEALED = Buffer.concat([ORIGINAL, Buffer.from('\n%fleet-r3 sealed artifact\n')]);
@@ -108,13 +117,18 @@ const fetchAll = async (request: APIRequestContext, origin: string, paths: Recor
   const got: Record<string, string> = {};
 
   for (const [name, p] of Object.entries(paths)) {
-    got[name] = await bytes(await request.get(`${origin}${p}`));
+    got[name] = await bytes(await request.get(`${origin}${p}`, { headers: origin === RECIPIENT ? proxyHeaders() : {} }));
   }
 
   return got;
 };
 
-const listeners = () => [STAFF, ...(RECIPIENT ? [RECIPIENT] : [])];
+const listeners = () => {
+  expect(RECIPIENT, 'CHIEF_E2E_RECIPIENT_URL must name private 3001').not.toBe('');
+  proxyHeaders();
+  return [STAFF, RECIPIENT];
+};
+const denied = { preview: '404', current: '404', initial: '404', dl: '404', signed: '404', original: '404' };
 
 test('[1] recipient/QR tokens: the original until COMPLETED, never the sealed artifact (database storage)', async ({
   request,
@@ -135,7 +149,7 @@ test('[1] recipient/QR tokens: the original until COMPLETED, never the sealed ar
     for (const origin of listeners()) {
       for (const token of [envelope.otherToken, envelope.qrToken]) {
         const got = await fetchAll(request, origin, tokenPaths(token, envelope));
-        expect(got, `${state} ${token.startsWith('qr_') ? 'QR' : 'recipient'} token via ${origin}`).toEqual(expected[state]);
+        expect(got, `${state} ${token.startsWith('qr_') ? 'QR' : 'recipient'} token via ${origin}`).toEqual(origin === STAFF ? denied : expected[state]);
       }
     }
   }
@@ -149,7 +163,7 @@ test('[11] a token only reaches its own envelope: another envelope\'s item, data
   const notFound = { preview: '404', current: '404', initial: '404', dl: '404', signed: '404', original: '404' };
 
   // Control: the victim's own tokens do reach its bytes, so a 404 below is the ownership rule, not a broken route.
-  expect((await fetchAll(request, STAFF, tokenPaths(theirs.otherToken, theirs))).signed).toBe('SEALED');
+  expect((await fetchAll(request, RECIPIENT, tokenPaths(theirs.otherToken, theirs))).signed).toBe('SEALED');
 
   for (const origin of listeners()) {
     for (const token of [mine.otherToken, mine.rejecterToken, mine.qrToken]) {
@@ -227,9 +241,17 @@ test('[9] recipient page loaders of a rejected database-backed document carry no
       // recipient gets the completion page. `.data` is the loader's serialized response, the HTML embeds the same.
       for (const page of [`/sign/${envelope.otherToken}`, `/sign/${envelope.otherToken}/complete`, `/sign/${envelope.rejecterToken}/complete`]) {
         for (const url of [page, `${page}.data`]) {
-          const res = await request.get(`${origin}${url}`, { maxRedirects: 0 });
+          const res = await request.get(`${origin}${url}`, { maxRedirects: 0, headers: origin === RECIPIENT ? proxyHeaders() : {} });
           const body = await res.text();
           const label = `${storage} ${url} via ${origin}`;
+          if (origin === STAFF) {
+            expect(res.status(), label).toBe(404);
+            expect(body, label).not.toContain(envelope.title);
+            for (const [what, needle] of leaks(envelope)) {
+              expect(body.includes(needle), `${label}: ${what}`).toBe(false);
+            }
+            continue;
+          }
           expect(res.status(), label).toBe(200);
           // Control: this is the loader's answer for THIS envelope, not an error page.
           expect(body, label).toContain(envelope.title);

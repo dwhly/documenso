@@ -23,3 +23,14 @@ test('native GET drops reminders and cannot be used for release read-back', () =
   assert.deepEqual(ZGetEnvelopeResponseSchema.shape.documentMeta.partial().parse(settings),
     { envelopeExpirationPeriod: settings.envelopeExpirationPeriod });
 });
+
+test('Gate 3 auth arrays are nested in authOptions and post-release mail flags survive native GET', () => {
+  const authOptions = { globalAccessAuth: [], globalActionAuth: [] };
+  const editor = ZGetEditorEnvelopeResponseSchema.pick({ authOptions: true }).parse({ authOptions });
+  assert.deepEqual(editor, { authOptions });
+  const flags = Object.fromEntries(['recipientSigningRequest', 'recipientRemoved', 'recipientSigned',
+    'documentPending', 'documentCompleted', 'documentDeleted', 'ownerDocumentCompleted',
+    'ownerRecipientExpired', 'ownerDocumentCreated'].map((name) => [name, false]));
+  const meta = { distributionMethod: 'NONE', emailSettings: flags };
+  assert.deepEqual(ZGetEnvelopeResponseSchema.shape.documentMeta.partial().parse(meta), meta);
+});

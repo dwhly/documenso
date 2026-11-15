@@ -1,6 +1,14 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
+// Manager runs live against the matching private preview stack.
+const keyFile = process.env.FLEET_PROXY_KEY_FILE;
+assert.ok(keyFile, 'FLEET_PROXY_KEY_FILE must name the private preview proxy key');
+const proxyKey = fs.readFileSync(keyFile, 'utf8').trim();
+assert.ok(proxyKey, 'The proxy key file must be nonblank');
+const recipient = process.env.SIGN_RECIPIENT_BASE;
+assert.ok(recipient, 'SIGN_RECIPIENT_BASE must point to private 3001');
+const recipientHeaders = {'X-Fleet-Proxy-Key': proxyKey};
 const base=process.env.SIGN_BASE || 'http://sign-v1.100-110-241-2.sslip.io';
 const {token,teamId}=JSON.parse(fs.readFileSync('chief/deploy/secrets/staff.json'));
 const post=(path,body,auth=token)=>fetch(`${base}${path}`,{method:'POST',headers:{'Content-Type':'application/json',...(auth?{Authorization:`Bearer ${auth}`}:{})},body:JSON.stringify(body)});
@@ -23,8 +31,11 @@ test('adapter returns actual native webhooks',async()=>{
 test('EE auth cannot be enabled through ordinary edit',async()=>{
  const r=await post('/api/v2/envelope/update',{envelopeId:'not-important',data:{globalActionAuth:['PASSKEY']}});assert.equal(r.status,403);
 });
-test('recipient listener header denies staff and mixed procedure batches',async()=>{
- for(const path of ['/signin','/api/deal/openapi.json','/api/trpc/envelope.field.sign,envelope.create']) {
+test('staff strips caller marker while denying token and mixed procedure batches',async()=>{
+ for(const path of ['/signin','/api/deal/openapi.json']) {
+  const r=await fetch(`${base}${path}`,{headers:{'X-Chief-Recipient-Listener':'1'}});assert.equal(r.status,200,path);
+ }
+ for(const path of ['/sign/fixture-token','/api/trpc/envelope.field.sign,envelope.create']) {
   const r=await fetch(`${base}${path}`,{headers:{'X-Chief-Recipient-Listener':'1'}});assert.equal(r.status,404,path);
  }
  const r=await fetch(`${base}/assets/not-an-asset`,{headers:{'X-Chief-Recipient-Listener':'1'}});assert.notEqual(r.status,200);
@@ -53,14 +64,13 @@ test('r1 finding 1: unsupported API content types fail closed',async()=>{
  }
 });
 test('r1 finding 3: independent recipient socket rejects staff without trusting headers', async()=>{
- const recipient=process.env.SIGN_RECIPIENT_BASE || 'http://127.0.0.1:8798';
  for(const value of [undefined,'0','1']) {
   for(const path of ['/signin','/api/deal/openapi.json','/api/trpc/envelope.field.sign,envelope.create','/api/jobs/run']) {
-   const r=await fetch(`${recipient}${path}`,{headers:value?{'X-Chief-Recipient-Listener':value}:{}});
+   const r=await fetch(`${recipient}${path}`,{headers:{...recipientHeaders,...(value?{'X-Chief-Recipient-Listener':value}:{})}});
    assert.equal(r.status,404,`${path} header=${value}`);
   }
  }
- assert.equal((await fetch(`${recipient}/articles/signature-disclosure`)).status,200);
+ assert.equal((await fetch(`${recipient}/articles/signature-disclosure`, {headers:recipientHeaders})).status,200);
 });
 test('r1 finding 4: public share cannot be invoked through staff adapter', async()=>{
  assert.equal((await post('/api/deal/document/share',{documentId:1},'***')).status,404);
@@ -71,7 +81,7 @@ test('r1 finding 9: malformed JSON and multipart are client errors',async()=>{
  }
 });
 test('r1 finding 9: oversized unauthenticated body is rejected before inspection',async()=>{
- const r=await fetch(`${base}/api/trpc/envelope.field.sign`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({padding:'x'.repeat(25*1024*1024)})});assert.equal(r.status,413);
+ const r=await fetch(`${base}/api/v2/envelope/create`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({padding:'x'.repeat(25*1024*1024)})});assert.equal(r.status,413);
 });
 test('r1 finding 11: inbox is human-only and adapter has native rate limiting',async()=>{
  for(const path of ['document/inbox/find','document/inbox/getCount']) assert.equal((await post(`/api/deal/${path}`,{})).status,404);
@@ -89,9 +99,14 @@ test('r1 finding 11: supplemental API applies the native rate limiter',async()=>
  assert.equal(r.headers.get('x-ratelimit-limit'),'1000');assert.ok(Number(r.headers.get('x-ratelimit-remaining'))<1000);
 });
 test('r1 finding 3: recipient origin passes CSRF while unrelated origins are rejected',async()=>{
- const recipient=process.env.SIGN_RECIPIENT_BASE || 'http://127.0.0.1:8798';
- for(const [origin,status] of [[recipient,400],['https://attacker.example',403]]) {
-  const r=await fetch(`${recipient}/api/trpc/envelope.field.sign`,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:'{}'});
+ for(const [origin,status] of [[process.env.SIGN_RECIPIENT_ORIGIN || recipient,400],['https://attacker.example',403]]) {
+  const r=await fetch(`${recipient}/api/trpc/envelope.field.sign`,{method:'POST',headers:{...recipientHeaders,Origin:origin,'Content-Type':'application/json'},body:'{}'});
   assert.equal(r.status,status);
+ }
+});
+
+test('3001 missing and wrong proxy keys are rejected before routes', async () => {
+ for (const headers of [{}, {'X-Fleet-Proxy-Key':'wrong-key','X-Chief-Recipient-Listener':'1'}]) {
+  assert.equal((await fetch(`${recipient}/articles/signature-disclosure`, {headers})).status,403);
  }
 });
