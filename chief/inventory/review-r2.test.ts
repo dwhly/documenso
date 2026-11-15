@@ -125,10 +125,10 @@ test('review r2 [2]: /api/theme: a foreign Origin gets no cookie, the staff/reci
     const h = new Headers(r.headers);
     h.set('x-chief-recipient-listener', '1');
     return app.fetch(new Request(r, { headers: h }), conn);
-  });
+  }, () => 'test-key');
   const post = async (listener: 'staff' | 'recipient', origin: string | null, p = '/api/theme', type = 'application/json') => {
     const publicHost = new URL(listener === 'staff' ? STAFF : RECIPIENT).host;
-    const headers: Record<string, string> = { 'content-type': type, 'x-forwarded-proto': 'https', 'x-forwarded-host': publicHost };
+    const headers: Record<string, string> = { 'content-type': type, 'x-forwarded-proto': 'https', 'x-forwarded-host': publicHost, 'x-fleet-proxy-key': 'test-key' };
     if (origin) headers.origin = origin;
     const req = new Request(`http://127.0.0.1:3000${p}`, { method: 'POST', headers, body: JSON.stringify({ theme: 'dark' }) });
     const res = await (listener === 'staff' ? staffFetch(req) : recipientListener(req));

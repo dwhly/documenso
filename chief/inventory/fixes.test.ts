@@ -70,13 +70,13 @@ test('fds r2: recipient origin behind a TLS proxy honours X-Forwarded-Proto/Host
 test('fds r2: recipient listener answers the session poll as signed out, never with a staff session', async () => {
   const {recipientFetch}=await import('../../apps/remix/server/chief/recipient-listener');
   let reached=false;
-  const handler=recipientFetch(() => { reached=true; return new Response('app'); });
-  const res=await handler(new Request('https://sign.example:9445/api/auth/session-json',{headers:{cookie:'sessionId=staff'}}));
+  const handler=recipientFetch(() => { reached=true; return new Response('app'); }, () => 'test-key');
+  const res=await handler(new Request('https://sign.example:9445/api/auth/session-json',{headers:{cookie:'sessionId=staff','x-fleet-proxy-key':'test-key'}}));
   assert.equal(res.status,200);
   assert.deepEqual(await res.json(),{json:{isAuthenticated:false,session:null,user:null}});
   assert.equal(reached,false);
-  assert.equal((await handler(new Request('https://sign.example:9445/api/auth/session'))).status,404);
-  assert.equal((await handler(new Request('https://sign.example:9445/api/auth/session-json',{method:'POST'}))).status,404);
+  assert.equal((await handler(new Request('https://sign.example:9445/api/auth/session',{headers:{'x-fleet-proxy-key':'test-key'}}))).status,404);
+  assert.equal((await handler(new Request('https://sign.example:9445/api/auth/session-json',{method:'POST',headers:{'x-fleet-proxy-key':'test-key'}}))).status,404);
 });
 test('fds r2: email subjects read "Fleet Dealroom: <what>" only when the prefix env is set', async () => {
   const {withSubjectPrefix}=await import('../../packages/email/chief-subject');

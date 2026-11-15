@@ -94,9 +94,9 @@ test('review r1 [2]: the recipient allowance is exactly POST /api/theme', async 
     assert.deepEqual(r, { status: 404, reached: false }, `${method} ${rawPath}`);
   }
   const { recipientFetch } = await import('../../apps/remix/server/chief/recipient-listener');
-  const app = recipientFetch(() => new Response('app'));
+  const app = recipientFetch(() => new Response('app'), () => 'test-key');
   const post = (p: string) =>
-    app(new Request(`https://sign.example:9445${p}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: dark }));
+    app(new Request(`https://sign.example:9445${p}`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-fleet-proxy-key': 'test-key' }, body: dark }));
   assert.equal(await (await post('/api/theme')).text(), 'app');
   assert.equal((await post('/api/theme.data')).status, 404);
   assert.equal((await post('/api/locale')).status, 404);
