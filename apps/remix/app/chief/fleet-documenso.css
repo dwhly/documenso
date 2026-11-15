@@ -387,3 +387,9 @@ html[data-theme='dark'] .dark\:bg-documenso.dark\:bg-documenso {
   font-size: var(--text-sm);
   font-weight: 600;
 }
+
+/* C4a: the signing page backdrop is the Fleet page surface (fds --background: cream when the tenant sets
+   data-surface="warm"), like Send's pages. Documenso hard-codes bg-gray-50 here; the PDF page stays white on top. */
+.min-h-screen.w-screen.bg-gray-50:has(> .fleet-signer-chrome) {
+  background-color: hsl(var(--background));
+}

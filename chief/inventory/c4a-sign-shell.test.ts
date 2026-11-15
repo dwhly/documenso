@@ -25,3 +25,9 @@ test('Sign buttons use the Fleet button type (13px / 600), like fds-btn on Send'
   // The shell spec's page-head actions stay 14px (they match Send's .dr-pagehead actions).
   assert.match(css, /\.fleet-page-head__actions button \{[^}]*font-size: var\(--text-md\);/);
 });
+
+test("the signing page backdrop follows the Fleet surface (cream for a warm tenant), not Documenso's hard-coded gray", () => {
+  // Owner, 15 Nov 2026: "the document should still have the cream colors around the edge… the document itself white".
+  // Documenso wraps the signer page in `min-h-screen w-screen bg-gray-50`; the PDF page stays white on top of it.
+  assert.match(css, /\.min-h-screen\.w-screen\.bg-gray-50:has\(> \.fleet-signer-chrome\)\s*\{\s*background-color: hsl\(var\(--background\)\);\s*\}/);
+});
