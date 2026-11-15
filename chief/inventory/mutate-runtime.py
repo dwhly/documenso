@@ -36,6 +36,7 @@ cases=[
  ('3-origin','server/csrf-middleware.js',lambda s:s.replace(' && !isRecipientOrigin(c.req.raw)',''),'recipient origin passes'),
  ('1-multipart','server/middleware.js',lambda s:s.replace("for (const [key, value] of form.entries()) {", "for (const [key, value] of [['payload', form.get('payload')]]) {"),'payload brackets'),
  ('1-content-type','server/middleware.js',lambda s:s.replace("return c.json({\n          error: 'JSON or multipart body required'\n        }, 415);",'payloads.push(null);'),'unsupported API content'),
+ # Status-only mutation: downstream middleware can mask removal of this listener gate.
  ('3','server/chief/recipient-listener.js',lambda s:re.sub(r"(error: ['\"]Recipient route required['\"][\s\S]*?status: )404", r'\g<1>200', s, count=1),'independent recipient socket'),
  ('5','server/chief/deal-api.js',lambda s:s.replace("if (scope && typeof scope", "if (false && scope && typeof scope"),'issuing team'),
  ('9-size','server/middleware.js',lambda s:s.replace('maxSize: 25 * 1024 * 1024','maxSize: 250 * 1024 * 1024'),'oversized unauthenticated'),

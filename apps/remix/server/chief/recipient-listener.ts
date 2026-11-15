@@ -63,27 +63,27 @@ export const staffFetch = (fetch: Fetch): Fetch => async (request, ...args) => {
   const url = new URL(request.url);
   let path: string;
   try {
-    path = decodeURIComponent(url.pathname).replace(/\/$/, '').replace(/\.data$/i, '');
-    const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/$/, '');
+    path = decodeURIComponent(url.pathname).replace(/\.data\/*$/i, '').replace(/\/+$/, '');
+    const basePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').replace(/\/+$/, '');
     if (basePath && path.toLowerCase().startsWith(`${basePath.toLowerCase()}/`)) {
       path = path.slice(basePath.length);
     }
-    if (path.includes('\\') || path.includes('//') || path.includes('%')) {
+    if (path.includes('\\') || path.includes('//') || path.includes('%') || path.includes(';')) {
       return deny();
     }
-    if (/^\/sign\/[^/]+(?:\/(complete|expired|rejected|waiting))?$/i.test(path) ||
+    if (/^\/sign(?:\/|$)/i.test(path) ||
         path.toLowerCase().startsWith('/api/files/token/')) {
       return deny();
     }
     if (path.toLowerCase().startsWith('/api/trpc/')) {
       const names = path.slice('/api/trpc/'.length).split(',');
-      if (names.some((name) => TOKEN_ONLY_PROCEDURES.includes(name))) {
+      if (names.some((name) => TOKEN_ONLY_PROCEDURES.some(p => p.toLowerCase() === name.toLowerCase()))) {
         return deny();
       }
-      if (names.some((name) => DUAL_MODE_PROCEDURES.includes(name))) {
+      if (names.some((name) => DUAL_MODE_PROCEDURES.some(p => p.toLowerCase() === name.toLowerCase()))) {
         const input = await parsedInput(request, url);
         for (const [index, name] of names.entries()) {
-          if (!DUAL_MODE_PROCEDURES.includes(name)) {
+          if (!DUAL_MODE_PROCEDURES.some(p => p.toLowerCase() === name.toLowerCase())) {
             continue;
           }
           const member = url.searchParams.get('batch') === '1' ? input?.[String(index)] : input;
@@ -91,7 +91,7 @@ export const staffFetch = (fetch: Fetch): Fetch => async (request, ...args) => {
           if (!object(value) || 'token' in value || value.access?.type === 'recipient') {
             return deny();
           }
-          if (name === 'envelope.item.getManyByToken' && value.access?.type !== 'user') {
+          if (name.toLowerCase() === 'envelope.item.getmanybytoken' && value.access?.type !== 'user') {
             return deny();
           }
         }

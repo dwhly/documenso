@@ -37,6 +37,7 @@ test('minor14 staff removes all caller IP authority and recipient marker', async
 test('minor14 main wires staffFetch only to 3000 and recipientFetch to 3001', () => {
   const main = readFileSync('apps/remix/server/main.js', 'utf8');
   assert.match(main, /import \{ recipientFetch, staffFetch \} from '\.\/hono\/server\/chief\/recipient-listener\.js';/);
-  assert.match(main, /fetch:\s*staffFetch\(handler\.fetch\)/);
-  assert.match(main, /fetch:\s*recipientFetch\(handler\.fetch\)/);
+  assert.match(main, /const port = parseInt\(process\.env\.PORT \|\| '3000', 10\);/);
+  assert.match(main, /serve\(\{ fetch: staffFetch\(handler\.fetch\), port \}\)/);
+  assert.match(main, /serve\(\{ fetch: recipientFetch\(handler\.fetch\), port: parseInt\(process\.env\.CHIEF_RECIPIENT_PORT \|\| '3001', 10\) \}\)/);
 });

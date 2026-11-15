@@ -38,7 +38,7 @@ test('staff strips caller marker while denying token and mixed procedure batches
  for(const path of ['/sign/fixture-token','/api/trpc/envelope.field.sign,envelope.create']) {
   const r=await fetch(`${base}${path}`,{headers:{'X-Chief-Recipient-Listener':'1'}});assert.equal(r.status,404,path);
  }
- const r=await fetch(`${base}/assets/not-an-asset`,{headers:{'X-Chief-Recipient-Listener':'1'}});assert.notEqual(r.status,200);
+ const r=await fetch(`${base}/assets/not-an-asset`,{headers:{'X-Chief-Recipient-Listener':'1'}});assert.equal(r.status,404);
 });
 test('multipart adapter also binds the issuing team',async()=>{
  const form=new FormData();form.append('payload',JSON.stringify({teamId:JSON.parse(fs.readFileSync('chief/deploy/secrets/second-team.json')).teamId}));

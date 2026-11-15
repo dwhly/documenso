@@ -155,19 +155,24 @@ test('[1] recipient/QR tokens: the original until COMPLETED, never the sealed ar
   }
 });
 
-test('[11] a token only reaches its own envelope: another envelope\'s item, data id or envelope id is 404', async ({
+test('[11] recipient ownership and staff blanket denial: foreign item, data id or envelope id is 404', async ({
   request,
 }) => {
   const mine = await seedEnvelope('PENDING');
   const theirs = await seedEnvelope('COMPLETED');
   const notFound = { preview: '404', current: '404', initial: '404', dl: '404', signed: '404', original: '404' };
 
-  // Control: the victim's own tokens do reach its bytes, so a 404 below is the ownership rule, not a broken route.
+  // The keyed recipient listener's own-token control proves ownership routing works.
+  // Staff token routes are blanket-denied; staff ownership is tested through the API below.
   expect((await fetchAll(request, RECIPIENT, tokenPaths(theirs.otherToken, theirs))).signed).toBe('SEALED');
 
   for (const origin of listeners()) {
+    expect((await fetchAll(request, origin, tokenPaths(theirs.otherToken, theirs))).signed).toBe(
+      origin === STAFF ? '404' : 'SEALED',
+    );
     for (const token of [mine.otherToken, mine.rejecterToken, mine.qrToken]) {
-      const label = `${token.startsWith('qr_') ? 'QR' : 'recipient'} token of another envelope via ${origin}`;
+      const boundary = origin === STAFF ? 'staff blanket denial' : 'recipient ownership';
+      const label = `${boundary}: ${token.startsWith('qr_') ? 'QR' : 'recipient'} token of another envelope via ${origin}`;
       // Every id is the victim's.
       expect(await fetchAll(request, origin, tokenPaths(token, theirs)), label).toEqual(notFound);
       // Own envelope id, the victim's item and data ids.
