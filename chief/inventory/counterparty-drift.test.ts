@@ -1,11 +1,21 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { dirname, resolve } from 'node:path';
 import test from 'node:test';
 
 const read = (path: string) => JSON.parse(readFileSync(path, 'utf8'));
 const contract = read('chief/inventory/counterparty-contract.json');
+
+test('r5 installed SuperJSON matches the reviewed deserialization contract', () => {
+  for (const source of ['packages/trpc/utils/data-transformer.ts', 'apps/remix/server/chief/recipient-listener.ts']) {
+    const entry = createRequire(resolve(source)).resolve('superjson');
+    const installed = read(resolve(dirname(entry), '../package.json'));
+    assert.equal(contract.installed_dependencies?.superjson, installed.version, source);
+    assert.equal(read('package-lock.json').packages['node_modules/superjson'].version, installed.version);
+  }
+});
 
 test('recipient procedures, input modes, token file routes and aliases match the reviewed Send boundary', {
   skip: process.env.SEND_REPO === undefined ? 'SEND_REPO is unset; provide the Send checkout to run the cross-repository drift check' : false,

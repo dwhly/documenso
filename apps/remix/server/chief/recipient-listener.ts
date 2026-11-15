@@ -1,6 +1,9 @@
 import { timingSafeEqual, createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 
+import SuperJSON from 'superjson';
+import type { SuperJSONResult } from 'superjson';
+
 import { isRecipientRequest } from './policy';
 
 type Fetch = (request: Request, ...args: any[]) => Response | Promise<Response>;
@@ -49,8 +52,43 @@ export const recipientFetch = (fetch: Fetch, keyProvider = readProxyKey): Fetch 
 const object = (value: unknown): value is Record<string, any> =>
   !!value && typeof value === 'object' && !Array.isArray(value);
 
+const undefinedAnnotation = (value: unknown) =>
+  Array.isArray(value) && value.length === 1 && value[0] === 'undefined';
+
+const allowedSuperJSON = (member: unknown): member is SuperJSONResult => {
+  if (!object(member) || Object.keys(member).some(key => !['json', 'meta'].includes(key))) {
+    return false;
+  }
+  if (!('meta' in member)) {
+    return true;
+  }
+  const { meta } = member;
+  return object(meta) && Object.keys(meta).every(key => ['values', 'v'].includes(key)) &&
+    (!('v' in meta) || meta.v === 1) &&
+    (undefinedAnnotation(meta.values) ||
+      (object(meta.values) && Object.values(meta.values).every(undefinedAnnotation)));
+};
+
+const staffInputAllowed = (name: string, value: unknown) => {
+  if (!DUAL_MODE_PROCEDURES.some(p => p.toLowerCase() === name.toLowerCase())) {
+    return true;
+  }
+  return object(value) && !('token' in value) && value.access?.type !== 'recipient' &&
+    (name.toLowerCase() !== 'envelope.item.getmanybytoken' || value.access?.type === 'user');
+};
+
+// These authenticated upload routes use tRPC's FormData handler, which never deserializes SuperJSON.
+const STAFF_FORM_PROCEDURES = [
+  'envelope.create', 'envelope.use', 'envelope.item.createMany', 'envelope.item.replacePdf',
+  'document.create', 'template.createTemplate', 'team.settings.updateBrandingLogo',
+  'organisation.settings.updateBrandingLogo',
+];
+
 const parsedInput = async (request: Request, url: URL) => {
   const raw = request.method === 'GET' ? url.searchParams.get('input') : await request.clone().text();
+  if (!raw && request.method === 'GET') {
+    return undefined;
+  }
   if (!raw || raw.length > 1024 * 1024) {
     throw new Error('Invalid input');
   }
@@ -80,18 +118,26 @@ export const staffFetch = (fetch: Fetch): Fetch => async (request, ...args) => {
       if (names.some((name) => TOKEN_ONLY_PROCEDURES.some(p => p.toLowerCase() === name.toLowerCase()))) {
         return deny();
       }
-      if (names.some((name) => DUAL_MODE_PROCEDURES.some(p => p.toLowerCase() === name.toLowerCase()))) {
+      const batched = url.searchParams.get('batch') === '1';
+      if (request.headers.get('content-type')?.startsWith('multipart/form-data')) {
+        if (request.method !== 'POST' || batched || names.length !== 1 || !STAFF_FORM_PROCEDURES.includes(names[0])) {
+          return deny();
+        }
+      } else {
         const input = await parsedInput(request, url);
+        if ((batched && (!object(input) || Object.keys(input).length !== names.length ||
+            names.some((_, index) => !(String(index) in input)))) || (!batched && names.length !== 1)) {
+          return deny();
+        }
         for (const [index, name] of names.entries()) {
-          if (!DUAL_MODE_PROCEDURES.some(p => p.toLowerCase() === name.toLowerCase())) {
+          const member = batched ? input[String(index)] : input;
+          if (member === undefined && !batched && staffInputAllowed(name, undefined)) {
             continue;
           }
-          const member = url.searchParams.get('batch') === '1' ? input?.[String(index)] : input;
-          const value = member?.json;
-          if (!object(value) || 'token' in value || value.access?.type === 'recipient') {
+          if (!allowedSuperJSON(member)) {
             return deny();
           }
-          if (name.toLowerCase() === 'envelope.item.getmanybytoken' && value.access?.type !== 'user') {
+          if (!staffInputAllowed(name, member.json) || !staffInputAllowed(name, SuperJSON.deserialize(member))) {
             return deny();
           }
         }
