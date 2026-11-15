@@ -14,6 +14,7 @@ import { DateTime } from 'luxon';
 import { UAParser } from 'ua-parser-js';
 import { renderSVG } from 'uqr';
 
+import { FLEET_PDF_LOGO_PATH } from '../../../../chief/branding';
 import { NEXT_PUBLIC_WEBAPP_URL } from '../../constants/app';
 import { APP_I18N_OPTIONS } from '../../constants/i18n';
 import { getSignatureFontFamily } from '../../constants/pdf';
@@ -573,20 +574,20 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
   const text = new Konva.Text({
     x: 0,
     verticalAlign: 'middle',
-    text: i18n._(msg`Signing certificate provided by`) + ':',
+    text: i18n._(msg`Signing record by Fleet | Dealroom`),
     fontStyle: fontMedium,
     fontFamily: 'Inter',
     fontSize: textSm,
     height: brandingHeight,
   });
 
-  const logoPath = path.join(process.cwd(), 'public/static/logo.png');
+  const logoPath = path.join(process.cwd(), FLEET_PDF_LOGO_PATH);
   const logo = fs.readFileSync(logoPath);
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const img = new SkiaImage(logo) as unknown as HTMLImageElement;
 
-  const documensoImage = new Konva.Image({
+  const brandingImage = new Konva.Image({
     image: img,
     height: brandingHeight,
     width: brandingHeight * (img.width / img.height),
@@ -599,7 +600,7 @@ const renderBranding = async ({ qrToken, i18n }: { qrToken: string | null; i18n:
     y: qrSize + 16,
   });
   logoGroup.add(text);
-  logoGroup.add(documensoImage);
+  logoGroup.add(brandingImage);
 
   branding.add(logoGroup);
 
@@ -719,7 +720,6 @@ export async function renderCertificate({
   recipients,
   envelopeId,
   qrToken,
-  hidePoweredBy,
   i18n,
   envelopeOwner,
   pageWidth,
@@ -789,7 +789,7 @@ export async function renderCertificate({
     group.add(table);
 
     // Add QR code and branding on the last page if there is space.
-    if (index === tables.length - 1 && !hidePoweredBy) {
+    if (index === tables.length - 1) {
       const remainingHeight = pageHeight - group.getClientRect().height - pageBottomMargin;
 
       if (brandingRect.height + brandingTopPadding <= remainingHeight) {
@@ -823,7 +823,7 @@ export async function renderCertificate({
   }
 
   // Need to create an empty page for the QR code if it hasn't been placed yet.
-  if (!hidePoweredBy && !isQrPlaced) {
+  if (!isQrPlaced) {
     const page = new Konva.Layer();
 
     brandingGroup.setAttrs({

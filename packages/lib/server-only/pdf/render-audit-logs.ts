@@ -14,6 +14,7 @@ import { DateTime } from 'luxon';
 import { match, P } from 'ts-pattern';
 import { UAParser } from 'ua-parser-js';
 
+import { FLEET_PDF_LOGO_PATH } from '../../../../chief/branding';
 import { DOCUMENT_STATUS } from '../../constants/document';
 import { APP_I18N_OPTIONS } from '../../constants/i18n';
 import { RECIPIENT_ROLES_DESCRIPTION } from '../../constants/recipient-roles';
@@ -442,7 +443,7 @@ const renderBranding = () => {
 
   const brandingHeight = 16;
 
-  const logoPath = path.join(process.cwd(), 'public/static/logo.png');
+  const logoPath = path.join(process.cwd(), FLEET_PDF_LOGO_PATH);
   const logo = fs.readFileSync(logoPath);
 
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
