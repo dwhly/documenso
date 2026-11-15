@@ -1,13 +1,11 @@
 import {
-  NEXT_PRIVATE_SIGNING_REASON,
   NEXT_PRIVATE_SIGNING_TRANSPORT,
   NEXT_PRIVATE_USE_LEGACY_SIGNING_SUBFILTER,
-  NEXT_PUBLIC_SIGNING_CONTACT_INFO,
-  NEXT_PUBLIC_WEBAPP_URL,
 } from '@documenso/lib/constants/app';
 import type { PDF, Signer } from '@libpdf/core';
 import { match } from 'ts-pattern';
 
+import { FLEET_SEAL } from '../../chief/branding';
 import { getTimestampAuthority } from './helpers/tsa';
 import { createGoogleCloudSigner } from './transports/google-cloud';
 import { createLocalSigner } from './transports/local';
@@ -43,9 +41,7 @@ export const signPdf = async ({ pdf }: SignOptions) => {
 
   const { bytes } = await pdf.sign({
     signer,
-    reason: NEXT_PRIVATE_SIGNING_REASON(),
-    location: NEXT_PUBLIC_WEBAPP_URL(),
-    contactInfo: NEXT_PUBLIC_SIGNING_CONTACT_INFO(),
+    ...FLEET_SEAL,
     subFilter: NEXT_PRIVATE_USE_LEGACY_SIGNING_SUBFILTER() ? 'adbe.pkcs7.detached' : 'ETSI.CAdES.detached',
     timestampAuthority: tsa ?? undefined,
     longTermValidation: !!tsa,
