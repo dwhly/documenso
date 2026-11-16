@@ -703,5 +703,10 @@
     "method": "ALL",
     "path": "/api/deal/*",
     "classification": "deal"
+  },
+  {
+    "method": "GET",
+    "path": "/chief/tenant-logo",
+    "classification": "plumbing"
   }
 ]

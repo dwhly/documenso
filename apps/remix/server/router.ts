@@ -29,6 +29,7 @@ import { aiRoute } from './api/ai/route';
 import { downloadRoute } from './api/download/download';
 import { filesRoute } from './api/files/files';
 import { type AppContext, appContext } from './context';
+import { tenantLogoResponse } from '../app/chief/tenant-brand.server';
 import { dealApi } from './chief/deal-api';
 import { csrfMiddleware } from './csrf-middleware';
 import { appMiddleware } from './middleware';
@@ -83,6 +84,7 @@ app.use(securityHeadersMiddleware);
  */
 app.use('*', appMiddleware);
 app.use('*', requestId());
+app.get('/chief/tenant-logo', (c) => tenantLogoResponse(c.req.raw));
 app.use(async (c, next) => {
   const metadata = c.get('context').requestMetadata;
 

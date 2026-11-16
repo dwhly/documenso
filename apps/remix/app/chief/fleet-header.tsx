@@ -1,38 +1,34 @@
 import { env } from '@documenso/lib/utils/env';
 import { cn } from '@documenso/ui/lib/utils';
-import type { HTMLAttributes, ReactNode } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 
+import { TenantIdentity, useTenantBrand } from './tenant-identity';
 import { FleetThemeToggle } from './fleet-theme-toggle';
 
 /** Fleet Dealroom product tabs. Rooms lives in Send; Signatures is this app. */
 const DEALROOM_TABS = [
-  { id: 'rooms', label: 'Rooms', envKey: 'NEXT_PUBLIC_AMFORGE_SEND_URL' },
+  { id: 'rooms', label: 'Rooms', envKey: 'NEXT_PUBLIC_FLEET_SEND_URL' },
   { id: 'signatures', label: 'Signatures', envKey: null },
 ] as const;
 
-/** The Fleet mark (fleet-design-system marks/fleet.svg). */
-export const FleetMark = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <path d="M12 2.5 16.2 10.4 12 8.6 7.8 10.4Z" />
-    <path d="M6 10.5 10.2 18.4 6 16.6 1.8 18.4Z" opacity=".8" />
-    <path d="M18 10.5 22.2 18.4 18 16.6 13.8 18.4Z" opacity=".8" />
-  </svg>
-);
+export { FleetMark } from './tenant-identity';
 
 /** `.fds-lockup` (vendored components.css, v0.5.1 optically centred): mark + "Fleet" + rule + product. */
-export const FleetLockup = ({ product = 'Dealroom', to = '/' }: { product?: string; to?: string }) => (
-  <Link
-    to={to}
-    aria-label={`Fleet ${product}`}
-    className="fds-lockup flex-shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-  >
-    <FleetMark className="fds-lockup__mark" />
-    <span className="fds-lockup__family">Fleet</span>
-    <span className="fds-lockup__rule" aria-hidden="true" />
-    <span className="fds-lockup__product">{product}</span>
-  </Link>
-);
+export const FleetLockup = ({ product = 'Dealroom', to = '/' }: { product?: string; to?: string }) => {
+  const brand = useTenantBrand();
+  return (
+    <Link
+      to={to}
+      aria-label={`${brand.name} ${product}`}
+      className="fds-lockup flex-shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      <TenantIdentity brand={brand} />
+      <span className="fds-lockup__rule" aria-hidden="true" />
+      <span className="fds-lockup__product">{product}</span>
+    </Link>
+  );
+};
 
 /**
  * Rooms | Signatures: pill tabs, the current tab = the neutral selected pill (fds v0.8.1 baseline, DESIGN.md §10).
@@ -56,11 +52,11 @@ export const FleetDealroomTabs = ({ className }: { className?: string }) => (
   </nav>
 );
 
-export type FleetHeaderProps = HTMLAttributes<HTMLElement> & {
+export type FleetHeaderProps = React.HTMLAttributes<HTMLElement> & {
   /** Staff header: show the Rooms | Signatures tabs. */
   tabs?: boolean;
   /** Right-aligned slot before the Theme button (the account menu). */
-  account?: ReactNode;
+  account?: React.ReactNode;
   homeHref?: string;
 };
 
@@ -101,6 +97,12 @@ export const FleetVisitorHeader = ({ className }: { className?: string }) => (
 );
 
 /** Visitor footer (shell §7, same line as Send's room pages). */
-export const FleetVisitorFooter = () => (
-  <footer className="fleet-visitor-footer">Fleet Dealroom · Every copy is watermarked to the person it was issued to</footer>
-);
+export const FleetVisitorFooter = () => {
+  const brand = useTenantBrand();
+  return (
+    <footer className="fleet-visitor-footer">
+      {brand.name} Dealroom · Every copy is watermarked to the person it was issued to
+      {brand.poweredBy && <div>Powered by Fleet</div>}
+    </footer>
+  );
+};

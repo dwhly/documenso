@@ -10,14 +10,15 @@ import { useEffect } from 'react';
 import { isRouteErrorResponse, Link, Outlet } from 'react-router';
 import { FleetRecipientLayoutContextBar } from '~/chief/fleet-context-bar';
 import { FleetVisitorFooter } from '~/chief/fleet-header';
+import { tenantPageTitle } from '~/chief/tenant-brand';
 import { RecipientHeader } from '~/chief/recipient-header';
 import { Header as AuthenticatedHeader } from '~/components/general/app-header';
 import { GenericErrorLayout } from '~/components/general/generic-error-layout';
 import type { Route } from './+types/_layout';
 
-export function meta() {
+export function meta({ matches }: Route.MetaArgs) {
   return [
-    { title: i18n._(msg`Sign document · Fleet Dealroom`) },
+    { title: tenantPageTitle(i18n._(msg`Sign document · Fleet Dealroom`), matches) },
     { name: 'robots', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
   ];
 }

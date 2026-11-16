@@ -3,6 +3,8 @@ import { useAnalytics } from '@documenso/lib/client-only/hooks/use-analytics';
 import { SessionProvider } from '@documenso/lib/client-only/providers/session';
 import { getBasePath } from '@documenso/lib/constants/app';
 import { APP_I18N_OPTIONS, type SupportedLanguageCodes } from '@documenso/lib/constants/i18n';
+import { DEFAULT_TENANT, serializePublicEnvironment, tenantFromEnvironment, tenantHtmlAttributes } from '~/chief/tenant-brand';
+import { TenantBrandProvider } from '~/chief/tenant-identity';
 import { FleetThemeHead } from '~/chief/fleet-theme';
 import { createChiefPublicEnv } from '~/chief/public-env.server';
 import { extractLocaleData } from '@documenso/lib/utils/i18n';
@@ -127,6 +129,8 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const matches = useMatches();
   const isRecipientRoute = matches.some((m) => m.id?.startsWith('routes/_recipient+'));
 
+  const tenant = isRecipientRoute ? tenantFromEnvironment(publicEnv) : DEFAULT_TENANT;
+
   return (
     // `suppressHydrationWarning` because the theme boot script (FleetThemeHead, which replaces remix-themes'
     // PreventFlashOnWrongTheme) mutates `data-theme` on <html> before hydration,
@@ -136,6 +140,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
     // Documenso's own palette). An empty attribute makes the boot script fill in the OS
     // preference before paint.
     <html
+      {...tenantHtmlAttributes(tenant)}
       translate="no"
       lang={lang}
       data-theme={theme ?? ''}
@@ -185,7 +190,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
           <SessionProvider initialSession={session}>
             <TooltipProvider>
               <TrpcProvider>
-                {children}
+                <TenantBrandProvider value={tenant}>{children}</TenantBrandProvider>
 
                 <Toaster />
               </TrpcProvider>
@@ -200,7 +205,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
             // react-remove-scroll / react-style-singleton inside Radix menus and
             // dialogs) to stamp runtime-injected <style> elements. Without it the
             // strict `style-src-elem` CSP blocks the scroll-lock styles.
-            __html: `window.__ENV__ = ${JSON.stringify(publicEnv)}; window.__webpack_nonce__ = ${JSON.stringify(cspNonce ?? '')}`,
+            __html: `window.__ENV__ = ${serializePublicEnvironment(publicEnv)}; window.__webpack_nonce__ = ${JSON.stringify(cspNonce ?? '')}`,
           }}
         />
 

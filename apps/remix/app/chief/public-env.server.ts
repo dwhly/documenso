@@ -1,3 +1,4 @@
+import { getTenantBrand } from './tenant-brand.server';
 import { createPublicEnv } from '@documenso/lib/utils/env';
 import { isRecipientPublicOrigin } from '../../server/chief/public-origin';
 
@@ -12,5 +13,6 @@ export const createChiefPublicEnv = (request: Request) => {
   if (configured && isRecipientPublicOrigin(request)) {
     environment.NEXT_PUBLIC_WEBAPP_URL = configured;
   }
+  environment.FLEET_TENANT_BRAND = JSON.stringify(getTenantBrand().brand);
   return environment;
 };
