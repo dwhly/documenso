@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
@@ -8,6 +8,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 
 import { parseTenantBrand, tenantLogoResponse } from '../../apps/remix/app/chief/tenant-brand.server';
 import { DEFAULT_TENANT, tenantHtmlAttributes } from '../../apps/remix/app/chief/tenant-brand';
+import { scan } from './tenant-scan';
 import { TenantIdentity } from '../../apps/remix/app/chief/tenant-identity';
 
 const png = Buffer.from(
@@ -48,7 +49,7 @@ test('configured logo replaces mark and name, server exposes URL only, fds uses 
     });
     assert.equal(brand.name, 'Acme Test Co');
     assert.equal(brand.logoBaseline, 0.75);
-    assert.match(brand.logoUrl, /^\/chief\/tenant-logo\?v=[a-f0-9]{64}$/);
+    assert.match(brand.logoUrl, /^\/chief\/sign-tenant-logo\?v=[a-f0-9]{64}$/);
     assert.ok(!JSON.stringify(brand).includes(file));
     assert.deepEqual(logo?.bytes, png);
     const attributes = tenantHtmlAttributes(brand);
@@ -101,42 +102,48 @@ test('file validation rejects wrong formats, oversized files and SVG, falling ba
       Buffer.from('<svg><script>alert(1)</script></svg>'),
     ]) {
       writeFileSync(file, bytes);
-      assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: file }).brand.logoUrl, '');
+      assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: file, FLEET_TENANT_CHROME: '#123456' }).brand.logoUrl, '');
     }
     const svg = file.replace('.png', '.svg');
     const warnings: string[] = [];
     const warn = (message: string) => warnings.push(message);
     for (const logoPath of [svg, file]) {
-      writeFileSync(logoPath, '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 0h20v20z"/></svg>');
+      writeFileSync(
+        logoPath,
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 0h20v20z"/></svg>',
+      );
       for (let attempt = 0; attempt < 3; attempt++) {
-        const tenant = parseTenantBrand({ FLEET_TENANT_NAME: 'Acme Test Co', FLEET_TENANT_LOGO: logoPath }, warn);
+        const tenant = parseTenantBrand(
+          { FLEET_TENANT_NAME: 'Acme Test Co', FLEET_TENANT_LOGO: logoPath, FLEET_TENANT_CHROME: '#123456' },
+          warn,
+        );
         assert.equal(tenant.brand.logoUrl, '');
         assert.equal(tenant.logo, undefined);
         assert.equal(tenant.brand.name, 'Acme Test Co');
         const html = renderToStaticMarkup(React.createElement(TenantIdentity, { brand: tenant.brand }));
         assert.match(html, />Acme Test Co<\/span>/);
         assert.doesNotMatch(html, /<img/);
-        assert.equal(tenantLogoResponse(new Request('https://sign.test/chief/tenant-logo'), tenant).status, 404);
+        assert.equal(tenantLogoResponse(new Request('https://sign.test/chief/sign-tenant-logo'), tenant).status, 404);
       }
     }
     assert.deepEqual(warnings, ['Invalid FLEET_TENANT_LOGO; using default']);
     writeFileSync(svg, '<svg><image href="https://example.test/logo.png"/></svg>');
-    assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: svg }).brand.logoUrl, '');
+    assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: svg, FLEET_TENANT_CHROME: '#123456' }).brand.logoUrl, '');
   });
 });
 
 test('same-origin asset is hash checked, immutable, typed and unavailable when unset', async () => {
   await withLogo(async (file) => {
-    const tenant = parseTenantBrand({ FLEET_TENANT_LOGO: file });
+    const tenant = parseTenantBrand({ FLEET_TENANT_LOGO: file, FLEET_TENANT_CHROME: '#123456' });
     const response = tenantLogoResponse(new Request(`https://sign.test${tenant.brand.logoUrl}`), tenant);
     assert.equal(response.status, 200);
     assert.equal(response.headers.get('Content-Type'), 'image/png');
     assert.match(response.headers.get('Cache-Control') ?? '', /immutable/);
     assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff');
     assert.deepEqual(Buffer.from(await response.arrayBuffer()), png);
-    assert.equal(tenantLogoResponse(new Request('https://sign.test/chief/tenant-logo?v=old'), tenant).status, 404);
+    assert.equal(tenantLogoResponse(new Request('https://sign.test/chief/sign-tenant-logo?v=old'), tenant).status, 404);
     assert.equal(
-      tenantLogoResponse(new Request('https://sign.test/chief/tenant-logo'), parseTenantBrand({})).status,
+      tenantLogoResponse(new Request('https://sign.test/chief/sign-tenant-logo'), parseTenantBrand({})).status,
       404,
     );
   });
@@ -160,27 +167,20 @@ test('wiring uses the existing public env loader, recipient-only attributes and 
 });
 
 test('configured tenant names do not ship in the product tree', () => {
-  const names = ['Acme Test Co', ...(process.env.FLEET_TEST_TENANT_NAMES ?? '').split(',').filter(Boolean)];
-  const root = new URL('../../apps/remix/app/chief/', import.meta.url);
-  for (const file of readdirSync(root, { recursive: true }).filter((p) => /\.(ts|tsx|css)$/.test(String(p)))) {
-    const source = readFileSync(new URL(String(file), root), 'utf8').toLowerCase();
-    for (const name of names) {
-      assert.ok(!source.includes(name.toLowerCase()), `${file} contains configured tenant name`);
-    }
-  }
+  assert.deepEqual(scan(path.resolve(import.meta.dirname, '../..')), []);
 });
 
 test('malformed XML, namespace-qualified external links, and corrupt PNG chunks fall back', async () => {
   await withLogo((file) => {
     writeFileSync(file, Buffer.concat([png.subarray(0, 45), Buffer.from('changed'), png.subarray(52)]));
-    assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: file }).brand.logoUrl, '');
+    assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: file, FLEET_TENANT_CHROME: '#123456' }).brand.logoUrl, '');
     const svg = file.replace('.png', '.svg');
     for (const content of [
       '<svg xmlns="http://www.w3.org/2000/svg"><path></svg>',
       '<svg xmlns="http://www.w3.org/2000/svg"><image xmlns:x="http://www.w3.org/1999/xlink" x:href="https://example.test/image.png"/></svg>',
     ]) {
       writeFileSync(svg, content);
-      assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: svg }).brand.logoUrl, '');
+      assert.equal(parseTenantBrand({ FLEET_TENANT_LOGO: svg, FLEET_TENANT_CHROME: '#123456' }).brand.logoUrl, '');
     }
   });
 });
@@ -210,8 +210,8 @@ test('full lockup renders both product labels with default, name-only and logo s
       assert.ok(html.includes(`class="fds-lockup__product">${product}</span>`));
       assert.ok(html.includes(`${name} Dealroom · Every copy`));
       assert.equal(html.includes('Powered by Fleet'), name !== 'Fleet');
-      assert.match(render('/chief/tenant-logo?v=test'), /<img[^>]+alt=/);
-      assert.doesNotMatch(render('/chief/tenant-logo?v=test'), /fds-lockup__mark|fds-lockup__family/);
+      assert.match(render('/chief/sign-tenant-logo?v=test'), /<img[^>]+alt=/);
+      assert.doesNotMatch(render('/chief/sign-tenant-logo?v=test'), /fds-lockup__mark|fds-lockup__family/);
     }
   }
 });
@@ -230,8 +230,8 @@ test('tenant names survive public-env script serialization without becoming mark
   assert.equal(context.window.__ENV__?.FLEET_TENANT_BRAND, publicEnv.FLEET_TENANT_BRAND);
   assert.equal(tenantFromEnvironment(context.window.__ENV__).name, brand.name);
   assert.equal(
-    tenantPageTitle('Sign document · Fleet Dealroom', [{ id: 'root', data: { publicEnv } }]),
-    `Sign document · ${brand.name} Dealroom`,
+    tenantPageTitle('Sign document', [{ id: 'root', data: { publicEnv } }]),
+    `Sign document · ${brand.name} Sign`,
   );
-  assert.equal(tenantPageTitle('Sign document · Fleet Dealroom', []), 'Sign document · Fleet Dealroom');
+  assert.equal(tenantPageTitle('Sign document', []), 'Sign document · Fleet Sign');
 });

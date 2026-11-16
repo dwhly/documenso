@@ -55,11 +55,15 @@ export const tenantFromEnvironment = (environment?: Record<string, string | unde
   }
 };
 
-export const tenantPageTitle = (title: string, matches: ({ id: string; data?: unknown } | undefined)[]) => {
+export const tenantPageTitle = (
+  title: string,
+  matches: ({ id: string; data?: unknown } | undefined)[],
+  product = 'Sign',
+) => {
   const root = matches.find((match) => match?.id === 'root')?.data as
     | { publicEnv?: Record<string, string | undefined> }
     | undefined;
-  return title.replace('Fleet', () => tenantFromEnvironment(root?.publicEnv).name);
+  return `${title} · ${tenantFromEnvironment(root?.publicEnv).name} ${product}`;
 };
 
 export const serializePublicEnvironment = (environment: unknown) =>

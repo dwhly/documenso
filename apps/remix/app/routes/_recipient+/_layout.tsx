@@ -18,7 +18,7 @@ import type { Route } from './+types/_layout';
 
 export function meta({ matches }: Route.MetaArgs) {
   return [
-    { title: tenantPageTitle(i18n._(msg`Sign document · Fleet Dealroom`), matches) },
+    { title: tenantPageTitle(i18n._(msg`Sign document`), matches) },
     { name: 'robots', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
   ];
 }

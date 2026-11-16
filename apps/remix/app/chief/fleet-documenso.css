@@ -383,7 +383,7 @@ html[data-theme='dark'] .dark\:bg-documenso.dark\:bg-documenso {
 
 /* C4a: buttons use the Fleet button type (DESIGN.md fds-btn: --text-sm / 600), the same as Send's pages.
    Documenso's Button primitive is text-sm (14px) / font-medium. The shell spec's page-head actions keep 14px. */
-.inline-flex.rounded-md.text-sm.font-medium:not(.fleet-page-head__actions *) {
+.documenso-branded .inline-flex.rounded-md.text-sm.font-medium:not(.fleet-page-head__actions *) {
   font-size: var(--text-sm);
   font-weight: 600;
 }
@@ -402,4 +402,11 @@ html[data-theme='dark'] .dark\:bg-documenso.dark\:bg-documenso {
 @media (max-width: 420px) {
   .fleet-tenant-logo { --tenant-logo-height: 17px; }
   .fds-lockup:has(.fleet-tenant-logo) { gap: 8px; }
+}
+
+/* The upstream upsell is unrelated to the recipient's document; keep its translation untouched. */
+.documenso-branded p.mt-36:has(> a[href="/articles/signature-disclosure"]) { display: none; }
+
+@media (forced-colors: active) {
+  .fds-header [data-fds-theme-toggle] { color: ButtonText; }
 }

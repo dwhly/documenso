@@ -706,7 +706,7 @@
   },
   {
     "method": "GET",
-    "path": "/chief/tenant-logo",
+    "path": "/chief/sign-tenant-logo",
     "classification": "plumbing"
   }
 ]

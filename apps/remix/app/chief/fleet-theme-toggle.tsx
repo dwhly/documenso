@@ -39,19 +39,24 @@ export const FleetThemeToggle = ({ className }: FleetThemeToggleProps) => {
   };
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={`${label} (click to change)`}
-      title={label}
-      data-fds-theme-toggle=""
-      suppressHydrationWarning
-      className={cn(
-        'relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-control text-current transition-colors after:absolute after:-inset-1.5 [@media(hover:hover)]:hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-        className,
-      )}
-    >
-      <Icon aria-hidden="true" className="h-[18px] w-[18px]" />
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={`${label} (click to change)`}
+        title={label}
+        data-fds-theme-toggle=""
+        suppressHydrationWarning
+        className={cn(
+          'relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-control text-current transition-colors after:absolute after:-inset-1.5 [@media(hover:hover)]:hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+          className,
+        )}
+      >
+        <Icon aria-hidden="true" className="h-[18px] w-[18px]" />
+      </button>
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        {label}
+      </span>
+    </>
   );
 };

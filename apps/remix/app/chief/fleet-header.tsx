@@ -1,9 +1,9 @@
-import { env } from '@documenso/lib/utils/env';
 import { cn } from '@documenso/ui/lib/utils';
 import React from 'react';
 import { Link } from 'react-router';
 
 import { TenantIdentity, useTenantBrand } from './tenant-identity';
+import { fleetSendUrl } from './fleet-send-url';
 import { FleetThemeToggle } from './fleet-theme-toggle';
 
 /** Fleet Dealroom product tabs. Rooms lives in Send; Signatures is this app. */
@@ -42,11 +42,11 @@ export const FleetDealroomTabs = ({ className }: { className?: string }) => (
           <Link key={tab.id} to="/" aria-current="page">
             {tab.label}
           </Link>
-        ) : (
-          <a key={tab.id} href={env(tab.envKey) || '/'}>
+        ) : fleetSendUrl() ? (
+          <a key={tab.id} href={fleetSendUrl()}>
             {tab.label}
           </a>
-        ),
+        ) : null,
       )}
     </div>
   </nav>

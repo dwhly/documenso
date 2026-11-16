@@ -84,7 +84,7 @@ app.use(securityHeadersMiddleware);
  */
 app.use('*', appMiddleware);
 app.use('*', requestId());
-app.get('/chief/tenant-logo', (c) => tenantLogoResponse(c.req.raw));
+app.get('/chief/sign-tenant-logo', (c) => tenantLogoResponse(c.req.raw));
 app.use(async (c, next) => {
   const metadata = c.get('context').requestMetadata;
 

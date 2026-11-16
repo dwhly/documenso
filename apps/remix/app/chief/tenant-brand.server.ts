@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { closeSync, fstatSync, openSync, readSync } from 'node:fs';
+import { closeSync, constants, fstatSync, openSync, readSync } from 'node:fs';
 import { extname } from 'node:path';
 
 import { DEFAULT_TENANT, type TenantBrand } from './tenant-brand';
@@ -37,6 +37,15 @@ const hsl = (hex: string) => {
   return `${Number((hue * 60).toFixed(4))} ${Number((saturation * 100).toFixed(4))}% ${Number((light * 100).toFixed(4))}%`;
 };
 
+const whiteContrast = (hex: string) => {
+  const digits = hex.length === 4 ? [...hex.slice(1)].map((c) => c + c).join('') : hex.slice(1);
+  const linear = [0, 2, 4].map((i) => {
+    const c = Number.parseInt(digits.slice(i, i + 2), 16) / 255;
+    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 1.05 / (linear.reduce((sum, c, i) => sum + c * [0.2126, 0.7152, 0.0722][i], 0) + 0.05);
+};
+
 const crc32 = (bytes: Buffer) => {
   let crc = 0xffffffff;
   for (const byte of bytes) {
@@ -53,7 +62,7 @@ const readLogo = (file: string) => {
   if (extension !== '.png') {
     throw new Error('logo_type');
   }
-  const fd = openSync(file, 'r');
+  const fd = openSync(file, constants.O_RDONLY | constants.O_NONBLOCK);
   let bytes: Buffer;
   try {
     if (!fstatSync(fd).isFile()) {
@@ -72,6 +81,9 @@ const readLogo = (file: string) => {
     bytes.length < 45 ||
     !bytes.subarray(0, 8).equals(Buffer.from('89504e470d0a1a0a', 'hex')) ||
     bytes.toString('ascii', 12, 16) !== 'IHDR' ||
+    bytes.readUInt32BE(8) !== 13 ||
+    bytes.readUInt32BE(16) > 2000 ||
+    bytes.readUInt32BE(20) > 600 ||
     !bytes.readUInt32BE(16) ||
     !bytes.readUInt32BE(20) ||
     !bytes.subarray(-12).equals(Buffer.from('0000000049454e44ae426082', 'hex'))
@@ -128,6 +140,9 @@ export const parseTenantBrand = (
           if (!/^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(value)) {
             throw new Error('hex');
           }
+          if (key === 'CHROME' && whiteContrast(value) < 4.5) {
+            throw new Error('contrast');
+          }
           const field = key === 'CHROME' ? 'chrome' : 'chromeRule';
           config.brand[field] = value;
           config.brand[`${field}Hsl`] = hsl(value);
@@ -147,12 +162,17 @@ export const parseTenantBrand = (
           break;
         case 'LOGO':
           config.logo = readLogo(value);
-          config.brand.logoUrl = `/chief/tenant-logo?v=${config.logo.hash}`;
+          config.brand.logoUrl = `/chief/sign-tenant-logo?v=${config.logo.hash}`;
           break;
       }
     } catch {
       warnOnce(key, warn);
     }
+  }
+  if (config.logo && !config.brand.chrome) {
+    warnOnce('LOGO', warn);
+    delete config.logo;
+    config.brand.logoUrl = '';
   }
   return config;
 };
@@ -166,6 +186,8 @@ export const getTenantBrand = (): TenantConfiguration => {
   return cached.config;
 };
 
+getTenantBrand();
+
 export const tenantLogoResponse = (request: Request, config = getTenantBrand()) => {
   const { logo } = config;
   if (!logo || new URL(request.url).searchParams.get('v') !== logo.hash) {
@@ -175,7 +197,6 @@ export const tenantLogoResponse = (request: Request, config = getTenantBrand()) 
     headers: {
       'Content-Type': logo.mime,
       'Cache-Control': 'public, max-age=31536000, immutable',
-      ETag: `"${logo.hash}"`,
       'X-Content-Type-Options': 'nosniff',
       'Content-Security-Policy': "default-src 'none'; sandbox",
     },

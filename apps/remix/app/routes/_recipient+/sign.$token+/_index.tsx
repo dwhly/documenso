@@ -39,7 +39,6 @@ import { Link, redirect } from 'react-router';
 import { getOptionalLoaderContext } from 'server/utils/get-loader-session';
 import { match } from 'ts-pattern';
 
-import { TenantProductName } from '~/chief/tenant-identity';
 import { toFleetRecipientContext } from '~/chief/recipient-context';
 import { Header as AuthenticatedHeader } from '~/components/general/app-header';
 import { CscRecipientBlockedPage } from '~/components/general/document-signing/csc-recipient-blocked-page';
@@ -487,7 +486,7 @@ const SigningPageV1 = ({ data }: { data: Awaited<ReturnType<typeof handleV1Loade
               <Trans>
                 Want to send slick signing links like this one?{' '}
                 <Link to="/articles/signature-disclosure" className="text-documenso-700 hover:text-documenso-600">
-                  <TenantProductName />
+                  Fleet Dealroom
                 </Link>
                 .
               </Trans>
@@ -587,7 +586,7 @@ const SigningPageV2 = ({ data }: { data: Awaited<ReturnType<typeof handleV2Loade
               <Trans>
                 Want to send slick signing links like this one?{' '}
                 <Link to="/articles/signature-disclosure" className="text-documenso-700 hover:text-documenso-600">
-                  <TenantProductName />
+                  Fleet Dealroom
                 </Link>
                 .
               </Trans>

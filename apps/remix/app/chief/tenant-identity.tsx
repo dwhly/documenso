@@ -6,12 +6,14 @@ const TenantContext = React.createContext<TenantBrand>(DEFAULT_TENANT);
 export const TenantBrandProvider = TenantContext.Provider;
 export const useTenantBrand = () => React.useContext(TenantContext);
 
-export const TenantIdentity = ({ brand }: { brand: TenantBrand }) =>
-  brand.logoUrl ? (
+export const TenantIdentity = ({ brand }: { brand: TenantBrand }) => {
+  const [failedUrl, setFailedUrl] = React.useState('');
+  return brand.logoUrl && brand.logoUrl !== failedUrl ? (
     <img
       className="fleet-tenant-logo"
       src={brand.logoUrl}
       alt={brand.name}
+      onError={() => setFailedUrl(brand.logoUrl)}
       style={{ '--tenant-logo-baseline': brand.logoBaseline } as CSSProperties}
     />
   ) : (
@@ -20,6 +22,7 @@ export const TenantIdentity = ({ brand }: { brand: TenantBrand }) =>
       <span className="fds-lockup__family">{brand.name}</span>
     </>
   );
+};
 
 export const FleetMark = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -28,5 +31,3 @@ export const FleetMark = ({ className }: { className?: string }) => (
     <path d="M18 10.5 22.2 18.4 18 16.6 13.8 18.4Z" opacity=".8" />
   </svg>
 );
-
-export const TenantProductName = () => <>{useTenantBrand().name} Dealroom</>;
