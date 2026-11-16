@@ -43,3 +43,9 @@ test('the Theme control is a small sun / moon icon with the full label kept for 
   assert.match(toggle, /after:-inset-1\.5/); // 44px tap area around the 32px icon
   assert.doesNotMatch(toggle, /\{label\}\s*<\/button>/); // the words are no longer drawn
 });
+
+test('the Theme icon only shows its hover chip on devices that really hover (no sticky chip after a tap)', () => {
+  const toggle = readFileSync(new URL('../../apps/remix/app/chief/fleet-theme-toggle.tsx', import.meta.url), 'utf8');
+  assert.match(toggle, /\[@media\(hover:hover\)\]:hover:bg-accent/);
+  assert.doesNotMatch(toggle, /[\s'"]hover:bg-accent/);
+});

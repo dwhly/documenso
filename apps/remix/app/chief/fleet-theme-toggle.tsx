@@ -47,7 +47,7 @@ export const FleetThemeToggle = ({ className }: FleetThemeToggleProps) => {
       data-fds-theme-toggle=""
       suppressHydrationWarning
       className={cn(
-        'relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-control text-current transition-colors after:absolute after:-inset-1.5 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-control text-current transition-colors after:absolute after:-inset-1.5 [@media(hover:hover)]:hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         className,
       )}
     >
