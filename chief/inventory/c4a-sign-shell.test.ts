@@ -31,3 +31,15 @@ test("the signing page backdrop follows the Fleet surface (cream for a warm tena
   // Documenso wraps the signer page in `min-h-screen w-screen bg-gray-50`; the PDF page stays white on top of it.
   assert.match(css, /\.min-h-screen\.w-screen\.bg-gray-50:has\(> \.fleet-signer-chrome\)\s*\{\s*background-color: hsl\(var\(--background\)\);\s*\}/);
 });
+
+test('the Theme control is a small sun / moon icon with the full label kept for screen readers and hover', () => {
+  // Owner, 15 Nov 2026: "really just an icon like a moon or a sun". Same cycle (auto -> light -> dark) as fds theme.js.
+  const toggle = readFileSync(new URL('../../apps/remix/app/chief/fleet-theme-toggle.tsx', import.meta.url), 'utf8');
+  assert.match(toggle, /import \{ MoonIcon, SunIcon, SunMoonIcon \} from 'lucide-react';/);
+  assert.match(toggle, /choice === 'system' \? SunMoonIcon : choice === 'dark' \? MoonIcon : SunIcon/);
+  assert.match(toggle, /aria-label=\{`\$\{label\} \(click to change\)`\}/);
+  assert.match(toggle, /title=\{label\}/);
+  assert.match(toggle, /h-8 w-8/);
+  assert.match(toggle, /after:-inset-1\.5/); // 44px tap area around the 32px icon
+  assert.doesNotMatch(toggle, /\{label\}\s*<\/button>/); // the words are no longer drawn
+});
