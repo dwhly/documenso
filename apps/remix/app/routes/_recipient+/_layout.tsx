@@ -39,7 +39,7 @@ export default function RecipientLayout({ matches }: Route.ComponentProps) {
   );
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" data-fleet-signing={hideHeader || undefined}>
       {!hideHeader && (sessionData?.user ? <AuthenticatedHeader /> : <RecipientHeader />)}
 
       {!hideHeader && !sessionData?.user && <FleetRecipientLayoutContextBar />}

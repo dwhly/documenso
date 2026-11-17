@@ -1,4 +1,5 @@
 import { renderAttribution } from '../../../../packages/fleet-ui/fleet-attribution';
+import { reserveSigningPanelSpace } from '../../../../packages/fleet-ui/signing-footer';
 import { cn } from '@documenso/ui/lib/utils';
 // biome-ignore lint/style/useImportType: The inventory runner uses the classic JSX transform.
 import React from 'react';
@@ -104,8 +105,14 @@ export const FleetVisitorHeader = ({ className }: { className?: string }) => (
 /** Visitor footer (shell §7, same line as Send's room pages). */
 export const FleetVisitorFooter = () => {
   const brand = useTenantBrand();
+  const footerRef = React.useRef<HTMLElement>(null);
+  React.useEffect(() => {
+    if (footerRef.current) {
+      return reserveSigningPanelSpace(footerRef.current);
+    }
+  }, []);
   return (
-    <footer className="fleet-visitor-footer">
+    <footer ref={footerRef} className="fleet-visitor-footer">
       {brand.name} Dealroom · Every copy is watermarked to the person it was issued to
       <div dangerouslySetInnerHTML={{ __html: renderAttribution('page', brand.attribution ?? {}) }} />
     </footer>
