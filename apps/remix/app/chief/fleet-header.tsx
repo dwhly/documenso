@@ -1,10 +1,10 @@
 import { cn } from '@documenso/ui/lib/utils';
+// biome-ignore lint/style/useImportType: The inventory runner uses the classic JSX transform.
 import React from 'react';
-import { Link } from 'react-router';
-
-import { TenantIdentity, useTenantBrand } from './tenant-identity';
+import { Link, useRouteLoaderData } from 'react-router';
 import { fleetSendUrl } from './fleet-send-url';
 import { FleetThemeToggle } from './fleet-theme-toggle';
+import { TenantIdentity, useTenantBrand } from './tenant-identity';
 
 /** Fleet Dealroom product tabs. Rooms lives in Send; Signatures is this app. */
 const DEALROOM_TABS = [
@@ -34,23 +34,27 @@ export const FleetLockup = ({ product = 'Dealroom', to = '/' }: { product?: stri
  * Rooms | Signatures: pill tabs, the current tab = the neutral selected pill (fds v0.8.1 baseline, DESIGN.md §10).
  * The wrapper carries the responsive display: `.fds-nav` sets its own and would beat `hidden`.
  */
-export const FleetDealroomTabs = ({ className }: { className?: string }) => (
-  <nav aria-label="Fleet Dealroom" className={cn('self-stretch', className)}>
-    <div className="fds-nav fleet-tabs">
-      {DEALROOM_TABS.map((tab) =>
-        tab.envKey === null ? (
-          <Link key={tab.id} to="/" aria-current="page">
-            {tab.label}
-          </Link>
-        ) : fleetSendUrl() ? (
-          <a key={tab.id} href={fleetSendUrl()}>
-            {tab.label}
-          </a>
-        ) : null,
-      )}
-    </div>
-  </nav>
-);
+export const FleetDealroomTabs = ({ className }: { className?: string }) => {
+  const root = useRouteLoaderData<{ publicEnv?: Record<string, string | undefined> }>('root');
+  const sendUrl = fleetSendUrl(root?.publicEnv);
+  return (
+    <nav aria-label="Fleet Dealroom" className={cn('self-stretch', className)}>
+      <div className="fds-nav fleet-tabs">
+        {DEALROOM_TABS.map((tab) =>
+          tab.envKey === null ? (
+            <Link key={tab.id} to="/" aria-current="page">
+              {tab.label}
+            </Link>
+          ) : sendUrl ? (
+            <a key={tab.id} href={sendUrl}>
+              {tab.label}
+            </a>
+          ) : null,
+        )}
+      </div>
+    </nav>
+  );
+};
 
 export type FleetHeaderProps = React.HTMLAttributes<HTMLElement> & {
   /** Staff header: show the Rooms | Signatures tabs. */

@@ -1,6 +1,6 @@
 import { cn } from '@documenso/ui/lib/utils';
 import { MoonIcon, SunIcon, SunMoonIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Theme, useTheme } from 'remix-themes';
 
 import { isSystemTheme, themeLabel } from './fleet-theme-contract';
@@ -23,7 +23,8 @@ export type FleetThemeToggleProps = {
  */
 export const FleetThemeToggle = ({ className }: FleetThemeToggleProps) => {
   const [theme, setTheme, { definedBy }] = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = React.useState(false);
+  const [announcement, setAnnouncement] = React.useState('');
 
   useEffect(() => setMounted(true), []);
 
@@ -36,6 +37,9 @@ export const FleetThemeToggle = ({ className }: FleetThemeToggleProps) => {
     const next = NEXT_CHOICE[choice];
 
     setTheme(next === 'system' ? null : next === 'dark' ? Theme.DARK : Theme.LIGHT);
+    const resolved =
+      next === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? Theme.DARK : Theme.LIGHT) : next;
+    setAnnouncement(themeLabel(resolved, next === 'system' ? 'SYSTEM' : 'USER'));
   };
 
   return (
@@ -48,14 +52,14 @@ export const FleetThemeToggle = ({ className }: FleetThemeToggleProps) => {
         data-fds-theme-toggle=""
         suppressHydrationWarning
         className={cn(
-          'relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-control text-current transition-colors after:absolute after:-inset-1.5 [@media(hover:hover)]:hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+          'relative inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-control text-current transition-colors after:absolute after:-inset-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [@media(hover:hover)]:hover:bg-accent',
           className,
         )}
       >
         <Icon aria-hidden="true" className="h-[18px] w-[18px]" />
       </button>
       <span className="sr-only" aria-live="polite" aria-atomic="true">
-        {label}
+        {announcement}
       </span>
     </>
   );

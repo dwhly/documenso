@@ -88,7 +88,7 @@ export async function loader({ context, request }: Route.LoaderArgs) {
             organisations: organisations || [],
           }
         : null,
-      publicEnv: createChiefPublicEnv(request),
+      publicEnv: createChiefPublicEnv(request, session.isAuthenticated),
     },
     {
       headers: {

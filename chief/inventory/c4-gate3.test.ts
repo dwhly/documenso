@@ -6,7 +6,9 @@ import path from 'node:path';
 import test from 'node:test';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { MemoryRouter } from 'react-router';
+import { createMemoryRouter, RouterProvider } from 'react-router';
+import { createHash } from 'node:crypto';
+import { createChiefPublicEnv } from '../../apps/remix/app/chief/public-env.server';
 
 import { FleetDealroomTabs } from '../../apps/remix/app/chief/fleet-header';
 import { parseTenantBrand, tenantLogoResponse } from '../../apps/remix/app/chief/tenant-brand.server';
@@ -31,8 +33,13 @@ const withLogo = (run: (file: string) => void) => {
 test('H2 Rooms uses new URL first and deprecated deployment key as fallback', () => {
   const keys = ['NEXT_PUBLIC_FLEET_SEND_URL', 'NEXT_PUBLIC_AMFORGE_SEND_URL'];
   const original = keys.map((key) => process.env[key]);
-  const render = () =>
-    renderToStaticMarkup(React.createElement(MemoryRouter, null, React.createElement(FleetDealroomTabs)));
+  const render = () => {
+    const publicEnv = createChiefPublicEnv(new Request('https://staff.test/t/team/documents'), true);
+    const router = createMemoryRouter([{ id: 'root', path: '/', element: React.createElement(FleetDealroomTabs) }], {
+      hydrationData: { loaderData: { root: { publicEnv } } },
+    });
+    return renderToStaticMarkup(React.createElement(RouterProvider, { router }));
+  };
   try {
     delete process.env[keys[0]];
     process.env[keys[1]] = 'https://legacy-send.example.test';
@@ -180,12 +187,27 @@ test('N5 logo does not advertise an unimplemented ETag validator', () =>
     );
   }));
 
-test('N6 logo geometry CSS is identical across Send and Sign', () => {
-  assert.ok(process.env.SEND_REPO);
-  const block = (source: string) =>
-    source.slice(source.indexOf("/* The inline image's bottom")).split('\n\n')[0].trim();
-  const send = block(read(path.join(process.env.SEND_REPO!, 'frontend/public/dealroom/shell.css')));
-  const sign = block(read('apps/remix/app/chief/fleet-documenso.css'));
+const logoBlock = (source: string) =>
+  source.slice(source.indexOf("/* The inline image's bottom")).split('\n\n')[0].trim();
+
+test('N-new-4 Sign logo geometry matches the pinned shared contract without Send', () => {
+  const sign = logoBlock(read('apps/remix/app/chief/fleet-documenso.css'));
+  assert.ok(sign.includes('--tenant-logo-height'));
+  assert.equal(
+    createHash('sha256').update(sign).digest('hex'),
+    'eda18561b4b5df1876f4c44450fd132677c94abd10ce4823aca36596a4f285ae',
+  );
+});
+
+test('N6 logo geometry CSS is identical across Send and Sign', {
+  skip:
+    process.env.SEND_REPO === undefined
+      ? 'SEND_REPO is unset; skipping only the live cross-repository CSS comparison (pinned contract still checked)'
+      : false,
+}, () => {
+  assert.ok(process.env.SEND_REPO, 'SEND_REPO must name a Send checkout when set');
+  const send = logoBlock(read(path.join(process.env.SEND_REPO!, 'frontend/public/dealroom/shell.css')));
+  const sign = logoBlock(read('apps/remix/app/chief/fleet-documenso.css'));
   assert.ok(send.includes('--tenant-logo-height'));
   assert.equal(send, sign);
 });
@@ -231,7 +253,7 @@ test('H2 scanner allows exactly one deprecated constant and rejects tenant words
   const { mkdirSync } = await import('node:fs');
   const { scan } = await import('./tenant-scan');
   const dir = mkdtempSync(path.join(tmpdir(), 'legacy-scan-'));
-  const relative = 'apps/remix/app/chief/fleet-send-url.ts';
+  const relative = 'apps/remix/app/chief/public-env.server.ts';
   const file = path.join(dir, relative);
   const constant = "export const DEPRECATED_SEND_URL_KEY = 'NEXT_PUBLIC_AMFORGE_SEND_URL';";
   const fixtures = { FLEET_TEST_TENANT_NAMES: 'AmForge' };
