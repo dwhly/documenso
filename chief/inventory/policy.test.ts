@@ -107,3 +107,23 @@ test('actual optional-version recipient download route works with and without ve
     assert.equal(isRecipientRequest('GET', path), true);
   }
 });
+
+// superjson marks an omitted authOptions as an `undefined` annotation in meta.values; that is not an auth option.
+test('superjson undefined authOptions annotation is not an excluded feature', () =>
+  assert.equal(
+    containsExcludedFeature({
+      '0': {
+        json: { token: 'tok', fieldId: 134, fieldValue: { type: 'NAME', value: 'Fixture signer' }, authOptions: null },
+        meta: { values: { authOptions: ['undefined'] }, v: 1 },
+      },
+    }),
+    false,
+  ));
+for (const payload of [
+  { '0': { json: { authOptions: { type: 'PASSKEY' } }, meta: { values: { authOptions: ['undefined'] }, v: 1 } } },
+  { '0': { json: { authOptions: ['undefined'] } } },
+  { '0': { json: {}, meta: { values: { authOptions: ['PASSKEY'] }, v: 1 } } },
+]) {
+  test(`auth option outside the superjson annotation still denied ${JSON.stringify(payload)}`, () =>
+    assert.equal(containsExcludedFeature(payload), true));
+}

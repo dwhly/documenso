@@ -118,6 +118,11 @@ export const containsExcludedFeature = (value: unknown): boolean => {
     return false;
   }
   return Object.entries(value).some(([key, item]) => {
+    // superjson's meta.values only annotates types (e.g. ['undefined'] for an omitted authOptions); it carries no option.
+    if (key === 'meta' && item && typeof item === 'object' && 'values' in item &&
+        Object.values((item as { values: object }).values ?? {}).every((a) => JSON.stringify(a) === '["undefined"]')) {
+      return false;
+    }
     if (['actionAuth', 'globalActionAuth', 'authOptions'].includes(key) && item) {
       const options = Array.isArray(item) ? item : [item];
       if (
