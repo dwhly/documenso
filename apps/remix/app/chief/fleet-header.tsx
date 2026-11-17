@@ -1,3 +1,4 @@
+import { renderAttribution } from '../../../../packages/fleet-ui/fleet-attribution';
 import { cn } from '@documenso/ui/lib/utils';
 // biome-ignore lint/style/useImportType: The inventory runner uses the classic JSX transform.
 import React from 'react';
@@ -106,7 +107,7 @@ export const FleetVisitorFooter = () => {
   return (
     <footer className="fleet-visitor-footer">
       {brand.name} Dealroom · Every copy is watermarked to the person it was issued to
-      {brand.poweredBy && <div>Powered by Fleet</div>}
+      <div dangerouslySetInnerHTML={{ __html: renderAttribution('page', brand.attribution ?? {}) }} />
     </footer>
   );
 };

@@ -1,3 +1,4 @@
+import { withFleetAttribution } from '../fleet-ui/fleet-mail';
 import { env } from '@documenso/lib/utils/env';
 import { ResendTransport } from '@documenso/nodemailer-resend';
 import type { Transporter } from 'nodemailer';
@@ -106,7 +107,7 @@ const getTransport = (): Transporter => {
   });
 };
 
-export const mailer = getTransport();
+export const mailer = withFleetAttribution(getTransport());
 
 // Chief: one product prefix on every subject (see chief-subject.ts).
 mailer.use('compile', (mail, callback) => {

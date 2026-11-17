@@ -52,7 +52,7 @@ export default function RecipientLayout({ matches }: Route.ComponentProps) {
         <Outlet />
       </main>
 
-      {(hideHeader || !sessionData?.user) && <FleetVisitorFooter />}
+      <FleetVisitorFooter />
     </div>
   );
 }

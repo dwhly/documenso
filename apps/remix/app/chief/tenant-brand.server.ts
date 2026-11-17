@@ -1,3 +1,4 @@
+import { warnMissingSource } from '../../../../packages/fleet-ui/fleet-attribution';
 import { createHash } from 'node:crypto';
 import { closeSync, constants, fstatSync, openSync, readSync } from 'node:fs';
 import { extname } from 'node:path';
@@ -186,6 +187,7 @@ export const getTenantBrand = (): TenantConfiguration => {
   return cached.config;
 };
 
+warnMissingSource(process.env);
 getTenantBrand();
 
 export const tenantLogoResponse = (request: Request, config = getTenantBrand()) => {

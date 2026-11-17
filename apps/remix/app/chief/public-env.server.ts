@@ -1,3 +1,4 @@
+import { attributionSettings } from '../../../../packages/fleet-ui/fleet-attribution';
 import { createPublicEnv } from '@documenso/lib/utils/env';
 import { isRecipientPublicOrigin } from '../../server/chief/public-origin';
 import { getTenantBrand } from './tenant-brand.server';
@@ -32,6 +33,6 @@ export const createChiefPublicEnv = (request: Request, authenticated = false) =>
   if (configured && recipient) {
     environment.NEXT_PUBLIC_WEBAPP_URL = configured;
   }
-  environment.FLEET_TENANT_BRAND = JSON.stringify(getTenantBrand().brand);
+  environment.FLEET_TENANT_BRAND = JSON.stringify({ ...getTenantBrand().brand, attribution: attributionSettings(process.env) });
   return environment;
 };

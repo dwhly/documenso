@@ -1,6 +1,8 @@
 import type { CSSProperties } from 'react';
+import type { AttributionSettings } from '../../../../packages/fleet-ui/fleet-attribution';
 
 export type TenantBrand = {
+  attribution?: AttributionSettings;
   name: string;
   logoUrl: string;
   logoBaseline: number;

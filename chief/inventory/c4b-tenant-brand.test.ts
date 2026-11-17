@@ -159,7 +159,8 @@ test('wiring uses the existing public env loader, recipient-only attributes and 
   const header = read('app/chief/fleet-header.tsx');
   assert.match(header, /TenantIdentity/);
   assert.match(header, /brand.name/);
-  assert.match(header, /Powered by Fleet/);
+  assert.match(header, /renderAttribution\('page'/);
+  assert.doesNotMatch(header, /Powered by Fleet/);
   const css = read('app/chief/fleet-documenso.css');
   assert.match(css, /--tenant-logo-height: 20px/);
   assert.match(css, /--tenant-logo-height: 17px/);
@@ -209,7 +210,8 @@ test('full lockup renders both product labels with default, name-only and logo s
       assert.ok(html.includes(`aria-label="${name} ${product}"`));
       assert.ok(html.includes(`class="fds-lockup__product">${product}</span>`));
       assert.ok(html.includes(`${name} Dealroom · Every copy`));
-      assert.equal(html.includes('Powered by Fleet'), name !== 'Fleet');
+      assert.ok(html.includes('Open-source software built on the Fleet.'));
+      assert.ok(!html.includes('Powered by Fleet'));
       assert.match(render('/chief/sign-tenant-logo?v=test'), /<img[^>]+alt=/);
       assert.doesNotMatch(render('/chief/sign-tenant-logo?v=test'), /fds-lockup__mark|fds-lockup__family/);
     }

@@ -1,3 +1,4 @@
+import { withFleetAttribution } from '../../fleet-ui/fleet-mail';
 import type { TEmailTransportConfig } from '@documenso/lib/server-only/email/email-transport-config';
 import { ResendTransport } from '@documenso/nodemailer-resend';
 import type { Transporter } from 'nodemailer';
@@ -5,7 +6,7 @@ import { createTransport } from 'nodemailer';
 
 import { MailChannelsTransport } from './mailchannels';
 
-export const buildTransport = (config: TEmailTransportConfig): Transporter => {
+const createConfiguredTransport = (config: TEmailTransportConfig): Transporter => {
   switch (config.type) {
     case 'MAILCHANNELS':
       return createTransport(
@@ -49,3 +50,6 @@ export const buildTransport = (config: TEmailTransportConfig): Transporter => {
       });
   }
 };
+
+export const buildTransport = (config: TEmailTransportConfig): Transporter =>
+  withFleetAttribution(createConfiguredTransport(config));
