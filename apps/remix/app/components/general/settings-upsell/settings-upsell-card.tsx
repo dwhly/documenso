@@ -109,7 +109,7 @@ export const SettingsUpsellCard = ({
 
       <div
         aria-hidden="true"
-        className="flex min-w-0 flex-col justify-center gap-3 border-t bg-muted p-6 md:border-t-0 md:border-l md:p-8"
+        className="flex min-w-0 flex-col justify-center gap-3 border-t bg-muted p-6 md:border-t-0 md:border-l md:p-8" // fds-allow-stripe: neutral column divider of a two-column card
       >
         {preview}
       </div>

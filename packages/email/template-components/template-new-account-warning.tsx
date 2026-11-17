@@ -9,7 +9,7 @@ export type TemplateNewAccountWarningProps = {
 
 export const TemplateNewAccountWarning = ({ senderEmail, reportUrl }: TemplateNewAccountWarningProps) => {
   return (
-    <Container className="mx-auto mt-8 max-w-xl rounded-lg border border-warning border-l-4 border-solid bg-[#fdfae6] px-4 py-3">
+    <Container className="mx-auto mt-8 max-w-xl rounded-lg border border-warning border-solid bg-[#fdfae6] px-4 py-3">
       <Text className="my-0 font-semibold text-foreground text-sm">
         <Trans>Warning: This was sent from a new account ({senderEmail})</Trans>
       </Text>
