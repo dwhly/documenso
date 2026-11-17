@@ -16285,3 +16285,19 @@ msgstr "Zoom in"
 #: packages/ui/primitives/signature-pad/signature-pad-upload.tsx
 msgid "Zoom out"
 msgstr "Zoom out"
+
+#: packages/ui/primitives/signature-pad/signature-pad-upload.tsx
+msgid "Drop an image here or click to browse"
+msgstr "Drop an image here or click to browse"
+
+#: packages/fleet-ui/signature-styles.tsx
+msgid "Signature style"
+msgstr "Signature style"
+
+#: packages/fleet-ui/signature-styles.tsx
+msgid "This style could not load. Choose another style or try again."
+msgstr "This style could not load. Choose another style or try again."
+
+#: packages/fleet-ui/signature-styles.tsx
+msgid "Your name"
+msgstr "Your name"
