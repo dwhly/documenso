@@ -14,7 +14,11 @@ test('the Theme control is a sun / moon / sun-moon icon with the full label kept
   assert.match(toggle, /aria-label=\{`\$\{label\} \(click to change\)`\}/);
   assert.match(toggle, /title=\{label\}/);
   assert.match(toggle, /h-8 w-8/);
-  assert.match(toggle, /after:-inset-1\.5/); // 32px box, no border: -6px on each side = 44px tap area
+  // 44px tap area: the package's [data-fds-theme-toggle] rule (layer fds.components) keeps a 1px transparent border because
+  // Sign's preflight sits in the lower sign.base layer, so ::after is measured from the 30px padding box: 30 + 2 x 7 = 44.
+  // -inset-1.5 (6px) gave 42px.
+  assert.match(toggle, /after:-inset-\[7px\]/);
+  assert.doesNotMatch(toggle, /after:-inset-1\.5/);
   assert.match(toggle, /<Icon aria-hidden="true" className="h-\[18px\] w-\[18px\]" \/>/);
   assert.doesNotMatch(toggle, /\{label\}\s*<\/button>/); // the words are no longer drawn
 });
