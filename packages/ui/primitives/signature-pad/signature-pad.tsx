@@ -104,15 +104,17 @@ export const SignaturePad = ({
 
   const onTypedSignatureChange = (value: string) => {
     setTypedSignature(value);
+  };
 
+  const onTypedSignatureRender = (value: string) => {
     onChange?.({
-      type: DocumentSignatureType.TYPE,
+      type: isBase64Image(value) ? DocumentSignatureType.DRAW : DocumentSignatureType.TYPE,
       value,
     });
   };
 
   const onTabChange = (value: 'draw' | 'text' | 'image') => {
-    if (disabled) {
+    if (disabled || value === tab) {
       return;
     }
 
@@ -123,7 +125,7 @@ export const SignaturePad = ({
         onDrawSignatureChange(drawSignature);
       })
       .with('text', () => {
-        onTypedSignatureChange(typedSignature);
+        onTypedSignatureRender('');
       })
       .with('image', () => {
         onImageSignatureChange(imageSignature);
@@ -178,7 +180,12 @@ export const SignaturePad = ({
         value="text"
         className="relative flex aspect-signature-pad items-center justify-center rounded-md border border-border bg-muted/25 text-center"
       >
-        <SignaturePadType value={typedSignature} defaultValue={fullName} onChange={onTypedSignatureChange} />
+        <SignaturePadType
+          value={typedSignature}
+          defaultValue={fullName}
+          onChange={onTypedSignatureChange}
+          onRender={onTypedSignatureRender}
+        />
       </TabsContent>
 
       <TabsContent

@@ -95,6 +95,7 @@ export const SignaturePadUpload = ({ className, value, onChange, ...props }: Sig
 
   const [hasImage, setHasImage] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isDragOver, setIsDragOver] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [isSignatureValid, setIsSignatureValid] = useState<boolean | null>(null);
 
@@ -260,12 +261,7 @@ export const SignaturePadUpload = ({ className, value, onChange, ...props }: Sig
     }
   };
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    // Allow re-selecting the same file to trigger another change event.
-    event.target.value = '';
-
+  const handleImageUpload = async (file?: File) => {
     if (!file) {
       return;
     }
@@ -359,7 +355,26 @@ export const SignaturePadUpload = ({ className, value, onChange, ...props }: Sig
   });
 
   return (
-    <div className={cn('relative h-full w-full', className)}>
+    <fieldset
+      aria-label={t`Upload Signature`}
+      className={cn('relative h-full w-full min-w-0', className)}
+      data-signature-drag-over={isDragOver || undefined}
+      onDragOver={(event) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'copy';
+        setIsDragOver(true);
+      }}
+      onDragLeave={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setIsDragOver(false);
+        }
+      }}
+      onDrop={(event) => {
+        event.preventDefault();
+        setIsDragOver(false);
+        void handleImageUpload(event.dataTransfer.files[0]);
+      }}
+    >
       <canvas
         data-testid="signature-pad-upload"
         ref={$el}
@@ -375,7 +390,16 @@ export const SignaturePadUpload = ({ className, value, onChange, ...props }: Sig
         onPointerCancel={onPointerEnd}
       />
 
-      <input ref={$fileInput} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+      <input
+        ref={$fileInput}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(event) => {
+          void handleImageUpload(event.target.files?.[0]);
+          event.target.value = '';
+        }}
+      />
 
       {hasImage && (
         <div className="absolute top-2 right-2 flex items-center gap-2">
@@ -430,7 +454,7 @@ export const SignaturePadUpload = ({ className, value, onChange, ...props }: Sig
       {!hasImage && (
         <motion.button
           type="button"
-          className="absolute inset-0 flex h-full w-full items-center justify-center"
+          className="absolute inset-0 flex h-full w-full items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           initial="initial"
           animate="animate"
           whileHover="hover"
@@ -443,11 +467,14 @@ export const SignaturePadUpload = ({ className, value, onChange, ...props }: Sig
                 <span className="font-semibold text-lg">
                   <Trans>Upload Signature</Trans>
                 </span>
+                <span className="text-sm">
+                  <Trans>Drop an image here or click to browse</Trans>
+                </span>
               </div>
             </div>
           </motion.div>
         </motion.button>
       )}
-    </div>
+    </fieldset>
   );
 };
